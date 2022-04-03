@@ -4,6 +4,12 @@
   align-items: center;
 }
 
+.timeselection__header {
+  height: 45px;
+  font-size: 32px;
+  margin: 20px 0;
+}
+
 .selection__container {
   display: flex;
   column-gap: 12px;

@@ -105,7 +105,7 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
   }
 
   const findTimeIndex = (coords) => {
-    return Math.floor((coords.y - 100) / 40)
+    return Math.floor((coords.y - 95) / 40)
   }
 
   const createEvent = () => {
@@ -114,7 +114,7 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
 
   return (
     <div className={styles.timeselection}>
-      <h1>Pick Time</h1>
+      <h1 className={styles.timeselection__header}>Pick Time</h1>
       <div
         className={styles.selection__container}
         onTouchEnd={resetEditLocks}
