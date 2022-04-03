@@ -8,6 +8,8 @@ import Hammer from 'react-hammerjs'
 
 import styles from '../../styles/Create.module.css'
 
+import timeslots from '../../models/timeslots'
+
 const TIMES = [
   '8am',
   '9am',
