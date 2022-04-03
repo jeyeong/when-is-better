@@ -26,39 +26,6 @@ const TIMES = [
   '8pm',
 ]
 
-const BasicDatePicker = () => {
-  const [value, setValue] = useState(null)
-
-  return (
-    <LocalizationProvider dateAdapter={AdapterLuxon}>
-      <DatePicker
-        label="Basic example"
-        value={value}
-        onChange={(newValue) => {
-          setValue(newValue)
-        }}
-        renderInput={(params) => <TextField {...params} />}
-      />
-    </LocalizationProvider>
-  )
-}
-
-const DatePickStep = ({ setStep }) => {
-  return (
-    <div>
-      <h1>Pick Your Date Range</h1>
-      <h3>Start Date</h3>
-      <BasicDatePicker />
-      <h3>End Date</h3>
-      <BasicDatePicker />
-      <div>
-        <Button variant="contained" onClick={() => setStep(1)}>
-          Continue
-        </Button>
-      </div>
-    </div>
-  )
-}
 
 const TimeSelectionStep = ({ selections, setSelections }) => {
   const [editLock, setEditLock] = useState(
@@ -154,20 +121,12 @@ const CreateForm = () => {
   const [selections, setSelections] = useState(
     new Array(4).fill(0).map((day) => Array(12).fill(false))
   )
-  const [timeslots, setTimeslots] = useState(
-
-  )
-
-  if (step === 0) {
-    return <DatePickStep setStep={setStep} />
-  } else if (step === 1) {
     return (
       <TimeSelectionStep
         selections={selections}
         setSelections={setSelections}
       />
     )
-  }
 }
 
 export default CreateForm

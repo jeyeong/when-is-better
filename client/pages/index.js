@@ -1,12 +1,15 @@
-import Link from 'next/link'
-import { Button } from '@mui/material'
-import styles from '../styles/Home.module.css'
-
-import { FaCalendarAlt } from 'react-icons/fa'
-import { IconContext } from 'react-icons'
-import Head from 'next/head'
+import Link from 'next/link';
+import { Button } from '@mui/material';
+import styles from '../styles/Home.module.css';
+import { IconContext } from 'react-icons';
+import Head from 'next/head';
+import { BasicDatePicker } from '../components/DatePicker';
+import { useState } from 'react';
 
 const LandingPage = () => {
+  const [startDate, setStartDate] = useState('blahstart');
+  const [endDate, setEndDate] = useState('blahend');
+
   return (
     <>
       <Head>
@@ -44,13 +47,25 @@ const LandingPage = () => {
                     easily, eliminating the hassle of back-and-forth messages so
                     you can get back to what matters most.
                   </p>
+                  <p>
+                    To get started, on what dates could you hold your event?
+                  </p>
+                  <BasicDatePicker setDate={(val) => setStartDate(val)} />
+
+                  <BasicDatePicker setDate={(val) => setEndDate(val)} />
+
                   <div className={styles.center_button}>
-                    <Link href="/create">
+                    <Link
+                      href={{
+                        pathname: '/create',
+                        query: { startDate: startDate, endDate: endDate },
+                      }}
+                    >
                       <Button
                         variant="contained"
                         style={{
                           backgroundColor: '#087f5b',
-                          'border-radius': '50px',
+                          borderRadius: '50px',
                           padding: '1rem 2rem',
                           fontSize: '1rem',
                         }}
@@ -66,7 +81,7 @@ const LandingPage = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default LandingPage
+export default LandingPage;
