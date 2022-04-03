@@ -7,6 +7,8 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import Hammer from 'react-hammerjs';
 import { DateTime, Duration } from 'luxon';
+import Link from 'next/link';
+import Router from 'next/router';
 
 import { generateTimeSlotArray } from '../../models/timeslots';
 
@@ -117,6 +119,9 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
+
+        /* Redirect user to page to share link */
+        Router.push(`/?event_id=${res.event_id}`);
       });
   };
 
@@ -155,8 +160,17 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
           </Hammer>
         ))}
       </div>
-      <Button variant="contained" onClick={createEvent}>
-        Create
+      <Button
+        variant="contained"
+        onClick={createEvent}
+        style={{
+          backgroundColor: '#087f5b',
+          borderRadius: '50px',
+          padding: '0.5rem 2rem',
+          fontSize: '1rem',
+        }}
+      >
+        Create Event
       </Button>
     </div>
   );
@@ -181,6 +195,7 @@ const CreateForm = () => {
           rel="stylesheet"
         />
       </Head>
+
       <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} />
     </>
   );

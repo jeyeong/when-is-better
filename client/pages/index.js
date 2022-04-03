@@ -6,6 +6,7 @@ import Head from 'next/head';
 import { BasicDatePicker } from '../components/DatePicker';
 import { useState } from 'react';
 import { Footer } from '../components/Footer';
+import { NavBar } from '../components/NavBar';
 
 const LandingPage = () => {
   const [startDate, setStartDate] = useState('blahstart');
@@ -26,6 +27,8 @@ const LandingPage = () => {
           rel="stylesheet"
         />
       </Head>
+
+      {/* <NavBar /> */}
 
       <div className={styles.image_wrapper}>
         <img
