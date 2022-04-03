@@ -27,10 +27,21 @@ const TIMES = [
   '8pm',
 ];
 
+const start = DateTime.fromObject({
+  year: 2022,
+  month: 4,
+  day: 4,
+  hour: 8,
+});
+const end = DateTime.fromObject({
+  year: 2022,
+  month: 4,
+  day: 7,
+  hour: 20,
+});
+const delta_duration = Duration.fromObject({ minutes: 60 });
+
 const TimeSelection = ({ timeslots, setTimeslots }) => {
-  const [editLock, setEditLock] = useState(
-    new Array(4).fill(0).map((day) => Array(12).fill(false))
-  );
   const [firstAction, setFirstAction] = useState({
     fixed: false,
     isSelection: false,
@@ -42,26 +53,24 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
     if (!firstAction.fixed) {
       setFirstAction({
         fixed: true,
-        isSelection: !timeslots[dayIndex][timeIndex],
+        isSelection: !timeslots[dayIndex][timeIndex].selected,
       });
     }
 
-    if (!editLock[dayIndex][timeIndex]) {
+    if (!timeslots[dayIndex][timeIndex].editLock) {
       setTimeslots(
         timeslots.map((day, i) =>
           i === dayIndex
-            ? day.map((time, j) =>
-                j === timeIndex && !(firstAction.isSelection && time)
-                  ? !time
-                  : time
+            ? day.map((slot, j) =>
+                j === timeIndex && !(firstAction.isSelection && slot.selected)
+                  ? {
+                      editLock: true,
+                      people_available: slot.people_available,
+                      selected: !slot.selected,
+                      time: slot.time,
+                    }
+                  : slot
               )
-            : day
-        )
-      );
-      setEditLock(
-        editLock.map((day, i) =>
-          i === dayIndex
-            ? day.map((time, j) => (j === timeIndex ? true : time))
             : day
         )
       );
@@ -69,7 +78,9 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
   };
 
   const resetEditLocks = () => {
-    setEditLock(new Array(4).fill(0).map((day) => Array(12).fill(false)));
+    setTimeslots(
+      timeslots.map((day) => day.map((slot) => ({ ...slot, editLock: false })))
+    );
     setFirstAction({ fixed: false, isSelection: false });
   };
 
@@ -78,9 +89,24 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
   };
 
   const createEvent = () => {
-    fetch('https://when-is-better-backend.herokuapp.com/', {
-      method: 'GET',
+    const availableTimes = timeslots.map((day) =>
+      day.filter((slot) => slot.selected).map((slot) => slot.time.toHTTP())
+    );
+
+    const payload = {
+      creator: 'uncommon_hacks',
+      event_name: 'uncommon_hacks',
+      description: 'flames',
+      available_times: availableTimes,
+      time_start: start.toHTTP(),
+      time_end: end.toHTTP(),
+      time_interval_min: 60,
+    };
+
+    fetch('https://when-is-better-backend.herokuapp.com/event', {
+      method: 'POST',
       mode: 'cors',
+      body: JSON.stringify(payload),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -104,9 +130,11 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
             key={i}
           >
             <div className={styles.datebox__container}>
-              {day.map((time, i) => (
+              {day.map((slot, i) => (
                 <div
-                  className={time ? styles.datebox__selected : styles.datebox}
+                  className={
+                    slot.selected ? styles.datebox__selected : styles.datebox
+                  }
                   key={i}
                 >
                   {TIMES[i]}
@@ -124,24 +152,8 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
 };
 
 const CreateForm = () => {
-  const start = DateTime.fromObject({
-    year: 2022,
-    month: 4,
-    day: 4,
-    hour: 8,
-  });
-  const end = DateTime.fromObject({
-    year: 2022,
-    month: 4,
-    day: 7,
-    hour: 20,
-  });
-  const delta_duration = Duration.fromObject({ minutes: 60 });
-
-  console.log(generateTimeSlotArray(start, end, delta_duration));
-
   const [timeslots, setTimeslots] = useState(
-    new Array(4).fill(0).map((day) => Array(12).fill(false))
+    generateTimeSlotArray(start, end, delta_duration)
   );
   return <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} />;
 };
