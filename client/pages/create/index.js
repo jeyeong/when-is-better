@@ -5,10 +5,11 @@ import AdapterLuxon from '@mui/lab/AdapterLuxon'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DatePicker from '@mui/lab/DatePicker'
 import Hammer from 'react-hammerjs'
+import { DateTime, Duration } from 'luxon'
+
+import { generateTimeSlotArray } from '../../models/timeslots'
 
 import styles from '../../styles/Create.module.css'
-
-import timeslots from '../../models/timeslots'
 
 const TIMES = [
   '8am',
@@ -26,7 +27,7 @@ const TIMES = [
   '8pm',
 ]
 
-const TimeSelection = ({ timeslot, setTimeslot }) => {
+const TimeSelection = ({ timeslots, setTimeslots }) => {
   const [editLock, setEditLock] = useState(
     new Array(4).fill(0).map((day) => Array(12).fill(false))
   )
@@ -41,13 +42,13 @@ const TimeSelection = ({ timeslot, setTimeslot }) => {
     if (!firstAction.fixed) {
       setFirstAction({
         fixed: true,
-        isSelection: !timeslot[dayIndex][timeIndex],
+        isSelection: !timeslots[dayIndex][timeIndex],
       })
     }
 
     if (!editLock[dayIndex][timeIndex]) {
-      setTimeslot(
-        timeslot.map((day, i) =>
+      setTimeslots(
+        timeslots.map((day, i) =>
           i === dayIndex
             ? day.map((time, j) =>
                 j === timeIndex && !(firstAction.isSelection && time)
@@ -95,7 +96,7 @@ const TimeSelection = ({ timeslot, setTimeslot }) => {
         onTouchEnd={resetEditLocks}
         onMouseUp={resetEditLocks}
       >
-        {timeslot.map((day, i) => (
+        {timeslots.map((day, i) => (
           <Hammer
             onPan={(e) => onPaint(e, i)}
             onTap={(e) => onPaint(e, i)}
@@ -103,9 +104,11 @@ const TimeSelection = ({ timeslot, setTimeslot }) => {
             key={i}
           >
             <div className={styles.datebox__container}>
-              {day.map((time, i) => (
+              {day.map((timeslot, i) => (
                 <div
-                  className={time ? styles.datebox__selected : styles.datebox}
+                  className={
+                    timeslot ? styles.datebox__selected : styles.datebox
+                  }
                   key={i}
                 >
                   {TIMES[i]}
@@ -123,18 +126,25 @@ const TimeSelection = ({ timeslot, setTimeslot }) => {
 }
 
 const CreateForm = () => {
-  // const timeslotInit = () => (
+  const start = DateTime.fromObject({
+    year: 2022,
+    month: 4,
+    day: 3,
+    hour: 8,
+  })
+  const end = DateTime.fromObject({
+    year: 2022,
+    month: 4,
+    day: 7,
+    hour: 20,
+  })
+  const delta_duration = Duration.fromObject({ minutes: 60 })
 
-  // )
-
-  const [timeslot, setTimeslot] = useState(
+  const [timeslots, setTimeslots] = useState(
     new Array(4).fill(0).map((day) => Array(12).fill(false))
   )
-  const [timeslots, setTimeslots] = useState(
 
-  )
-
-  return <TimeSelection timeslot={timeslot} setTimeslot={setTimeslot} />
+  return <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} />
 }
 
 export default CreateForm
