@@ -124,6 +124,7 @@ FONT SIZE SYSTEM (px)
 }
 
 .center_button {
+  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -169,10 +170,16 @@ FONT SIZE SYSTEM (px)
   display: flex;
   justify-content: flex-end;
   margin-right: 1rem;
+  margin-top: 1rem;
 }
 
 .main_image {
   width: 80vw;
   height: auto;
   align-content: center;
+}
+
+.flex_and_center {
+  display: flex;
+  justify-content: space-around;
 }

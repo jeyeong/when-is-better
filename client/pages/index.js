@@ -5,6 +5,7 @@ import { IconContext } from 'react-icons';
 import Head from 'next/head';
 import { BasicDatePicker } from '../components/DatePicker';
 import { useState } from 'react';
+import { Footer } from '../components/Footer';
 
 const LandingPage = () => {
   const [startDate, setStartDate] = useState('blahstart');
@@ -54,9 +55,18 @@ const LandingPage = () => {
                   <p>
                     To get started, on what dates could you hold your event?
                   </p>
-                  <BasicDatePicker setDate={(val) => setStartDate(val)} />
 
-                  <BasicDatePicker setDate={(val) => setEndDate(val)} />
+                  <div className={styles.flex_and_center}>
+                    <BasicDatePicker
+                      label="Start"
+                      setDate={(val) => setStartDate(val)}
+                    />
+
+                    <BasicDatePicker
+                      label="End"
+                      setDate={(val) => setEndDate(val)}
+                    />
+                  </div>
 
                   <div className={styles.center_button}>
                     <Link
@@ -84,6 +94,8 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 };
