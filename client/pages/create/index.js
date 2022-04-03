@@ -24,8 +24,7 @@ const TIMES = [
   '8pm',
 ]
 
-
-const TimeSelectionStep = ({ selections, setSelections }) => {
+const TimeSelection = ({ timeslot, setTimeslot }) => {
   const [editLock, setEditLock] = useState(
     new Array(4).fill(0).map((day) => Array(12).fill(false))
   )
@@ -40,13 +39,13 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
     if (!firstAction.fixed) {
       setFirstAction({
         fixed: true,
-        isSelection: !selections[dayIndex][timeIndex],
+        isSelection: !timeslot[dayIndex][timeIndex],
       })
     }
 
     if (!editLock[dayIndex][timeIndex]) {
-      setSelections(
-        selections.map((day, i) =>
+      setTimeslot(
+        timeslot.map((day, i) =>
           i === dayIndex
             ? day.map((time, j) =>
                 j === timeIndex && !(firstAction.isSelection && time)
@@ -76,7 +75,14 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
   }
 
   const createEvent = () => {
-    console.log('create event')
+    fetch('https://when-is-better-backend.herokuapp.com/', {
+      method: 'GET',
+      mode: 'cors',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res)
+      })
   }
 
   return (
@@ -87,7 +93,7 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
         onTouchEnd={resetEditLocks}
         onMouseUp={resetEditLocks}
       >
-        {selections.map((day, i) => (
+        {timeslot.map((day, i) => (
           <Hammer
             onPan={(e) => onPaint(e, i)}
             onTap={(e) => onPaint(e, i)}
@@ -115,16 +121,15 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
 }
 
 const CreateForm = () => {
-  const [step, setStep] = useState(0)
-  const [selections, setSelections] = useState(
+  // const timeslotInit = () => (
+
+  // )
+
+  const [timeslot, setTimeslot] = useState(
     new Array(4).fill(0).map((day) => Array(12).fill(false))
   )
-    return (
-      <TimeSelectionStep
-        selections={selections}
-        setSelections={setSelections}
-      />
-    )
+
+  return <TimeSelection timeslot={timeslot} setTimeslot={setTimeslot} />
 }
 
 export default CreateForm
