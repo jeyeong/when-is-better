@@ -111,7 +111,11 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
   return (
     <div className={styles.timeselection}>
       <h1>Pick Time</h1>
-      <div className={styles.selection__container} onTouchEnd={resetEditLocks}>
+      <div
+        className={styles.selection__container}
+        onTouchEnd={resetEditLocks}
+        onMouseUp={resetEditLocks}
+      >
         {selections.map((day, i) => (
           <Hammer
             onPan={(e) => onPaint(e, i)}
