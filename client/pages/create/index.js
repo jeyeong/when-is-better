@@ -59,16 +59,49 @@ const DatePickStep = ({ setStep }) => {
 }
 
 const TimeSelectionStep = ({ selections, setSelections }) => {
+  const [editLock, setEditLock] = useState(
+    new Array(4).fill(0).map((day) => Array(12).fill(false))
+  )
+  const [firstAction, setFirstAction] = useState({
+    fixed: false,
+    isSelection: false,
+  })
+
   const onPaint = (e, dayIndex) => {
-    // console.log(e.center)
     const timeIndex = findTimeIndex(e.center)
-    setSelections(
-      selections.map((day, i) =>
-        i === dayIndex
-          ? day.map((time, j) => (time === 1 || j === timeIndex ? 1 : 0))
-          : day
+
+    if (!firstAction.fixed) {
+      setFirstAction({
+        fixed: true,
+        isSelection: !selections[dayIndex][timeIndex],
+      })
+    }
+
+    if (!editLock[dayIndex][timeIndex]) {
+      setSelections(
+        selections.map((day, i) =>
+          i === dayIndex
+            ? day.map((time, j) =>
+                j === timeIndex && !(firstAction.isSelection && time)
+                  ? !time
+                  : time
+              )
+            : day
+        )
       )
-    )
+      setEditLock(
+        editLock.map((day, i) =>
+          i === dayIndex
+            ? day.map((time, j) => (j === timeIndex ? true : time))
+            : day
+        )
+      )
+    }
+  }
+
+  const resetEditLocks = () => {
+    setEditLock(new Array(4).fill(0).map((day) => Array(12).fill(false)))
+    setFirstAction({ fixed: false, isSelection: false })
   }
 
   const findTimeIndex = (coords) => {
@@ -76,29 +109,29 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
   }
 
   return (
-    <div className={styles.container__major}>
-      {selections.map((day, i) => (
-        <Hammer
-          onPan={(e) => onPaint(e, i)}
-          onTap={(e) => onPaint(e, i)}
-          direction="DIRECTION_ALL"
-        >
-          <div className={styles.container}>
-            {day.map((time, i) => (
-              <div
-                className={
-                  time === 1 ? styles.datebox__selected : styles.datebox
-                }
-                // onMouseEnter={(_) => handleMouseEnter(i)}
-                // onTouchStart={(_) => handleMouseEnter(i)}
-                // onTouchMove={(_) => handleMouseEnter(i)}
-              >
-                {TIMES[i]}
-              </div>
-            ))}
-          </div>
-        </Hammer>
-      ))}
+    <div className={styles.timeselection}>
+      <h1>Pick Time</h1>
+      <div className={styles.selection__container} onTouchEnd={resetEditLocks}>
+        {selections.map((day, i) => (
+          <Hammer
+            onPan={(e) => onPaint(e, i)}
+            onTap={(e) => onPaint(e, i)}
+            direction="DIRECTION_ALL"
+            key={i}
+          >
+            <div className={styles.datebox__container}>
+              {day.map((time, i) => (
+                <div
+                  className={time ? styles.datebox__selected : styles.datebox}
+                >
+                  {TIMES[i]}
+                </div>
+              ))}
+            </div>
+          </Hammer>
+        ))}
+      </div>
+      <Button variant="contained">Create</Button>
     </div>
   )
 }
@@ -106,20 +139,17 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
 const CreateForm = () => {
   const [step, setStep] = useState(0)
   const [selections, setSelections] = useState(
-    new Array(4).fill(0).map((day) => Array(12).fill(0))
+    new Array(4).fill(0).map((day) => Array(12).fill(false))
   )
 
   if (step === 0) {
     return <DatePickStep setStep={setStep} />
   } else if (step === 1) {
     return (
-      <div>
-        <h1>Pick Time</h1>
-        <TimeSelectionStep
-          selections={selections}
-          setSelections={setSelections}
-        />
-      </div>
+      <TimeSelectionStep
+        selections={selections}
+        setSelections={setSelections}
+      />
     )
   }
 }
