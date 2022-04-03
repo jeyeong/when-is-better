@@ -1,34 +1,28 @@
-// const BasicDatePicker = () => {
-//   const [value, setValue] = useState(null)
+import React, { useState } from 'react';
+import AdapterLuxon from '@mui/lab/AdapterLuxon';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
-//   return (
-//     <LocalizationProvider dateAdapter={AdapterLuxon}>
-//       <DatePicker
-//         label="Basic example"
-//         value={value}
-//         onChange={(newValue) => {
-//           setValue(newValue)
-//         }}
-//         renderInput={(params) => <TextField {...params} />}
-//       />
-//     </LocalizationProvider>
-//   )
-// }
+export const BasicDatePicker = ({ setDate }) => {
+  const [value, setValue] = useState(null);
 
-// const DatePickStep = ({ setStep }) => {
-//   return (
-//     <div>
-//       <h1>Pick Your Date Range</h1>
-//       <h3>Start Date</h3>
-//       <BasicDatePicker />
-//       <h3>End Date</h3>
-//       <BasicDatePicker />
-//       <div>
-//         <Button variant="contained" onClick={() => setStep(1)}>
-//           Continue
-//         </Button>
-//       </div>
-//     </div>
-//   )
-// }
+  const onChange = (newValue) => {
+    setValue(newValue);
+    if (newValue != null) {
+      setDate(newValue.toHTTP());
+    }
+  };
 
+  return (
+    <LocalizationProvider dateAdapter={AdapterLuxon}>
+      <DatePicker
+        label="DatePicker"
+        value={value}
+        onChange={onChange}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    </LocalizationProvider>
+  );
+};
