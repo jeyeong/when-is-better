@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Head from 'next/head';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import AdapterLuxon from '@mui/lab/AdapterLuxon';
@@ -155,7 +156,24 @@ const CreateForm = () => {
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(start, end, delta_duration)
   );
-  return <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} />;
+  return (
+    <>
+      <Head>
+        {/* for the font */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="true"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Open+Sans:ital,wght@0,400;0,800;1,400&family=Raleway+Dots&family=Raleway:wght@100;400;900&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
+      <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} />
+    </>
+  );
 };
 
 export default CreateForm;
