@@ -181,6 +181,7 @@ const CreateForm = () => {
 
   useEffect(() => {
     getEventObject('d39ec5').then((res) => {
+      console.log(res);
       setTimeslots(res.timeslots);
     });
   }, []);

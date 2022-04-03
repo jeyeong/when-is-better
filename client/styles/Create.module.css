@@ -46,7 +46,11 @@
 
 .datebox,
 .datebox__selected,
-.datebox__unavailable {
+.datebox__unavailable,
+.intensity__0,
+.intensity__1,
+.intensity__2,
+.intensity__3 {
   height: 40px;
   width: 100%;
   border-top: 1px solid black;
@@ -68,4 +72,16 @@
 .datebox:last-of-type,
 .datebox__selected:last-of-type {
   border-bottom: none;
+}
+
+.intensity__1 {
+  background-color: #e9f9eb;
+}
+
+.intensity__2 {
+  background-color: #b2e9b9;
+}
+
+.intensity__3 {
+  background-color: #91e09b;
 }

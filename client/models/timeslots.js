@@ -1,6 +1,6 @@
 const { DateTime, Interval, Duration } = require('luxon');
 const luxon = require('luxon');
-const BACKEND_URL='https://when-is-better-backend.herokuapp.com'
+const BACKEND_URL = 'https://when-is-better-backend.herokuapp.com';
 
 const generateTimesInInterval = (interval, delta_duration) => {
   let times = [];
@@ -55,7 +55,13 @@ const generateTimeSlotArray = (start, end, delta_duration) => {
     const interval = Interval.fromDateTimes(dayStarts[i], dayEnds[i]);
     const day_times = generateTimesInInterval(interval, delta_duration);
     const timeslots = day_times.map((time) => {
-      return { editLock: false, people_available: [], selected: false, available: false, time };
+      return {
+        editLock: false,
+        people_available: [],
+        selected: false,
+        available: false,
+        time,
+      };
     });
     times.push(timeslots);
   }
@@ -69,68 +75,76 @@ const timeSlotSelect = (timeslots, dayIndex, timeIndex) => {
   }
 };
 
-
 const getEventObject = (event_id) => {
   const rv = fetch(`${BACKEND_URL}/event/${event_id}`, {
     method: 'GET',
     mode: 'cors',
-  }).then(resp => resp.json())
-    .then(resp => {
-    if (resp.code != 'SUCCESS') {
-      return null;
-    }
-    let event = {
-      event_id: resp.event.event_id,
-      creator: resp.event.creator,
-      event_name: resp.event.event_name,
-      description: resp.event.description,
-    };
-    const delta_duration = Duration.fromObject({minutes: resp.event.time_interval_min})
-    let timeslots = generateTimeSlotArray(DateTime.fromHTTP(resp.event.time_start), 
-                                          DateTime.fromHTTP(resp.event.time_end), delta_duration)
-    
-    
+  })
+    .then((resp) => resp.json())
+    .then((resp) => {
+      if (resp.code != 'SUCCESS') {
+        return null;
+      }
+      let event = {
+        event_id: resp.event.event_id,
+        creator: resp.event.creator,
+        event_name: resp.event.event_name,
+        description: resp.event.description,
+      };
+      const delta_duration = Duration.fromObject({
+        minutes: resp.event.time_interval_min,
+      });
+      let timeslots = generateTimeSlotArray(
+        DateTime.fromHTTP(resp.event.time_start),
+        DateTime.fromHTTP(resp.event.time_end),
+        delta_duration
+      );
 
-    resp.event.available_times.forEach((day, i) => day.forEach(available_time_str => {
-      // const available_time = DateTime.fromHTTP(available_time_str)
-      let day_timeslots = timeslots[i]
-      day_timeslots.forEach(timeslot => {
-        // TODO: fix
-        if (timeslot.time.toHTTP() == available_time_str) {
-          timeslot.available = true
-        }
-      })
-    }))
-    
-    // keep track of available people at each timeslot
-    let people_available_times = {}
-    resp.responses.forEach(resp => {
-      const name = resp.name
-      resp.selected_times.forEach(time => {
-        if (time in people_available_times) {
-          people_available_times[time].push(name)
-        } else {
-          // create new entry
-          people_available_times[time] = [name]
-        }
-      })
-    })
+      resp.event.available_times.forEach((day, i) =>
+        day.forEach((available_time_str) => {
+          // const available_time = DateTime.fromHTTP(available_time_str)
+          let day_timeslots = timeslots[i];
+          day_timeslots.forEach((timeslot) => {
+            // TODO: fix
+            if (timeslot.time.toHTTP() == available_time_str) {
+              timeslot.available = true;
+            }
+          });
+        })
+      );
 
-    timeslots.forEach(day_timeslots => {
-      day_timeslots.forEach(timeslot => {
-        // TODO: fix
-        const time_str = timeslot.time.toHTTP();
-        timeslot.people_available = people_available_times[time_str]
-      })
-    })
-    
-  
-    event.timeslots = timeslots;
-    return event
-  });
-  
+      // keep track of available people at each timeslot
+      let people_available_times = {};
+      resp.responses.forEach((resp) => {
+        const name = resp.name;
+        resp.selected_times.forEach((time) => {
+          if (time in people_available_times) {
+            people_available_times[time].push(name);
+          } else {
+            // create new entry
+            people_available_times[time] = [name];
+          }
+        });
+      });
 
-  return rv
+      timeslots.forEach((day_timeslots) => {
+        day_timeslots.forEach((timeslot) => {
+          // TODO: fix
+          const time_str = timeslot.time.toHTTP();
+
+          if (!(time_str in people_available_times)) {
+            timeslot.people_available = [];
+          } else {
+            timeslot.people_available = people_available_times[time_str];
+          }
+        });
+      });
+
+      event.timeslots = timeslots;
+      return event;
+    });
+
+  return rv;
 };
 
 export { generateTimeSlotArray, timeSlotSelect, getEventObject };
