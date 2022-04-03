@@ -1,0 +1,27 @@
+.container {
+  width: 23%;
+  margin: 0 1%;
+  height: 120vh;
+}
+
+.container__major {
+  display: flex;
+  column-gap: 12px;
+  width: 100%;
+  touch-action: none;
+}
+
+.datebox,
+.datebox__selected {
+  height: 40px;
+  width: 100%;
+  border: 2px solid black;
+  display: grid;
+  place-items: center;
+}
+
+.datebox__selected {
+  background-color: black;
+  color: white;
+}
+
