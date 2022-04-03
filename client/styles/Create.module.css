@@ -11,6 +11,23 @@
   font-family: 'Open Sans', sans-serif;
 }
 
+.day__headers {
+  height: 20px;
+  display: flex;
+  width: 100%;
+  touch-action: none;
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+
+.day__headers h4 {
+  width: 23%;
+  margin: 0 1%;
+  font-size: 14px;
+  display: grid;
+  place-items: center;
+}
+
 .selection__container {
   display: flex;
   width: 100%;

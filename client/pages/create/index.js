@@ -28,6 +28,8 @@ const TIMES = [
   '8pm',
 ];
 
+const HARDCODED_DATES = ['Apr 4 Mon', 'Apr 5 Tue', 'Apr 6 Wed', 'Apr 7 Thu'];
+
 const start = DateTime.fromObject({
   year: 2022,
   month: 4,
@@ -86,7 +88,7 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
   };
 
   const findTimeIndex = (coords) => {
-    return Math.floor((coords.y - 95) / 40);
+    return Math.floor((coords.y - 123) / 40);
   };
 
   const createEvent = () => {
@@ -121,6 +123,11 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
   return (
     <div className={styles.timeselection}>
       <h1 className={styles.timeselection__header}>Pick Time</h1>
+      <div className={styles.day__headers}>
+        {HARDCODED_DATES.map((date, i) => (
+          <h4 key={i}>{date}</h4>
+        ))}
+      </div>
       <div
         className={styles.selection__container}
         onTouchEnd={resetEditLocks}
