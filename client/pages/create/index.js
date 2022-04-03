@@ -13,6 +13,7 @@ import Router from 'next/router';
 import { generateTimeSlotArray } from '../../models/timeslots';
 
 import styles from '../../styles/Create.module.css';
+import timeslots, { getEventObject } from '../../models/timeslots'
 
 const TIMES = [
   '8am',
@@ -177,6 +178,7 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
 };
 
 const CreateForm = () => {
+  getEventObject('d39ec5')
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(start, end, delta_duration)
   );
