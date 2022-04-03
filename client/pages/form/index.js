@@ -1,19 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import AdapterLuxon from '@mui/lab/AdapterLuxon';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
 import Hammer from 'react-hammerjs';
 import { DateTime, Duration } from 'luxon';
-import Link from 'next/link';
-import Router from 'next/router';
 
-import { generateTimeSlotArray } from '../../models/timeslots';
+import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 
 import styles from '../../styles/Create.module.css';
-import timeslots, { getEventObject } from '../../models/timeslots';
 
 const TIMES = [
   '8am',
@@ -74,6 +67,7 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
                       people_available: slot.people_available,
                       selected: !slot.selected,
                       time: slot.time,
+                      available: slot.available,
                     }
                   : slot
               )
@@ -94,22 +88,26 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
     return Math.floor((coords.y - 123) / 40);
   };
 
-  const createEvent = () => {
-    const availableTimes = timeslots.map((day) =>
-      day.filter((slot) => slot.selected).map((slot) => slot.time.toHTTP())
-    );
+  const submitForm = () => {
+    const availableTimes = [];
+
+    for (let day of timeslots) {
+      for (let slot of day) {
+        if (slot.available && slot.selected) {
+          availableTimes.push(slot.time.toHTTP());
+        }
+      }
+    }
 
     const payload = {
-      creator: 'uncommon_hacks',
-      event_name: 'uncommon_hacks',
-      description: 'flames',
-      available_times: availableTimes,
-      time_start: start.toHTTP(),
-      time_end: end.toHTTP(),
+      event_id: 'd39ec5',
+      name: 'james',
+      comments: 'flames',
+      selected_times: availableTimes,
       time_interval_min: 60,
     };
 
-    fetch('https://when-is-better-backend.herokuapp.com/event', {
+    fetch('https://when-is-better-backend.herokuapp.com/response', {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -120,15 +118,12 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-
-        /* Redirect user to page to share link */
-        Router.push(`/create-success/?event_id=${res.event_id}`);
       });
   };
 
   return (
     <div className={styles.timeselection}>
-      <h1 className={styles.timeselection__header}>Pick Time</h1>
+      <h1 className={styles.timeselection__header}>When is better?</h1>
       <div className={styles.day__headers}>
         {HARDCODED_DATES.map((date, i) => (
           <h4 key={i}>{date}</h4>
@@ -150,7 +145,11 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
               {day.map((slot, i) => (
                 <div
                   className={
-                    slot.selected ? styles.datebox__selected : styles.datebox
+                    slot.available
+                      ? slot.selected
+                        ? styles.datebox__selected
+                        : styles.datebox
+                      : styles.datebox__unavailable
                   }
                   key={i}
                 >
@@ -161,27 +160,22 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
           </Hammer>
         ))}
       </div>
-      <Button
-        variant="contained"
-        onClick={createEvent}
-        style={{
-          backgroundColor: '#087f5b',
-          borderRadius: '50px',
-          padding: '0.5rem 2rem',
-          fontSize: '1rem',
-        }}
-      >
-        Create Event
+      <Button variant="contained" onClick={submitForm}>
+        Submit
       </Button>
     </div>
   );
 };
 
 const CreateForm = () => {
-  getEventObject('d39ec5');
-  const [timeslots, setTimeslots] = useState(
-    generateTimeSlotArray(start, end, delta_duration)
-  );
+  const [timeslots, setTimeslots] = useState([]);
+
+  useEffect(() => {
+    getEventObject('d39ec5').then((res) => {
+      setTimeslots(res.timeslots);
+    });
+  }, []);
+
   return (
     <>
       <Head>
@@ -197,7 +191,6 @@ const CreateForm = () => {
           rel="stylesheet"
         />
       </Head>
-
       <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} />
     </>
   );
