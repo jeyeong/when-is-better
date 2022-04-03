@@ -71,7 +71,7 @@ const timeSlotSelect = (timeslots, dayIndex, timeIndex) => {
 
 
 const getEventObject = (event_id) => {
-  fetch(`${BACKEND_URL}/event/${event_id}`, {
+  const rv = fetch(`${BACKEND_URL}/event/${event_id}`, {
     method: 'GET',
     mode: 'cors',
   }).then(resp => resp.json())
@@ -104,11 +104,12 @@ const getEventObject = (event_id) => {
     return event
   });
   
+
+  return rv
 };
 
 export { generateTimeSlotArray, timeSlotSelect, getEventObject };
 
-// console.log(getEventObject('532040'))
 // const logDateTimeArr = arr => console.log(arr.map(time => time.toHTTP()))
 
 // const start = DateTime.fromObject({year: 2022, month: 4, day: 3, hour: 8})
