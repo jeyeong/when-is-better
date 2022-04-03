@@ -131,6 +131,7 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
               {day.map((time, i) => (
                 <div
                   className={time ? styles.datebox__selected : styles.datebox}
+                  key={i}
                 >
                   {TIMES[i]}
                 </div>

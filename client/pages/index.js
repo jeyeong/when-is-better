@@ -5,7 +5,7 @@ const LandingPage = () => {
   return (
     <div>
       <h1>Landing Page</h1>
-      <Link href="/create">
+      <Link href="/create" passHref>
         <Button variant="contained">Start</Button>
       </Link>
     </div>
