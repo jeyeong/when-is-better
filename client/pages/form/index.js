@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import Router from 'next/router';
 import Button from '@mui/material/Button';
 import Hammer from 'react-hammerjs';
 import { DateTime, Duration } from 'luxon';
@@ -118,6 +119,8 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
+
+        Router.push(`/view?event_id=d39ec5`);
       });
   };
 

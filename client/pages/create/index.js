@@ -122,7 +122,7 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
         console.log(res);
 
         /* Redirect user to page to share link */
-        Router.push(`/create-success/?event_id=${res.event_id}`);
+        Router.push(`/create-success?event_id=${res.event_id}`);
       });
   };
 
