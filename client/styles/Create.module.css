@@ -1,0 +1,39 @@
+.timeselection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeselection__header {
+  height: 45px;
+  font-size: 32px;
+  margin: 20px 0;
+}
+
+.selection__container {
+  display: flex;
+  column-gap: 12px;
+  width: 100%;
+  touch-action: none;
+  margin-bottom: 24px;
+}
+
+.datebox__container {
+  width: 23%;
+  margin: 0 1%;
+}
+
+.datebox,
+.datebox__selected {
+  height: 40px;
+  width: 100%;
+  border: 2px solid black;
+  display: grid;
+  place-items: center;
+}
+
+.datebox__selected {
+  background-color: black;
+  color: white;
+}
+
