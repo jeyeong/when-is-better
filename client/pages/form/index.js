@@ -126,7 +126,9 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
 
   return (
     <div className={styles.timeselection}>
-      <h1 className={styles.timeselection__header}>When is better?</h1>
+      <h1 className={styles.timeselection__header}>
+        WhenIs<span style={{ color: '#087f5b' }}>Better</span>
+      </h1>
       <div className={styles.day__headers}>
         {HARDCODED_DATES.map((date, i) => (
           <h4 key={i}>{date}</h4>
