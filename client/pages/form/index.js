@@ -160,7 +160,16 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
           </Hammer>
         ))}
       </div>
-      <Button variant="contained" onClick={submitForm}>
+      <Button
+        variant="contained"
+        onClick={submitForm}
+        style={{
+          backgroundColor: '#087f5b',
+          borderRadius: '50px',
+          padding: '0.5rem 2rem',
+          fontSize: '1rem',
+        }}
+      >
         Submit
       </Button>
     </div>

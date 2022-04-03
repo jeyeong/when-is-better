@@ -56,8 +56,8 @@
 }
 
 .datebox__unavailable {
-  background-color: rgb(176, 176, 176);
-  color: rgb(176, 176, 176);
+  background-color: gray;
+  color: gray;
 }
 
 .datebox__selected {
