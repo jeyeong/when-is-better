@@ -45,13 +45,19 @@
 }
 
 .datebox,
-.datebox__selected {
+.datebox__selected,
+.datebox__unavailable {
   height: 40px;
   width: 100%;
   border-top: 1px solid black;
   border-bottom: 1px solid black;
   display: grid;
   place-items: center;
+}
+
+.datebox__unavailable {
+  background-color: rgb(176, 176, 176);
+  color: rgb(176, 176, 176);
 }
 
 .datebox__selected {
