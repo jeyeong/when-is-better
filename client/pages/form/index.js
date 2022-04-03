@@ -67,6 +67,7 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
                       people_available: slot.people_available,
                       selected: !slot.selected,
                       time: slot.time,
+                      available: slot.available,
                     }
                   : slot
               )
@@ -87,22 +88,26 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
     return Math.floor((coords.y - 123) / 40);
   };
 
-  const createEvent = () => {
-    const availableTimes = timeslots.map((day) =>
-      day.filter((slot) => slot.selected).map((slot) => slot.time.toHTTP())
-    );
+  const submitForm = () => {
+    const availableTimes = [];
+
+    for (let day of timeslots) {
+      for (let slot of day) {
+        if (slot.available && slot.selected) {
+          availableTimes.push(slot.time.toHTTP());
+        }
+      }
+    }
 
     const payload = {
-      creator: 'uncommon_hacks',
-      event_name: 'uncommon_hacks',
-      description: 'flames',
-      available_times: availableTimes,
-      time_start: start.toHTTP(),
-      time_end: end.toHTTP(),
+      event_id: 'd39ec5',
+      name: 'james',
+      comments: 'flames',
+      selected_times: availableTimes,
       time_interval_min: 60,
     };
 
-    fetch('https://when-is-better-backend.herokuapp.com/event', {
+    fetch('https://when-is-better-backend.herokuapp.com/response', {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -112,14 +117,13 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.code === 'SUCCESS') {
-        }
+        console.log(res);
       });
   };
 
   return (
     <div className={styles.timeselection}>
-      <h1 className={styles.timeselection__header}>Pick Time</h1>
+      <h1 className={styles.timeselection__header}>When is better?</h1>
       <div className={styles.day__headers}>
         {HARDCODED_DATES.map((date, i) => (
           <h4 key={i}>{date}</h4>
@@ -141,7 +145,11 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
               {day.map((slot, i) => (
                 <div
                   className={
-                    slot.selected ? styles.datebox__selected : styles.datebox
+                    slot.available
+                      ? slot.selected
+                        ? styles.datebox__selected
+                        : styles.datebox
+                      : styles.datebox__unavailable
                   }
                   key={i}
                 >
@@ -152,8 +160,8 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
           </Hammer>
         ))}
       </div>
-      <Button variant="contained" onClick={createEvent}>
-        Create
+      <Button variant="contained" onClick={submitForm}>
+        Submit
       </Button>
     </div>
   );
@@ -164,7 +172,7 @@ const CreateForm = () => {
 
   useEffect(() => {
     getEventObject('d39ec5').then((res) => {
-      console.log(res);
+      setTimeslots(res.timeslots);
     });
   }, []);
 
