@@ -108,6 +108,10 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
     return Math.floor((coords.y - 100) / 40)
   }
 
+  const createEvent = () => {
+    console.log('create event')
+  }
+
   return (
     <div className={styles.timeselection}>
       <h1>Pick Time</h1>
@@ -135,7 +139,9 @@ const TimeSelectionStep = ({ selections, setSelections }) => {
           </Hammer>
         ))}
       </div>
-      <Button variant="contained">Create</Button>
+      <Button variant="contained" onClick={createEvent}>
+        Create
+      </Button>
     </div>
   )
 }
