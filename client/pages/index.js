@@ -19,7 +19,13 @@ const LandingPage = () => {
         />
       </Head>
 
-      <div className={styles.hero_placeholder}></div>
+      <div className={styles.image_wrapper}>
+        <img
+          src="icon.svg"
+          alt="Clock Icon Image"
+          className={styles.main_image}
+        />
+      </div>
 
       <div className={styles.wrapper}>
         <div className={styles.diagonal_box_top_left}>
