@@ -89,6 +89,8 @@ const getEventObject = (event_id) => {
     let timeslots = generateTimeSlotArray(DateTime.fromHTTP(resp.event.time_start), 
                                           DateTime.fromHTTP(resp.event.time_end), delta_duration)
     
+    
+
     resp.event.available_times.forEach((day, i) => day.forEach(available_time_str => {
       // const available_time = DateTime.fromHTTP(available_time_str)
       let day_timeslots = timeslots[i]
@@ -99,6 +101,29 @@ const getEventObject = (event_id) => {
         }
       })
     }))
+    
+    // keep track of available people at each timeslot
+    let people_available_times = {}
+    resp.responses.forEach(resp => {
+      const name = resp.name
+      resp.selected_times.forEach(time => {
+        if (time in people_available_times) {
+          people_available_times[time].push(name)
+        } else {
+          // create new entry
+          people_available_times[time] = [name]
+        }
+      })
+    })
+
+    timeslots.forEach(day_timeslots => {
+      day_timeslots.forEach(timeslot => {
+        // TODO: fix
+        const time_str = timeslot.time.toHTTP();
+        timeslot.people_available = people_available_times[time_str]
+      })
+    })
+    
   
     event.timeslots = timeslots;
     return event
