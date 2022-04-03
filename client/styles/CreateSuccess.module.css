@@ -12,3 +12,11 @@
   border-radius: 12px;
   padding: 20px;
 }
+
+.margin_top {
+  margin-top: 1rem;
+}
+
+.big_font {
+  font-size: 45px;
+}
