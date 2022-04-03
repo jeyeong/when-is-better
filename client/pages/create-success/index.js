@@ -29,7 +29,7 @@ const CreateSuccess = () => {
         <span>Forward this link to your event attendees!</span>
         <div
           className={styles.createsuccess__linkbox}
-        >{`${DOMAIN_NAME}${event_id}`}</div>
+        >{`${DOMAIN_NAME}form?event_id=${event_id}`}</div>
       </div>
     </>
   );
