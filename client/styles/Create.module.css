@@ -42,3 +42,8 @@
   color: black;
 }
 
+.datebox:last-of-type,
+.datebox__selected:last-of-type {
+  border-bottom: none;
+}
+

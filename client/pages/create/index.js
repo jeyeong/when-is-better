@@ -107,6 +107,9 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
     fetch('https://when-is-better-backend.herokuapp.com/event', {
       method: 'POST',
       mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(payload),
     })
       .then((res) => res.json())
