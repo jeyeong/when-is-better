@@ -1,8 +1,14 @@
 import Head from 'next/head';
 
 import styles from '../../styles/CreateSuccess.module.css';
+import { useRouter } from 'next/router';
+
+const DOMAIN_NAME = 'https://when-is-better.vercel.app/';
 
 const CreateSuccess = () => {
+  const router = useRouter();
+  const { event_id } = router.query;
+
   return (
     <>
       <Head>
@@ -21,10 +27,22 @@ const CreateSuccess = () => {
       <div className={styles.createsuccess}>
         <h1>Success</h1>
         <span>Forward this link to your event attendees!</span>
-        <div className={styles.createsuccess__linkbox}></div>
+        <div
+          className={styles.createsuccess__linkbox}
+        >{`${DOMAIN_NAME}${event_id}`}</div>
       </div>
     </>
   );
 };
 
 export default CreateSuccess;
+
+{
+  /* <button
+onClick={() =>
+  navigator.clipboard.writeText(`${DOMAIN_NAME}${event_id}`)
+}
+>
+Copy
+</button> */
+}

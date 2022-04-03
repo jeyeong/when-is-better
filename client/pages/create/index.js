@@ -13,7 +13,7 @@ import Router from 'next/router';
 import { generateTimeSlotArray } from '../../models/timeslots';
 
 import styles from '../../styles/Create.module.css';
-import timeslots, { getEventObject } from '../../models/timeslots'
+import timeslots, { getEventObject } from '../../models/timeslots';
 
 const TIMES = [
   '8am',
@@ -122,7 +122,7 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
         console.log(res);
 
         /* Redirect user to page to share link */
-        Router.push(`/?event_id=${res.event_id}`);
+        Router.push(`/create-success/?event_id=${res.event_id}`);
       });
   };
 
@@ -178,7 +178,7 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
 };
 
 const CreateForm = () => {
-  getEventObject('d39ec5')
+  getEventObject('d39ec5');
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(start, end, delta_duration)
   );
