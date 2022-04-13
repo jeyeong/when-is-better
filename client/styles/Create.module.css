@@ -1,14 +1,12 @@
-.timeselection {
+.createpage {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .timeselection__header {
-  height: 45px;
   font-size: 32px;
   margin: 20px 0;
-  font-family: 'Open Sans', sans-serif;
 }
 
 .day__headers {
