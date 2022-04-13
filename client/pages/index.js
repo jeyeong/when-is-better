@@ -1,12 +1,10 @@
 import Link from 'next/link';
 import { Button } from '@mui/material';
 import styles from '../styles/Home.module.css';
-import { IconContext } from 'react-icons';
-import Head from 'next/head';
-import { BasicDatePicker } from '../components/DatePicker';
+import { BasicDatePicker } from '../components/homepage/DatePicker';
 import { useState } from 'react';
-import { Footer } from '../components/Footer';
-import { NavBar } from '../components/NavBar';
+import { Footer } from '../components/general/Footer';
+import { NavBar } from '../components/general/NavBar';
 
 const LandingPage = () => {
   const [startDate, setStartDate] = useState('blahstart');
@@ -14,20 +12,6 @@ const LandingPage = () => {
 
   return (
     <>
-      <Head>
-        {/* for the font */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="true"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Open+Sans:ital,wght@0,400;0,800;1,400&family=Raleway+Dots&family=Raleway:wght@100;400;900&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
-
       {/* <NavBar /> */}
 
       <div className={styles.image_wrapper}>
