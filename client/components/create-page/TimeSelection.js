@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Hammer from 'react-hammerjs';
+import utils from '../../components/utils'
 
 import styles from '../../styles/Create.module.css';
 
@@ -102,10 +103,11 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
     setFirstAction({ taken: false, isSelection: false });
   };
 
+  const dates = utils.getStringDatesFromArray(timeslots);
   return (
     <>
       <div className={styles.day__headers}>
-        {HARDCODED_DATES.map((date, i) => (
+        {dates.map((date, i) => (
           <h4 key={i}>{date}</h4>
         ))}
       </div>
@@ -129,7 +131,7 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
                   }
                   key={i}
                 >
-                  {TIMES[i]}
+                  {slot.time.toFormat('h:mm a')}
                 </div>
               ))}
             </div>

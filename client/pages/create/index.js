@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { DateTime, Duration } from 'luxon';
 
 import styles from '../../styles/Create.module.css';
@@ -10,19 +11,19 @@ import CreateEventButton from '../../components/create-page/CreateEventButton';
 /* Constants */
 const TITLE_HEIGHT = '45px';
 
-const start = DateTime.fromObject({
+const default_start = DateTime.fromObject({
   year: 2022,
   month: 4,
   day: 4,
   hour: 8,
-});
+}).setZone("America/Chicago");
 
-const end = DateTime.fromObject({
+const default_end = DateTime.fromObject({
   year: 2022,
   month: 4,
   day: 7,
   hour: 20,
-});
+}).setZone("America/Chicago");
 
 const delta_duration = Duration.fromObject({ minutes: 60 });
 
@@ -33,10 +34,22 @@ const CreateTitle = () => (
 );
 
 const CreatePage = () => {
-  getEventObject('d39ec5');
-  const [timeslots, setTimeslots] = useState(
-    generateTimeSlotArray(start, end, delta_duration)
-  );
+  const [timeslots, setTimeslots] = useState(generateTimeSlotArray(default_start, default_end, delta_duration));
+  const {query, isReady} = useRouter();
+
+  useEffect(() => {
+    console.log("QUERY")
+    if (!(("startDate" in query) && "endDate" in query)) {
+      return
+    }
+    const startDate = DateTime.fromHTTP(query.startDate).toLocal()
+    const endDate = DateTime.fromHTTP(query.endDate).toLocal()
+    const timeslots_arr = generateTimeSlotArray(startDate, endDate, delta_duration)
+    console.log(timeslots_arr)
+    // console.log(`first timeslot: ${timeslots_arr[0][0].time.toHTTP()}`)
+    setTimeslots(timeslots_arr)  
+    
+  }, [isReady])
 
   return (
     <div className={styles.createpage}>

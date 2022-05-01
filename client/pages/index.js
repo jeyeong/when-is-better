@@ -5,10 +5,19 @@ import { BasicDatePicker } from '../components/homepage/DatePicker';
 import { useState } from 'react';
 import { Footer } from '../components/general/Footer';
 import { NavBar } from '../components/general/NavBar';
+import { DateTime } from 'luxon';
 
 const LandingPage = () => {
-  const [startDate, setStartDate] = useState('blahstart');
-  const [endDate, setEndDate] = useState('blahend');
+  const [startDate, _setStartDate] = useState('blahstart');
+  const [endDate, _setEndDate] = useState('blahend');
+  const setStartDate = (startDate) => {
+    let date = DateTime.fromHTTP(startDate).toLocal().set({hour: 8, minute: 0})
+    _setStartDate(date.toHTTP())
+  }
+  const setEndDate = (endDate) => {
+    let date = DateTime.fromHTTP(endDate).toLocal().set({hour: 21, minute: 0})
+    _setEndDate(date.toHTTP())
+  }
 
   return (
     <>
@@ -57,7 +66,9 @@ const LandingPage = () => {
                     <Link
                       href={{
                         pathname: '/create',
-                        query: { startDate: startDate, endDate: endDate },
+                        // startTimeHrs, endTimeHrs in 0-24
+                        // TODO what about timezones?
+                        query: { startDate: startDate, endDate: endDate},
                       }}
                       passHref
                     >

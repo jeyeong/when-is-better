@@ -51,12 +51,23 @@ exports.generateDateTimeArray = (start, end, delta_duration) => {
     return times
 }
 
-const logDateTimeArr = arr => console.log(arr.map(time => time.toHTTP()))
-
-const start = DateTime.fromObject({year: 2022, month: 4, day: 3, hour: 8})
-const end = DateTime.fromObject({year: 2022, month: 4, day: 7, hour: 21})
-const delta_duration = luxon.Duration.fromObject({minutes: 60})
-
-const dateTimes = exports.generateDateTimeArray(start, end, delta_duration)
-console.log("DATETIME ARRAY")
-dateTimes.forEach(col => {logDateTimeArr(col)})
+exports.getStringDatesFromArray = timeslots => {
+    if (timeslots === null || timeslots === undefined) {
+        return []
+    }
+    const start = timeslots[0][0].time;
+    const ndays = timeslots.length
+    const end = timeslots[ndays - 1][timeslots[ndays - 1].length - 1].time;
+    const days = getDaysInIntervalFromStart(Interval.fromDateTimes(start, end))
+    const date_format = "EEE, MMM d"
+    return days.map(d => d.toFormat(date_format)); 
+}
+// const logDateTimeArr = arr => console.log(arr.map(time => time.toHTTP()))
+// 
+// const start = DateTime.fromObject({year: 2022, month: 4, day: 3, hour: 8})
+// const end = DateTime.fromObject({year: 2022, month: 4, day: 7, hour: 21})
+// const delta_duration = luxon.Duration.fromObject({minutes: 60})
+// 
+// const dateTimes = exports.generateDateTimeArray(start, end, delta_duration)
+// console.log("DATETIME ARRAY")
+// dateTimes.forEach(col => {logDateTimeArr(col)})
