@@ -83,3 +83,30 @@
 .intensity__3 {
   background-color: #91e09b;
 }
+
+.button_container {
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gear_wrapper {
+  width: 40px;
+  height: 40px;
+  border: 2px solid black;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input {
+  height: 40px;
+  text-decoration: none;
+  /* height: 40px; */
+  padding: 3px;
+  border-radius: 8px;
+}

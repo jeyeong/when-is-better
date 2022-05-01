@@ -26,6 +26,7 @@ const sleep = (ms) => {
 };
 
 const TimeSelection = ({ timeslots, setTimeslots }) => {
+  // TODO: refactor y offset
   const findTimeIndex = (coords) => {
     return Math.floor((coords.y - 123) / 40);
   };

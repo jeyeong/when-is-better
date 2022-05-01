@@ -69,6 +69,12 @@ const LandingPage = () => {
                           padding: '0.5rem 2rem',
                           fontSize: '1rem',
                         }}
+                        onClick={() => {
+                          console.log(
+                            `startDate: ${startDate}, endDate: ${endDate}`
+                          );
+                          console.log(typeof startDate);
+                        }}
                       >
                         Get Started
                       </Button>
