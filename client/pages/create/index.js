@@ -38,14 +38,12 @@ const CreatePage = () => {
   const {query, isReady} = useRouter();
 
   useEffect(() => {
-    console.log("QUERY")
     if (!(("startDate" in query) && "endDate" in query)) {
       return
     }
     const startDate = DateTime.fromHTTP(query.startDate).toLocal()
     const endDate = DateTime.fromHTTP(query.endDate).toLocal()
     const timeslots_arr = generateTimeSlotArray(startDate, endDate, delta_duration)
-    console.log(timeslots_arr)
     // console.log(`first timeslot: ${timeslots_arr[0][0].time.toHTTP()}`)
     setTimeslots(timeslots_arr)  
     
