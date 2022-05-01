@@ -5,10 +5,11 @@ import { BasicDatePicker } from '../components/homepage/DatePicker';
 import { useState } from 'react';
 import { Footer } from '../components/general/Footer';
 import { NavBar } from '../components/general/NavBar';
+import Router from 'next/router';
 
 const LandingPage = () => {
-  const [startDate, setStartDate] = useState('blahstart');
-  const [endDate, setEndDate] = useState('blahend');
+  const [startDate, setStartDate] = useState('startDateNotSet');
+  const [endDate, setEndDate] = useState('endDateNotSet');
 
   return (
     <>
@@ -54,31 +55,23 @@ const LandingPage = () => {
                   </div>
 
                   <div className={styles.center_button}>
-                    <Link
-                      href={{
-                        pathname: '/create',
-                        query: { startDate: startDate, endDate: endDate },
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#087f5b',
+                        borderRadius: '999px',
+                        padding: '0.5rem 2rem',
+                        fontSize: '1rem',
                       }}
-                      passHref
+                      onClick={() => {
+                        Router.push({
+                          pathname: 'create',
+                          query: { startDate: startDate, endDate: endDate },
+                        });
+                      }}
                     >
-                      <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: '#087f5b',
-                          borderRadius: '50px',
-                          padding: '0.5rem 2rem',
-                          fontSize: '1rem',
-                        }}
-                        onClick={() => {
-                          console.log(
-                            `startDate: ${startDate}, endDate: ${endDate}`
-                          );
-                          console.log(typeof startDate);
-                        }}
-                      >
-                        Get Started
-                      </Button>
-                    </Link>
+                      Get Started
+                    </Button>
                   </div>
                 </div>
               </div>

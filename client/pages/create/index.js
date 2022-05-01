@@ -8,6 +8,7 @@ import TimeSelection from '../../components/create-page/TimeSelection';
 import CreateEventButton from '../../components/create-page/CreateEventButton';
 
 import { BsGear } from 'react-icons/bs';
+import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 
 /* Constants */
 const TITLE_HEIGHT = '45px';
@@ -44,6 +45,7 @@ const CreatePage = () => {
   );
 
   const [input, setInput] = useState('');
+  const [showOptions, setShowOptions] = useState(false);
 
   return (
     <div className={styles.createpage}>
@@ -67,22 +69,18 @@ const CreatePage = () => {
           <CreateEventButton timeslots={timeslots} />
         </div>
         <div className={styles.flex}>
-          <div className={styles.gear_wrapper}>
+          <button
+            className={styles.btn_test}
+            onClick={() => setShowOptions(!showOptions)}
+          >
             <BsGear size={30} />
-          </div>
+          </button>
         </div>
       </div>
+
+      {showOptions ? <OptionsMenu /> : <div></div>}
     </div>
   );
 };
 
 export default CreatePage;
-
-{
-  /* <div>
-        </div>
-        <CreateEventButton timeslots={timeslots} />
-        <div className={styles.gear_wrapper}>
-          <BsGear size={30} />
-        </div> */
-}

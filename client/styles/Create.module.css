@@ -128,13 +128,25 @@
   width: 100%;
 }
 
-.input {
+.btn {
+  width: 40px;
   height: 40px;
-  text-decoration: none;
-  font-size: 16px;
-  font: inherit;
-
   border: 1px solid black;
-  padding: 10px 12px;
-  border-radius: 9999px;
+  text-decoration: none;
+  border: none;
+
+  display: flex;
+  justify-content: center;
+}
+
+.btn_test {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 999px;
+  background-color: inherit;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
