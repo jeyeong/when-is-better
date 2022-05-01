@@ -106,7 +106,10 @@
 .input {
   height: 40px;
   text-decoration: none;
-  /* height: 40px; */
-  padding: 3px;
-  border-radius: 8px;
+  font-size: 16px;
+  font: inherit;
+
+  border: 1px solid black;
+  padding: 10px 12px;
+  border-radius: 123231px;
 }
