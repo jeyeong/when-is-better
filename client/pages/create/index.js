@@ -54,17 +54,22 @@ const CreatePage = () => {
       <CreateTitle />
       <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} />
       <div className={styles.button_container}>
-        <div>
+        <div className={styles.flex}>
           <input
-            placeholder="John Doe"
+            type="text"
             value={input}
-            className={styles.input}
             onInput={(e) => setInput(e.target.value)}
+            placeholder="John Doe"
+            className={styles.input_name}
           />
         </div>
-        <CreateEventButton timeslots={timeslots} />
-        <div className={styles.gear_wrapper}>
-          <BsGear size={30} />
+        <div className={styles.flex}>
+          <CreateEventButton timeslots={timeslots} />
+        </div>
+        <div className={styles.flex}>
+          <div className={styles.gear_wrapper}>
+            <BsGear size={30} />
+          </div>
         </div>
       </div>
     </div>
@@ -72,3 +77,12 @@ const CreatePage = () => {
 };
 
 export default CreatePage;
+
+{
+  /* <div>
+        </div>
+        <CreateEventButton timeslots={timeslots} />
+        <div className={styles.gear_wrapper}>
+          <BsGear size={30} />
+        </div> */
+}

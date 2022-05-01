@@ -87,20 +87,45 @@
 .button_container {
   width: 100%;
   padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
+
+  display: grid;
+  grid-template-columns: 4fr 3fr 1fr;
+  column-gap: 10px;
+
   align-items: center;
+  justify-content: center;
+
+  /* display: flex;
+  justify-content: space-between;
+  align-items: center; */
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
 }
 
 .gear_wrapper {
   width: 40px;
   height: 40px;
   border: 2px solid black;
-  border-radius: 50%;
+  border-radius: 9999px;
 
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.input_name {
+  text-decoration: none;
+  /* width: 100%; */
+  padding: 5px 15px;
+  border: 1px solid black;
+  border-radius: 9999px;
+  font: inherit;
+
+  height: 40px;
+  width: 100%;
 }
 
 .input {
@@ -111,5 +136,5 @@
 
   border: 1px solid black;
   padding: 10px 12px;
-  border-radius: 123231px;
+  border-radius: 9999px;
 }

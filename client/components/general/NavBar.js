@@ -5,14 +5,9 @@ import { FaCalendarAlt } from 'react-icons/fa';
 
 export const NavBar = () => {
   return (
-    <div>poo</div>
-    // <navbar className={styles.navbar}>
-    //   <div>
-    //     <FaCalendarAlt size={24} />
-    //   </div>
-    //   <div>
-    //     <p>Smelly Poo</p>
-    //   </div>
-    // </navbar>
+    // <h1 className={styles.timeselection__header}>
+    <h1>
+      WhenIs<span style={{ color: '#087f5b' }}>Better</span>
+    </h1>
   );
 };
