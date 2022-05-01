@@ -56,12 +56,13 @@ const CreateEventButton = ({ timeslots }) => {
       onClick={createEvent}
       style={{
         backgroundColor: '#087f5b',
-        borderRadius: '50px',
-        padding: '0.5rem 2rem',
-        fontSize: '1rem',
+        borderRadius: '9999px',
+        height: '40px',
+        width: '100%',
+        fontSize: '16px',
       }}
     >
-      Create Event
+      Create
     </Button>
   );
 };
