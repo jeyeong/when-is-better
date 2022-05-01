@@ -12,8 +12,7 @@ const LandingPage = () => {
 
   return (
     <>
-      {/* <NavBar /> */}
-
+      <NavBar />
       <div className={styles.image_wrapper}>
         <img
           src="icon.svg"
@@ -35,9 +34,9 @@ const LandingPage = () => {
               <div className={styles.undo_diagonal_top_right}>
                 <div className={styles.margin_x}>
                   <p className={styles.description}>
-                    When Is Better is your hub for scheduling your hangouts
-                    easily, eliminating the hassle of back-and-forth messages so
-                    you can get back to what matters most.
+                    When Is Better is your hub for scheduling hangouts easily,
+                    eliminating the hassle of back-and-forth messages so you can
+                    get back to what matters most.
                   </p>
                   <p>
                     To get started, on what dates could you hold your event?
@@ -48,7 +47,6 @@ const LandingPage = () => {
                       label="Start"
                       setDate={(val) => setStartDate(val)}
                     />
-
                     <BasicDatePicker
                       label="End"
                       setDate={(val) => setEndDate(val)}
@@ -61,13 +59,14 @@ const LandingPage = () => {
                         pathname: '/create',
                         query: { startDate: startDate, endDate: endDate },
                       }}
+                      passHref
                     >
                       <Button
                         variant="contained"
                         style={{
                           backgroundColor: '#087f5b',
                           borderRadius: '50px',
-                          padding: '1rem 2rem',
+                          padding: '0.5rem 2rem',
                           fontSize: '1rem',
                         }}
                       >

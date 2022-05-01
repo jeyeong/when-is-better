@@ -3,7 +3,6 @@ import AdapterLuxon from '@mui/lab/AdapterLuxon';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 
 export const BasicDatePicker = ({ setDate, label }) => {
   const [value, setValue] = useState(null);
@@ -28,8 +27,6 @@ export const BasicDatePicker = ({ setDate, label }) => {
               width: 0.4,
               mx: 2,
               color: 'primary.main',
-              // color: '#087f5b',
-              // bgcolor: 'white',
             }}
           />
         )}

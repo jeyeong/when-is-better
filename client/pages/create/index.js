@@ -7,7 +7,7 @@ import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 import TimeSelection from '../../components/create-page/TimeSelection';
 import CreateEventButton from '../../components/create-page/CreateEventButton';
 
-/* Constats */
+/* Constants */
 const TITLE_HEIGHT = '45px';
 
 const start = DateTime.fromObject({
