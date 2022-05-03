@@ -32,7 +32,7 @@ const defaultEnd = DateTime.fromObject({
 const MINUTES_15 = 15;
 const MINUTES_30 = 30;
 const MINUTES_60 = 60;
-const deltaTime = MINUTES_15;
+const deltaTime = MINUTES_60;
 const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
 const CreateTitle = () => (

@@ -30,11 +30,11 @@ const CreateSuccess = () => {
             }}
             onClick={() =>
               navigator.clipboard.writeText(
-                `${DOMAIN_NAME}form?event_id=${event_id}`
+                `${DOMAIN_NAME}form/${event_id}`
               )
             }
           >
-            {`${DOMAIN_NAME}form?event_id=${event_id}`}
+            {`${DOMAIN_NAME}form/${event_id}`}
           </Button>
         </div>
       </div>
