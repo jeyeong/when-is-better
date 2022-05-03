@@ -51,8 +51,7 @@
 .intensity__3 {
   height: 40px;
   width: 100%;
-  /* border-top: 1px solid black; */
-  border-bottom: 1px solid black;
+  border-top: 1px dashed #aaa;
   display: grid;
   place-items: center;
 }
@@ -82,24 +81,6 @@
 
 .intensity__3 {
   background-color: #91e09b;
-}
-
-.button_container {
-  width: 100%;
-  padding: 0 20px;
-
-  display: grid;
-  grid-template-columns: 4fr 3fr 1fr;
-  column-gap: 10px;
-
-  align-items: center;
-  justify-content: center;
-
-  padding-bottom: 20px;
-
-  /* display: flex;
-  justify-content: space-between;
-  align-items: center; */
 }
 
 .flex {
@@ -153,6 +134,64 @@
   align-items: center;
 }
 
+/**********************************/
+/* TimeSelection Component Style  */
+/**********************************/
+
 .slot_group {
-  border: 4px solid blue;
+  position: relative;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
 }
+
+.slot_group:first-child {
+  border-top: none;
+}
+
+.slot_group:last-child {
+  border-bottom: none;
+}
+
+.time_str {
+  font-size: 14px;
+  font-weight: 500;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.timebox:first-child {
+  border-top: none;
+}
+
+.height_15 {
+  height: 10px;
+}
+.height_30 {
+  height: 20px;
+}
+.height_60 {
+  height: 40px;
+}
+
+/**********************************/
+/* Button container   */
+/**********************************/
+.button_container {
+  width: 100%;
+  padding: 0 20px;
+
+  display: grid;
+  grid-template-columns: 4fr 3fr 1fr;
+  column-gap: 10px;
+
+  align-items: center;
+  justify-content: center;
+
+  padding-bottom: 20px;
+}
+
+/* TODO: better to have separate sheet for each component? Feel that timeselection css should be its own thing */

@@ -106,6 +106,14 @@ const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
   };
 
   const dates = utils.getStringDatesFromArray(timeslots);
+
+  let slotHeightClassName = styles.height_15;
+  if (deltaTime === 30) {
+    slotHeightClassName = styles.height_30;
+  } else if (deltaTime === 60) {
+    slotHeightClassName = styles.height_60;
+  }
+
   return (
     <>
       <div className={styles.day__headers}>
@@ -127,35 +135,23 @@ const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
           >
             <div className={styles.datebox__container}>
               {groupDaySlots(day, deltaTime).map((slotGroup, i) => (
-                <div key={i} className={styles.slot_group}>
+                <div key={i} className={`${styles.slot_group}`}>
                   {slotGroup.map((slot, i) => (
                     <div
-                      className={
+                      className={`${
                         slot.selected
                           ? styles.datebox__selected
                           : styles.datebox
-                      }
+                      } ${slotHeightClassName} ${styles.timebox}`}
                       key={i}
-                    >
-                      {/* {slot.time.toFormat('h:mm a')} */}
-                      {formatSlotTime(slot.time)}
-                    </div>
+                    ></div>
                   ))}
+                  <div className={styles.time_str}>
+                    {formatSlotTime(slotGroup[0].time)}
+                  </div>
                 </div>
               ))}
             </div>
-            {/* <div className={styles.datebox__container}>
-              {day.map((slot, i) => (
-                <div
-                  className={
-                    slot.selected ? styles.datebox__selected : styles.datebox
-                  }
-                  key={i}
-                >
-                  {slot.time.toFormat('h:mm a')}
-                </div>
-              ))}
-            </div> */}
           </Hammer>
         ))}
       </div>
