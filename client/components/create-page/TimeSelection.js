@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Hammer from 'react-hammerjs';
-import utils from '../../components/utils'
+import utils from '../../components/utils';
 
 import styles from '../../styles/Create.module.css';
 
@@ -26,7 +26,9 @@ const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-const TimeSelection = ({ timeslots, setTimeslots }) => {
+const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
+  console.log('deltaTime: ', deltaTime);
+
   // TODO: refactor y offset
   const findTimeIndex = (coords) => {
     return Math.floor((coords.y - 123) / 40);
@@ -103,6 +105,8 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
     );
     setFirstAction({ taken: false, isSelection: false });
   };
+
+  console.log('timeslots: ', timeslots);
 
   const dates = utils.getStringDatesFromArray(timeslots);
   return (

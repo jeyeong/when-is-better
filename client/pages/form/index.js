@@ -39,7 +39,7 @@ const end = DateTime.fromObject({
   day: 7,
   hour: 20,
 });
-const delta_duration = Duration.fromObject({ minutes: 60 });
+const deltaDuration = Duration.fromObject({ minutes: 60 });
 
 const TimeSelection = ({ timeslots, setTimeslots }) => {
   const [firstAction, setFirstAction] = useState({

@@ -17,7 +17,7 @@ const end = DateTime.fromObject({
   hour: 20,
 });
 
-const delta_duration = Duration.fromObject({ minutes: 60 });
+const deltaDuration = Duration.fromObject({ minutes: 60 });
 
 const CreateEventButton = ({ timeslots }) => {
   const createEvent = () => {

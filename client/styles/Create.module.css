@@ -51,7 +51,7 @@
 .intensity__3 {
   height: 40px;
   width: 100%;
-  border-top: 1px solid black;
+  /* border-top: 1px solid black; */
   border-bottom: 1px solid black;
   display: grid;
   place-items: center;
@@ -94,6 +94,8 @@
 
   align-items: center;
   justify-content: center;
+
+  padding-bottom: 20px;
 
   /* display: flex;
   justify-content: space-between;

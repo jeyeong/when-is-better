@@ -14,21 +14,26 @@ import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 /* Constants */
 const TITLE_HEIGHT = '45px';
 
-const default_start = DateTime.fromObject({
+const defaultStart = DateTime.fromObject({
   year: 2022,
   month: 4,
   day: 4,
   hour: 8,
-}).setZone("America/Chicago");
+}).setZone('America/Chicago');
 
-const default_end = DateTime.fromObject({
+const defaultEnd = DateTime.fromObject({
   year: 2022,
   month: 4,
   day: 7,
   hour: 20,
-}).setZone("America/Chicago");
+}).setZone('America/Chicago');
 
-const delta_duration = Duration.fromObject({ minutes: 60 });
+/* make deltaDuration programmatic */
+const MINUTES_15 = 15;
+const MINUTES_30 = 30;
+const MINUTES_60 = 60;
+const deltaTime = MINUTES_15;
+const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
 const CreateTitle = () => (
   <>
@@ -40,32 +45,38 @@ const CreateTitle = () => (
 );
 
 const CreatePage = () => {
-  const [timeslots, setTimeslots] = useState(generateTimeSlotArray(default_start, default_end, delta_duration));
-  const {query, isReady} = useRouter();
+  const [timeslots, setTimeslots] = useState(
+    generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration)
+  );
+  const { query, isReady } = useRouter();
 
   useEffect(() => {
-    if (!(("startDate" in query) && "endDate" in query)) {
-      return
+    if (!('startDate' in query && 'endDate' in query)) {
+      return;
     }
-    const startDate = DateTime.fromHTTP(query.startDate).toLocal()
-    const endDate = DateTime.fromHTTP(query.endDate).toLocal()
-    const timeslots_arr = generateTimeSlotArray(startDate, endDate, delta_duration)
+    const startDate = DateTime.fromHTTP(query.startDate).toLocal();
+    const endDate = DateTime.fromHTTP(query.endDate).toLocal();
+    const timeslots_arr = generateTimeSlotArray(
+      startDate,
+      endDate,
+      deltaDuration
+    );
     // console.log(`first timeslot: ${timeslots_arr[0][0].time.toHTTP()}`)
-    setTimeslots(timeslots_arr)  
-    
-  }, [isReady])
+    setTimeslots(timeslots_arr);
+  }, [isReady]);
 
   const [input, setInput] = useState('');
   const [showOptions, setShowOptions] = useState(false);
 
   return (
     <div className={styles.createpage}>
-      {/* <h1 className={styles.timeselection__header}>
-        WhenIs<span style={{ color: '#087f5b' }}>Better</span>
-      </h1> */
-      /* this is a breaking change due to the y-difference, etc.*/}
       <CreateTitle />
-      <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} />
+      <TimeSelection
+        timeslots={timeslots}
+        setTimeslots={setTimeslots}
+        deltaTime={deltaTime}
+      />
+
       <div className={styles.button_container}>
         <div className={styles.flex}>
           <input
