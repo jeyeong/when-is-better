@@ -61,6 +61,7 @@ exports.getStringDatesFromArray = (timeslots) => {
   const date_format = 'EEE, MMM d';
   return days.map((d) => d.toFormat(date_format));
 };
+
 // const logDateTimeArr = arr => console.log(arr.map(time => time.toHTTP()))
 //
 // const start = DateTime.fromObject({year: 2022, month: 4, day: 3, hour: 8})

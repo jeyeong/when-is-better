@@ -54,6 +54,7 @@ const generateTimeSlotArray = (start, end, deltaDuration) => {
   for (let i = 0; i < dayEnds.length; i++) {
     const interval = Interval.fromDateTimes(dayStarts[i], dayEnds[i]);
     const day_times = generateTimesInInterval(interval, deltaDuration);
+
     const timeslots = day_times.map((time) => {
       return {
         editLock: false,

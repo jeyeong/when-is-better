@@ -74,7 +74,6 @@ const CreateForm = () => {
     getEventObject('d39ec5').then((res) => {
       setTimeslots(res.timeslots);
     });
-    console.log(timeslots);
   }, []);
 
   return (
