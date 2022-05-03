@@ -1,31 +1,9 @@
 import { useState } from 'react';
 import Hammer from 'react-hammerjs';
-import utils from '../../components/utils';
-const { DateTime, Interval } = require('luxon');
+import utils from '../components/utils';
+const { DateTime } = require('luxon');
 
-import styles from '../../styles/Create.module.css';
-
-const TIMES = [
-  '8am',
-  '9am',
-  '10am',
-  '11am',
-  '12pm',
-  '1pm',
-  '2pm',
-  '3pm',
-  '4pm',
-  '5pm',
-  '6pm',
-  '7pm',
-  '8pm',
-];
-
-const HARDCODED_DATES = ['Apr 4 Mon', 'Apr 5 Tue', 'Apr 6 Wed', 'Apr 7 Thu'];
-
-const sleep = (ms) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
+import styles from '../styles/Create.module.css';
 
 const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
   // TODO: refactor y offset
@@ -82,12 +60,11 @@ const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
           timeslots.map((day, i) =>
             i === dayIndex
               ? day.map((slot, j) =>
-                  j === timeIndex
+                  (j === timeIndex && slot.available)
                     ? {
+                        ...slot,
                         editLock: true,
-                        people_available: slot.people_available,
                         selected: !slot.selected,
-                        time: slot.time,
                       }
                     : slot
                 )
@@ -139,9 +116,11 @@ const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
                   {slotGroup.map((slot, i) => (
                     <div
                       className={`${
-                        slot.selected
-                          ? styles.datebox__selected
-                          : styles.datebox
+                        slot.available
+                          ? slot.selected
+                            ? styles.datebox__selected
+                            : styles.datebox
+                          : styles.datebox__unavailable
                       } ${slotHeightClassName} ${styles.timebox}`}
                       key={i}
                     ></div>

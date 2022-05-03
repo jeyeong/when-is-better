@@ -46,7 +46,7 @@ const getDaysInIntervalFromEnd = (interval) => {
  *   editLock - bool
  * }
  */
-const generateTimeSlotArray = (start, end, deltaDuration) => {
+const generateTimeSlotArray = (start, end, deltaDuration, available_default) => {
   const interval = Interval.fromDateTimes(start, end);
   const dayStarts = getDaysInIntervalFromStart(interval);
   const dayEnds = getDaysInIntervalFromEnd(interval);
@@ -60,7 +60,7 @@ const generateTimeSlotArray = (start, end, deltaDuration) => {
         editLock: false,
         people_available: [],
         selected: false,
-        available: false,
+        available: available_default,
         time,
       };
     });
@@ -95,11 +95,9 @@ const getEventObject = (event_id) => {
       const deltaDuration = Duration.fromObject({
         minutes: resp.event.time_interval_min,
       });
-      let timeslots = generateTimeSlotArray(
-        DateTime.fromHTTP(resp.event.time_start),
-        DateTime.fromHTTP(resp.event.time_end),
-        deltaDuration
-      );
+      const start = DateTime.fromHTTP(resp.event.time_start);
+      const end = DateTime.fromHTTP(resp.event.time_end);
+      let timeslots = generateTimeSlotArray(start, end, deltaDuration, false);
 
       resp.event.available_times.forEach((day, i) =>
         day.forEach((available_time_str) => {

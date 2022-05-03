@@ -5,7 +5,7 @@ import { DateTime, Duration } from 'luxon';
 import styles from '../../styles/Create.module.css';
 import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 
-import TimeSelection from '../../components/create-page/TimeSelection';
+import TimeSelection from '../../components/TimeSelection';
 import CreateEventButton from '../../components/create-page/CreateEventButton';
 
 import { BsGear } from 'react-icons/bs';
@@ -45,8 +45,12 @@ const CreateTitle = () => (
 );
 
 const CreatePage = () => {
+  /* startDate is beginning of first day, endDate is end of last day */
+  let [startDate, setStartDate] = useState(defaultStart)
+  let [endDate, setEndDate] = useState(defaultEnd)
+  
   const [timeslots, setTimeslots] = useState(
-    generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration)
+    generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
   );
   const { query, isReady } = useRouter();
 
@@ -54,14 +58,16 @@ const CreatePage = () => {
     if (!('startDate' in query && 'endDate' in query)) {
       return;
     }
-    const startDate = DateTime.fromHTTP(query.startDate).toLocal();
-    const endDate = DateTime.fromHTTP(query.endDate).toLocal();
+    startDate = DateTime.fromHTTP(query.startDate).toLocal()
+    endDate = DateTime.fromHTTP(query.endDate).toLocal()
+    setStartDate(startDate)
+    setEndDate(endDate)
     const timeslots_arr = generateTimeSlotArray(
       startDate,
       endDate,
-      deltaDuration
+      deltaDuration,
+      true
     );
-    // console.log(`first timeslot: ${timeslots_arr[0][0].time.toHTTP()}`)
     setTimeslots(timeslots_arr);
   }, [isReady]);
 
@@ -88,7 +94,7 @@ const CreatePage = () => {
           />
         </div>
         <div className={styles.flex}>
-          <CreateEventButton timeslots={timeslots} />
+          <CreateEventButton timeslots={timeslots} start={startDate} end={endDate}/>
         </div>
         <div className={styles.flex}>
           <button

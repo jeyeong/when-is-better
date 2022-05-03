@@ -2,24 +2,9 @@ import { Button } from '@mui/material';
 import { DateTime, Duration } from 'luxon';
 import Router from 'next/router';
 
-/* (Temporary) constats */
-const start = DateTime.fromObject({
-  year: 2022,
-  month: 4,
-  day: 4,
-  hour: 8,
-});
-
-const end = DateTime.fromObject({
-  year: 2022,
-  month: 4,
-  day: 7,
-  hour: 20,
-});
-
 const deltaDuration = Duration.fromObject({ minutes: 60 });
 
-const CreateEventButton = ({ timeslots }) => {
+const CreateEventButton = ({ timeslots, start, end }) => {
   const createEvent = () => {
     const availableTimes = timeslots.map((day) =>
       day.filter((slot) => slot.selected).map((slot) => slot.time.toHTTP())

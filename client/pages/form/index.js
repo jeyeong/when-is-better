@@ -1,93 +1,51 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
 import Hammer from 'react-hammerjs';
 import { DateTime, Duration } from 'luxon';
+import TimeSelection from '../../components/TimeSelection';
 
 import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 
 import styles from '../../styles/Create.module.css';
 
-const TIMES = [
-  '8am',
-  '9am',
-  '10am',
-  '11am',
-  '12pm',
-  '1pm',
-  '2pm',
-  '3pm',
-  '4pm',
-  '5pm',
-  '6pm',
-  '7pm',
-  '8pm',
-];
-
-const HARDCODED_DATES = ['Apr 4 Mon', 'Apr 5 Tue', 'Apr 6 Wed', 'Apr 7 Thu'];
-
-const start = DateTime.fromObject({
+const defaultStart = DateTime.fromObject({
   year: 2022,
   month: 4,
   day: 4,
   hour: 8,
-});
-const end = DateTime.fromObject({
+}).setZone('America/Chicago');
+
+const defaultEnd = DateTime.fromObject({
   year: 2022,
   month: 4,
   day: 7,
   hour: 20,
-});
-const deltaDuration = Duration.fromObject({ minutes: 60 });
+}).setZone('America/Chicago');
 
-const TimeSelection = ({ timeslots, setTimeslots }) => {
-  const [firstAction, setFirstAction] = useState({
-    fixed: false,
-    isSelection: false,
-  });
+const MINUTES_15 = 15;
+const MINUTES_30 = 30;
+const MINUTES_60 = 60;
+const deltaTime = MINUTES_15;
+const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
-  const onPaint = (e, dayIndex) => {
-    const timeIndex = findTimeIndex(e.center);
+const CreateForm = () => {
+  const [timeslots, setTimeslots] = useState(
+    generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
+  );
+  const { query, isReady } = useRouter();
+  let event_id = undefined;
 
-    if (!firstAction.fixed) {
-      setFirstAction({
-        fixed: true,
-        isSelection: !timeslots[dayIndex][timeIndex].selected,
-      });
+  useEffect(() => {
+    if (!('event_id' in query)) {
+      return;
     }
-
-    if (!timeslots[dayIndex][timeIndex].editLock) {
-      setTimeslots(
-        timeslots.map((day, i) =>
-          i === dayIndex
-            ? day.map((slot, j) =>
-                j === timeIndex && !(firstAction.isSelection && slot.selected)
-                  ? {
-                      editLock: true,
-                      people_available: slot.people_available,
-                      selected: !slot.selected,
-                      time: slot.time,
-                      available: slot.available,
-                    }
-                  : slot
-              )
-            : day
-        )
-      );
-    }
-  };
-
-  const resetEditLocks = () => {
-    setTimeslots(
-      timeslots.map((day) => day.map((slot) => ({ ...slot, editLock: false })))
-    );
-    setFirstAction({ fixed: false, isSelection: false });
-  };
-
-  const findTimeIndex = (coords) => {
-    return Math.floor((coords.y - 123) / 40);
-  };
+    event_id = query.event_id;
+    getEventObject(query.event_id).then(res => {
+      setTimeslots(res.timeslots);
+    })
+  }, [isReady])
 
   const submitForm = () => {
     const availableTimes = [];
@@ -101,7 +59,7 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
     }
 
     const payload = {
-      event_id: 'd39ec5',
+      event_id: event_id,
       name: 'james',
       comments: 'flames',
       selected_times: availableTimes,
@@ -125,73 +83,6 @@ const TimeSelection = ({ timeslots, setTimeslots }) => {
   };
 
   return (
-    <div className={styles.timeselection}>
-      <h1 className={styles.timeselection__header}>
-        WhenIs<span style={{ color: '#087f5b' }}>Better</span>
-      </h1>
-      <div className={styles.day__headers}>
-        {HARDCODED_DATES.map((date, i) => (
-          <h4 key={i}>{date}</h4>
-        ))}
-      </div>
-      <div
-        className={styles.selection__container}
-        onTouchEnd={resetEditLocks}
-        onMouseUp={resetEditLocks}
-      >
-        {timeslots.map((day, i) => (
-          <Hammer
-            onPan={(e) => onPaint(e, i)}
-            onTap={(e) => onPaint(e, i)}
-            direction="DIRECTION_ALL"
-            key={i}
-          >
-            <div className={styles.datebox__container}>
-              {day.map((slot, i) => (
-                <div
-                  className={
-                    slot.available
-                      ? slot.selected
-                        ? styles.datebox__selected
-                        : styles.datebox
-                      : styles.datebox__unavailable
-                  }
-                  key={i}
-                >
-                  {TIMES[i]}
-                </div>
-              ))}
-            </div>
-          </Hammer>
-        ))}
-      </div>
-      <Button
-        variant="contained"
-        onClick={submitForm}
-        style={{
-          backgroundColor: '#087f5b',
-          borderRadius: '50px',
-          padding: '0.5rem 2rem',
-          fontSize: '1rem',
-        }}
-      >
-        Submit
-      </Button>
-    </div>
-  );
-};
-
-const CreateForm = () => {
-  const [timeslots, setTimeslots] = useState([]);
-
-  useEffect(() => {
-    getEventObject('d39ec5').then((res) => {
-      console.log(res);
-      setTimeslots(res.timeslots);
-    });
-  }, []);
-
-  return (
     <>
       <Head>
         {/* for the font */}
@@ -206,7 +97,22 @@ const CreateForm = () => {
           rel="stylesheet"
         />
       </Head>
-      <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} />
+      <h1 className={styles.timeselection__header}>
+        WhenIs<span style={{ color: '#087f5b' }}>Better</span>
+      </h1>
+      <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} deltaTime={deltaTime}/>
+      <Button
+        variant="contained"
+        onClick={submitForm}
+        style={{
+          backgroundColor: '#087f5b',
+          borderRadius: '50px',
+          padding: '0.5rem 2rem',
+          fontSize: '1rem',
+        }}
+      >
+        Submit
+      </Button>
     </>
   );
 };
