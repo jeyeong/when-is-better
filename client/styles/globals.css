@@ -30,6 +30,14 @@ a {
   display: none;
 }
 
+.flex {
+  display: flex;
+}
+
+.w_100 {
+  width: 100%;
+}
+
 /* 
 Style Choices
 

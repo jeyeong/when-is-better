@@ -94,7 +94,7 @@ const CreatePage = () => {
             end={endDate}
           />
         </div>
-        <div className={styles.flex}>
+        <div className="flex">
           <button
             className={styles.btn_test}
             onClick={async () => {
@@ -122,10 +122,10 @@ const CreatePage = () => {
         </div>
       </div>
 
-      <div
-        className={`${styles.options_container} ${showOptions ? '' : 'hide'}`}
-      >
-        <OptionsMenu />
+      <div className={`${showOptions ? '' : 'hide'} w_100 `}>
+        <div className="container-padding-lg">
+          <OptionsMenu />
+        </div>
       </div>
 
       <div ref={bottomRef}></div>
