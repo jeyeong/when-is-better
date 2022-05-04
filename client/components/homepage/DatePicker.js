@@ -1,11 +1,19 @@
-import { useState } from 'react';
-import AdapterLuxon from '@mui/lab/AdapterLuxon';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
+import React from 'react';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
+import { DatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
 
-export const BasicDatePicker = ({ setDate, label }) => {
-  const [value, setValue] = useState(null);
+// const ToggleButton = styled(MuiToggleButton)({
+//   '&.Mui-selected, &.Mui-selected:hover': {
+//     color: 'white',
+//     backgroundColor: '#087f5b',
+//   },
+// });
+
+export const BasicDatePicker = ({ label, setDate }) => {
+  const [value, setValue] = React.useState(null);
 
   const onChange = (newValue) => {
     setValue(newValue);
@@ -26,7 +34,7 @@ export const BasicDatePicker = ({ setDate, label }) => {
             sx={{
               width: 0.4,
               mx: 2,
-              color: 'primary.main',
+              color: '#087f5b',
             }}
           />
         )}
