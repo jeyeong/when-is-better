@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { DateTime, Duration } from 'luxon';
 
@@ -12,6 +12,8 @@ import { BsGear } from 'react-icons/bs';
 import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 
 import { defaultStart, defaultEnd } from '../../constants.js';
+
+const sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
 
 /* Constants */
 const TITLE_HEIGHT = '45px';
@@ -62,8 +64,12 @@ const CreatePage = () => {
   const [input, setInput] = useState('');
   const [showOptions, setShowOptions] = useState(false);
 
+  const bottomRef = useRef();
+  const topRef = useRef();
+
   return (
     <div className={`${styles.createpage} container-padding-sm`}>
+      <div ref={topRef}></div>
       <CreateTitle />
       <TimeSelection
         timeslots={timeslots}
@@ -91,14 +97,38 @@ const CreatePage = () => {
         <div className={styles.flex}>
           <button
             className={styles.btn_test}
-            onClick={() => setShowOptions(!showOptions)}
+            onClick={async () => {
+              if (showOptions) {
+                topRef.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                  inline: 'nearest',
+                });
+                await sleep(200); /* wait to get to page top first */
+                setShowOptions(!showOptions);
+              } else {
+                setShowOptions(!showOptions);
+                await sleep(200); /* wait for menu to render first */
+                bottomRef.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                  inline: 'nearest',
+                });
+              }
+            }}
           >
             <BsGear size={30} />
           </button>
         </div>
       </div>
 
-      {showOptions ? <OptionsMenu /> : <div></div>}
+      <div
+        className={`${styles.options_container} ${showOptions ? '' : 'hide'}`}
+      >
+        <OptionsMenu />
+      </div>
+
+      <div ref={bottomRef}></div>
     </div>
   );
 };

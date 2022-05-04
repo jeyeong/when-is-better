@@ -26,6 +26,10 @@ a {
   padding: 0 2px;
 }
 
+.hide {
+  display: none;
+}
+
 /* 
 Style Choices
 

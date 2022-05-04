@@ -37,7 +37,7 @@
 .datebox__container {
   width: 23%;
   margin: 0 1%;
-  border: 2px solid black;
+  border: 2px solid #333;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -51,7 +51,7 @@
 .intensity__3 {
   height: 40px;
   width: 100%;
-  border-top: 1px dashed #aaa;
+  border-top: 1px dashed #bbb;
   display: grid;
   place-items: center;
 }
@@ -64,6 +64,7 @@
 .datebox__selected {
   background-color: #91e09b;
   color: black;
+  /* border-top: 1px dashed #; */
 }
 
 .datebox:last-of-type,
@@ -91,7 +92,7 @@
 .gear_wrapper {
   width: 40px;
   height: 40px;
-  border: 2px solid black;
+  border: 2px solid #aaa;
   border-radius: 9999px;
 
   display: flex;
@@ -103,7 +104,7 @@
   text-decoration: none;
   /* width: 100%; */
   padding: 5px 15px;
-  border: 1px solid black;
+  border: 1px solid #aaa;
   border-radius: 9999px;
   font: inherit;
 
@@ -140,8 +141,8 @@
 
 .slot_group {
   position: relative;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
 }
 
 .slot_group:first-child {
@@ -164,6 +165,7 @@
 }
 
 .timebox:first-child {
+  /* so we don't get border stacking at the top */
   border-top: none;
 }
 
