@@ -1,5 +1,6 @@
 .container {
   padding: 0 2rem;
+  background-color: red;
 }
 
 .main {
@@ -166,9 +167,10 @@ FONT SIZE SYSTEM (px)
 
 .image_wrapper {
   display: flex;
-  justify-content: flex-end;
-  margin-right: 1rem;
-  margin-top: 1rem;
+  justify-content: flex-start;
+  margin-left: 2rem;
+  /* margin-right: 1rem; */
+  /* margin-top: 1rem; */
 }
 
 .main_image {

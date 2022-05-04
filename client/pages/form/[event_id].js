@@ -5,24 +5,10 @@ import Button from '@mui/material/Button';
 import Hammer from 'react-hammerjs';
 import { DateTime, Duration } from 'luxon';
 import TimeSelection from '../../components/TimeSelection';
-
 import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
-
 import styles from '../../styles/Create.module.css';
 
-const defaultStart = DateTime.fromObject({
-  year: 2022,
-  month: 4,
-  day: 4,
-  hour: 8,
-}).setZone('America/Chicago');
-
-const defaultEnd = DateTime.fromObject({
-  year: 2022,
-  month: 4,
-  day: 7,
-  hour: 20,
-}).setZone('America/Chicago');
+import { defaultStart, defaultEnd } from '../../constants.js';
 
 const MINUTES_15 = 15;
 const MINUTES_30 = 30;
@@ -42,10 +28,10 @@ const CreateForm = () => {
       return;
     }
     event_id = query.event_id;
-    getEventObject(query.event_id).then(res => {
+    getEventObject(query.event_id).then((res) => {
       setTimeslots(res.timeslots);
-    })
-  }, [isReady])
+    });
+  }, [isReady]);
 
   const submitForm = () => {
     const availableTimes = [];
@@ -100,7 +86,11 @@ const CreateForm = () => {
       <h1 className={styles.timeselection__header}>
         WhenIs<span style={{ color: '#087f5b' }}>Better</span>
       </h1>
-      <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} deltaTime={deltaTime}/>
+      <TimeSelection
+        timeslots={timeslots}
+        setTimeslots={setTimeslots}
+        deltaTime={deltaTime}
+      />
       <Button
         variant="contained"
         onClick={submitForm}

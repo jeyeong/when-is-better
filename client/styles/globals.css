@@ -6,6 +6,7 @@ body {
   margin: 0;
   font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: #333;
 }
 
 a {
@@ -17,9 +18,13 @@ a {
   box-sizing: border-box;
 }
 
-/**********************/
-/* NAVBAR             */
-/**********************/
+.container-padding-lg {
+  padding: 0 24px;
+}
+
+.container-padding-sm {
+  padding: 0 2px;
+}
 
 /* 
 Style Choices

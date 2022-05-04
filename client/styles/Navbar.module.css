@@ -1,3 +1,22 @@
 .navbar {
+  height: 80px;
+  position: sticky;
+  top: 0;
+
+  background-color: #fff;
+
   display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0;
+
+  font-size: 40px;
+  color: #333;
+
+  z-index: 100;
+}
+
+.show_shadow {
+  box-shadow: 1px 1px 4px 2px rgb(51, 51, 51, 0.04);
 }

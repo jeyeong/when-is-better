@@ -12,13 +12,17 @@ const LandingPage = () => {
   const [startDate, _setStartDate] = useState('startDateNotSet');
   const [endDate, _setEndDate] = useState('endDateNotSet');
   const setStartDate = (startDate) => {
-    let date = DateTime.fromHTTP(startDate).toLocal().set({hour: 8, minute: 0})
-    _setStartDate(date.toHTTP())
-  }
+    let date = DateTime.fromHTTP(startDate)
+      .toLocal()
+      .set({ hour: 8, minute: 0 });
+    _setStartDate(date.toHTTP());
+  };
   const setEndDate = (endDate) => {
-    let date = DateTime.fromHTTP(endDate).toLocal().set({hour: 21, minute: 0})
-    _setEndDate(date.toHTTP())
-  }
+    let date = DateTime.fromHTTP(endDate)
+      .toLocal()
+      .set({ hour: 21, minute: 0 });
+    _setEndDate(date.toHTTP());
+  };
 
   return (
     <>
@@ -34,7 +38,7 @@ const LandingPage = () => {
       <div className={styles.wrapper}>
         <div className={styles.diagonal_box_top_left}>
           <div className={styles.undo_diagonal_top_left}>
-            <div className={styles.margin_x}>
+            <div className="container-padding-lg">
               <h1 className={styles.title}>
                 When Is <span className={styles.accented}>Better</span>
               </h1>
@@ -42,7 +46,7 @@ const LandingPage = () => {
 
             <div className={styles.diagonal_box_top_right}>
               <div className={styles.undo_diagonal_top_right}>
-                <div className={styles.margin_x}>
+                <div className="container-padding-lg">
                   <p className={styles.description}>
                     When Is Better is your hub for scheduling hangouts easily,
                     eliminating the hassle of back-and-forth messages so you can

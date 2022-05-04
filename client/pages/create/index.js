@@ -11,28 +11,16 @@ import CreateEventButton from '../../components/create-page/CreateEventButton';
 import { BsGear } from 'react-icons/bs';
 import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 
+import { defaultStart, defaultEnd } from '../../constants.js';
+
 /* Constants */
 const TITLE_HEIGHT = '45px';
-
-const defaultStart = DateTime.fromObject({
-  year: 2022,
-  month: 4,
-  day: 4,
-  hour: 8,
-}).setZone('America/Chicago');
-
-const defaultEnd = DateTime.fromObject({
-  year: 2022,
-  month: 4,
-  day: 7,
-  hour: 20,
-}).setZone('America/Chicago');
 
 /* make deltaDuration programmatic */
 const MINUTES_15 = 15;
 const MINUTES_30 = 30;
 const MINUTES_60 = 60;
-const deltaTime = MINUTES_60;
+const deltaTime = MINUTES_15;
 const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
 const CreateTitle = () => (
@@ -46,9 +34,9 @@ const CreateTitle = () => (
 
 const CreatePage = () => {
   /* startDate is beginning of first day, endDate is end of last day */
-  let [startDate, setStartDate] = useState(defaultStart)
-  let [endDate, setEndDate] = useState(defaultEnd)
-  
+  let [startDate, setStartDate] = useState(defaultStart);
+  let [endDate, setEndDate] = useState(defaultEnd);
+
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
   );
@@ -58,10 +46,10 @@ const CreatePage = () => {
     if (!('startDate' in query && 'endDate' in query)) {
       return;
     }
-    startDate = DateTime.fromHTTP(query.startDate).toLocal()
-    endDate = DateTime.fromHTTP(query.endDate).toLocal()
-    setStartDate(startDate)
-    setEndDate(endDate)
+    startDate = DateTime.fromHTTP(query.startDate).toLocal();
+    endDate = DateTime.fromHTTP(query.endDate).toLocal();
+    setStartDate(startDate);
+    setEndDate(endDate);
     const timeslots_arr = generateTimeSlotArray(
       startDate,
       endDate,
@@ -75,7 +63,7 @@ const CreatePage = () => {
   const [showOptions, setShowOptions] = useState(false);
 
   return (
-    <div className={styles.createpage}>
+    <div className={`${styles.createpage} container-padding-sm`}>
       <CreateTitle />
       <TimeSelection
         timeslots={timeslots}
@@ -94,7 +82,11 @@ const CreatePage = () => {
           />
         </div>
         <div className={styles.flex}>
-          <CreateEventButton timeslots={timeslots} start={startDate} end={endDate}/>
+          <CreateEventButton
+            timeslots={timeslots}
+            start={startDate}
+            end={endDate}
+          />
         </div>
         <div className={styles.flex}>
           <button
