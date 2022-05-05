@@ -3,14 +3,34 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-// const ToggleButton = styled(MuiToggleButton)({
-//   '&.Mui-selected, &.Mui-selected:hover': {
-//     color: 'white',
-//     backgroundColor: '#087f5b',
-//   },
-// });
+const color = 'red';
+const theme = createTheme({
+  components: {
+    MuiIconButton: {
+      styleOverrides: {
+        sizeMedium: {
+          color,
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          color,
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color,
+        },
+      },
+    },
+  },
+});
 
 export const BasicDatePicker = ({ label, setDate }) => {
   const [value, setValue] = React.useState(null);
@@ -23,22 +43,24 @@ export const BasicDatePicker = ({ label, setDate }) => {
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterLuxon}>
-      <DatePicker
-        label={label}
-        value={value}
-        onChange={onChange}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            sx={{
-              width: 0.4,
-              mx: 2,
-              color: '#087f5b',
-            }}
-          />
-        )}
-      />
-    </LocalizationProvider>
+    <ThemeProvider theme={theme}>
+      <LocalizationProvider dateAdapter={AdapterLuxon}>
+        <DatePicker
+          label={label}
+          value={value}
+          onChange={onChange}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              sx={{
+                width: 0.4,
+                mx: 2,
+                color: '#087f5b',
+              }}
+            />
+          )}
+        />
+      </LocalizationProvider>
+    </ThemeProvider>
   );
 };
