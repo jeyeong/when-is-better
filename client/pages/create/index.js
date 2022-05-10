@@ -1,17 +1,27 @@
+/*---------------*
+ *    Imports    *
+ *---------------*/
+
+/* Library imports */
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { DateTime, Duration } from 'luxon';
+import { BsGear } from 'react-icons/bs';
 
-import styles from '../../styles/Create.module.css';
-import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
-
+/* Component imports */
+import CreateTitle from '../../components/create-page/CreateTitle';
 import TimeSelection from '../../components/TimeSelection';
 import CreateEventButton from '../../components/create-page/CreateEventButton';
-
-import { BsGear } from 'react-icons/bs';
 import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 
+/* Other imports */
+import styles from '../../styles/Create.module.css';
 import { defaultStart, defaultEnd } from '../../constants.js';
+import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
+
+/*----------------*
+ *    Settings    *
+ *----------------*/
 
 const sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
 
@@ -25,14 +35,9 @@ const MINUTES_60 = 60;
 const deltaTime = MINUTES_15;
 const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
-const CreateTitle = () => (
-  <>
-    <h1 className={styles.createpage__header} style={{ height: TITLE_HEIGHT }}>
-      Your Event Name Here
-    </h1>
-    {/* <h2>Your Event Description</h2> */}
-  </>
-);
+/*--------------*
+ *     Main     *
+ *--------------*/
 
 const CreatePage = () => {
   /* startDate is beginning of first day, endDate is end of last day */
@@ -70,7 +75,8 @@ const CreatePage = () => {
   return (
     <div className={`${styles.createpage} container-padding-sm`}>
       <div ref={topRef}></div>
-      <CreateTitle />
+      <CreateTitle titleHeight={TITLE_HEIGHT} />
+
       <TimeSelection
         timeslots={timeslots}
         setTimeslots={setTimeslots}
