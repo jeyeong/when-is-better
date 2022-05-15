@@ -4,28 +4,32 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import TextField from '@mui/material/TextField';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
-const color = 'red';
+const color = '#087f5b';
+
+// https://codesandbox.io/s/material-demo-forked-wm16xh?file=/demo.tsx:2962-3033
+
 const theme = createTheme({
   components: {
     MuiIconButton: {
       styleOverrides: {
         sizeMedium: {
-          color,
+          color: '#333',
         },
       },
     },
-    MuiOutlinedInput: {
+    MuiButton: {
       styleOverrides: {
-        root: {
-          color,
+        sizeMedium: {
+          color: '#087f5b',
         },
       },
     },
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color,
+          color: '#333',
         },
       },
     },
@@ -49,16 +53,10 @@ export const BasicDatePicker = ({ label, setDate }) => {
           label={label}
           value={value}
           onChange={onChange}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              sx={{
-                width: 0.4,
-                mx: 2,
-                color: '#087f5b',
-              }}
-            />
-          )}
+          renderInput={(params) => <TextField {...params} />}
+          sx={{
+            color: '#087f5b',
+          }}
         />
       </LocalizationProvider>
     </ThemeProvider>
