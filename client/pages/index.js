@@ -64,60 +64,51 @@ const LandingPage = () => {
           </div>
 
           <div className={styles.wrapper}>
-            <div className={styles.diagonal_box_top_left}>
-              <div className={styles.undo_diagonal_top_left}>
-                <div className="container-padding-lg">
-                  <h1 className={styles.title}>
-                    When Is <span className={styles.accented}>Better</span>
-                  </h1>
-                </div>
+            <div className="container-padding-lg">
+              <h1 className={styles.title}>
+                When Is <span className={styles.accented}>Better</span>
+              </h1>
+            </div>
+            <div className="container-padding-lg">
+              <p className={styles.description}>
+                When Is Better is your hub for scheduling hangouts easily,
+                eliminating the hassle of back-and-forth messages so you can get
+                back to what matters most.
+              </p>
+              <p className={styles.description}>
+                To get started, on what dates could you hold your event?
+              </p>
 
-                <div className={styles.diagonal_box_top_right}>
-                  <div className={styles.undo_diagonal_top_right}>
-                    <div className="container-padding-lg">
-                      <p className={styles.description}>
-                        When Is Better is your hub for scheduling hangouts
-                        easily, eliminating the hassle of back-and-forth
-                        messages so you can get back to what matters most.
-                      </p>
-                      <p className={styles.description}>
-                        To get started, on what dates could you hold your event?
-                      </p>
+              <div
+                className={`${styles.datepicker_container} ${
+                  isInvalidDate ? styles.highlight_red : ''
+                }`}
+              >
+                <BasicDatePicker
+                  label="Start"
+                  setDate={(val) => setStartDate(val)}
+                />
+                <BasicDatePicker
+                  label="End"
+                  setDate={(val) => setEndDate(val)}
+                />
+              </div>
+              <div className={styles.invalid_date}>{errorMsg}</div>
 
-                      <div
-                        className={`${styles.datepicker_container} ${
-                          isInvalidDate ? styles.highlight_red : ''
-                        }`}
-                      >
-                        <BasicDatePicker
-                          label="Start"
-                          setDate={(val) => setStartDate(val)}
-                        />
-                        <BasicDatePicker
-                          label="End"
-                          setDate={(val) => setEndDate(val)}
-                        />
-                      </div>
-                      <div className={styles.invalid_date}>{errorMsg}</div>
-
-                      <div className={styles.center_button}>
-                        <Button
-                          variant="contained"
-                          style={{
-                            backgroundColor: '#087f5b',
-                            borderRadius: '999px',
-                            padding: '0.5rem 2rem',
-                            fontSize: '1.4rem',
-                          }}
-                          onClick={takeToCreatePage}
-                        >
-                          Get Started
-                        </Button>
-                        {/* <div>Invalid date</div> */}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className={styles.center_button}>
+                <Button
+                  variant="contained"
+                  style={{
+                    backgroundColor: '#087f5b',
+                    borderRadius: '999px',
+                    padding: '0.5rem 2rem',
+                    fontSize: '1.4rem',
+                  }}
+                  onClick={takeToCreatePage}
+                >
+                  Get Started
+                </Button>
+                {/* <div>Invalid date</div> */}
               </div>
             </div>
           </div>
