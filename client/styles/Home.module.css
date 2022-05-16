@@ -131,7 +131,7 @@ FONT SIZE SYSTEM (px)
 }
 
 .diagonal_box_top_left {
-  background-image: linear-gradient(45deg, #c9f2c7, #c9f2c7);
+  /* background-image: linear-gradient(45deg, #c9f2c7, #c9f2c7); */
   transform: skewY(9deg);
 }
 
@@ -140,7 +140,7 @@ FONT SIZE SYSTEM (px)
 }
 
 .diagonal_box_top_right {
-  background-image: linear-gradient(45deg, #aceca1, #aceca1);
+  /* background-image: linear-gradient(45deg, #aceca1, #aceca1); */
   transform: skewY(-9deg);
 }
 
@@ -156,6 +156,7 @@ FONT SIZE SYSTEM (px)
 .image_wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
   /* margin-left: 2rem; */
   /* margin-right: 1rem; */
   /* margin-top: 1rem; */
@@ -163,8 +164,19 @@ FONT SIZE SYSTEM (px)
 
 .main_image {
   width: 80vw;
+  height: 80vw;
   height: auto;
   align-content: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.main_image:hover {
+  transform: rotate(-25deg);
+}
+
+@keyframes rotateCool {
+  100% {
+  }
 }
 
 .datepicker_container {
@@ -204,6 +216,7 @@ FONT SIZE SYSTEM (px)
   /* sizing adjustments */
   .main_image {
     width: 200px;
+    height: 200px;
   }
   .home_box {
     flex-direction: row;
