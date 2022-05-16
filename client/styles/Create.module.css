@@ -2,7 +2,49 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 7.5%;
+  font-family: 'Open Sans';
 }
+
+/* Title */
+.createpage__header {
+  display: flex;
+  place-items: center;
+}
+
+.createpage__header > input {
+  width: 50vw;
+  min-width: 400px;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-size: 28px;
+  color: #000000;
+}
+
+.createpage__header > input::placeholder {
+  color: #000000;
+  text-align: center;
+}
+
+/* Description */
+.createpage__description {
+  width: 100%;
+  text-align: center;
+}
+
+.createpage__description > textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-size: 14px;
+  resize: none;
+  overflow: hidden;
+  color: rgb(64, 64, 64);
+}
+
+
 
 .timeselection__header {
   font-size: 32px;

@@ -1,6 +1,6 @@
-/*---------------*
+/*****************
  *    Imports    *
- *---------------*/
+ *****************/
 
 /* Library imports */
 import { useEffect, useState, useRef } from 'react';
@@ -9,7 +9,8 @@ import { DateTime, Duration } from 'luxon';
 import { BsGear } from 'react-icons/bs';
 
 /* Component imports */
-import CreateTitle from '../../components/create-page/CreateTitle';
+import EventTitle from '../../components/create-page/EventTitle';
+import EventDescription from '../../components/create-page/EventDescription';
 import TimeSelection from '../../components/TimeSelection';
 import CreateEventButton from '../../components/create-page/CreateEventButton';
 import { OptionsMenu } from '../../components/create-page/OptionsMenu';
@@ -19,25 +20,27 @@ import styles from '../../styles/Create.module.css';
 import { defaultStart, defaultEnd } from '../../constants.js';
 import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 
-/*----------------*
+/******************
  *    Settings    *
- *----------------*/
+ ******************/
 
 const sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
 
 /* Constants */
-const TITLE_HEIGHT = '45px';
+const TOP_MARGIN = '12px'; // space above the title
+const TITLE_HEIGHT = '60px';
+const DESCRIPTION_BOTTOM_MARGIN = '16px';
 
 /* make deltaDuration programmatic */
 const MINUTES_15 = 15;
 const MINUTES_30 = 30;
 const MINUTES_60 = 60;
-const deltaTime = MINUTES_15;
+const deltaTime = MINUTES_60;
 const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
-/*--------------*
+/****************
  *     Main     *
- *--------------*/
+ ****************/
 
 const CreatePage = () => {
   /* startDate is beginning of first day, endDate is end of last day */
@@ -73,9 +76,10 @@ const CreatePage = () => {
   const topRef = useRef();
 
   return (
-    <div className={`${styles.createpage} container-padding-sm`}>
+    <div className={styles.createpage} style={{ marginTop: TOP_MARGIN }}>
       <div ref={topRef}></div>
-      <CreateTitle titleHeight={TITLE_HEIGHT} />
+      <EventTitle titleHeight={TITLE_HEIGHT} />
+      <EventDescription bottomMargin={DESCRIPTION_BOTTOM_MARGIN} />
 
       <TimeSelection
         timeslots={timeslots}
@@ -83,6 +87,7 @@ const CreatePage = () => {
         deltaTime={deltaTime}
       />
 
+      {/* Bottom settings */}
       <div className={styles.button_container}>
         <div className={styles.flex}>
           <input
