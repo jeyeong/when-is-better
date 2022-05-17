@@ -27,15 +27,15 @@ import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 const sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
 
 /* Constants */
-const TOP_MARGIN = '12px'; // space above the title
-const TITLE_HEIGHT = '60px';
-const DESCRIPTION_BOTTOM_MARGIN = '16px';
+const TOP_MARGIN = 12; // space above the title
+const TITLE_HEIGHT = 60;
+const DESCRIPTION_BOTTOM_MARGIN = 16;
 
 /* make deltaDuration programmatic */
 const MINUTES_15 = 15;
 const MINUTES_30 = 30;
 const MINUTES_60 = 60;
-const deltaTime = MINUTES_60;
+const deltaTime = MINUTES_15;
 const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
 /****************
@@ -46,6 +46,13 @@ const CreatePage = () => {
   /* startDate is beginning of first day, endDate is end of last day */
   let [startDate, setStartDate] = useState(defaultStart);
   let [endDate, setEndDate] = useState(defaultEnd);
+
+  /* States */
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(42);
+
+  /* Configurations after initial render */
 
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
@@ -76,10 +83,21 @@ const CreatePage = () => {
   const topRef = useRef();
 
   return (
-    <div className={styles.createpage} style={{ marginTop: TOP_MARGIN }}>
+    <div className={styles.createpage} style={{ marginTop: `${TOP_MARGIN}px` }}>
       <div ref={topRef}></div>
-      <EventTitle titleHeight={TITLE_HEIGHT} />
-      <EventDescription bottomMargin={DESCRIPTION_BOTTOM_MARGIN} />
+
+      <EventTitle
+        titleHeight={TITLE_HEIGHT}
+        title={title}
+        setTitle={setTitle}
+      />
+
+      <EventDescription
+        bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
+        description={description}
+        setDescription={setDescription}
+        setDescriptionBoxHeight={setDescriptionBoxHeight}
+      />
 
       <TimeSelection
         timeslots={timeslots}

@@ -25,7 +25,6 @@ export const OptionsMenu = () => {
     Intl.DateTimeFormat().resolvedOptions().timeZone
   ); // use default timezone of user
   const currTZ = JSON.stringify(selectedTimezone, null, 2);
-  console.log('currTZ: ', currTZ);
 
   /* Code for Time Increment */
   const [timeInterval, setTimeInterval] = useState('15');
