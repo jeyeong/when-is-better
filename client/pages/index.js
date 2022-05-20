@@ -108,7 +108,6 @@ const LandingPage = () => {
                 >
                   Get Started
                 </Button>
-                {/* <div>Invalid date</div> */}
               </div>
             </div>
           </div>
