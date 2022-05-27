@@ -1,13 +1,16 @@
 import React from 'react';
 import styles from '../../styles/OptionsMenu.module.css';
-import Box from '@mui/material/Box';
 import { useState } from 'react';
 
-import TimezoneSelect from 'react-timezone-select';
-
 import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import MuiToggleButton from '@mui/material/ToggleButton';
+
+import { SelectHour } from '../../components/create-page/SelectHour';
+import TimezoneSelect from 'react-timezone-select';
+import { BasicDatePicker } from '../homepage/DatePicker';
+import { Increment } from './Increment';
 
 /* Define our own styling
 https://stackoverflow.com/questions/69707814/set-selected-background-color-of-mui-togglebutton
@@ -36,18 +39,6 @@ export const OptionsMenu = () => {
     setTimeInterval(newTimeInterval);
   };
 
-  const children = [
-    <ToggleButton value="15" key="15" disableRipple={true}>
-      15
-    </ToggleButton>,
-    <ToggleButton value="30" key="30" disableRipple={true}>
-      30
-    </ToggleButton>,
-    <ToggleButton value="60" key="60" disableRipple={true}>
-      60
-    </ToggleButton>,
-  ];
-
   const control = {
     value: timeInterval,
     onChange: handleChange,
@@ -59,10 +50,36 @@ export const OptionsMenu = () => {
       <div className={`${styles.options_container}`}>
         <div>
           <ul className={styles.options_list}>
-            <li>start Date</li>
-            <li>end Date</li>
-            <li>Hour Start</li>
-            <li>Hour End</li>
+            <li>
+              start Date
+              <div>
+                <BasicDatePicker
+                  label="Start"
+                  setDate={(val) => setStartDate(val)}
+                />
+              </div>
+            </li>
+            <li>
+              end Date
+              <div>
+                <BasicDatePicker
+                  label="Start"
+                  setDate={(val) => setStartDate(val)}
+                />
+              </div>
+            </li>
+            <li>
+              Hour Start:
+              <div>
+                <SelectHour />
+              </div>
+            </li>
+            <li>
+              Hour End:
+              <div>
+                <SelectHour />
+              </div>
+            </li>
             <li>
               Timezone
               <div className="select-wrapper">
@@ -71,20 +88,11 @@ export const OptionsMenu = () => {
                   onChange={setSelectedTimezone}
                 />
               </div>
+              <div>currTZ: {currTZ}</div>
             </li>
             <li>
               Increment
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <ToggleButtonGroup size="small" {...control}>
-                  {children}
-                </ToggleButtonGroup>
-              </Box>
+              <Increment />
             </li>
           </ul>
         </div>
