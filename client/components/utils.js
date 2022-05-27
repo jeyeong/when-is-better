@@ -58,7 +58,7 @@ exports.getStringDatesFromArray = (timeslots) => {
   const ndays = timeslots.length;
   const end = timeslots[ndays - 1][timeslots[ndays - 1].length - 1].time;
   const days = getDaysInIntervalFromStart(Interval.fromDateTimes(start, end));
-  const date_format = 'EEE, MMM d';
+  const date_format = 'EEE,\nMMM d';
   return days.map((d) => d.toFormat(date_format));
 };
 

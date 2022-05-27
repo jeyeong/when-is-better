@@ -3,9 +3,16 @@ import Hammer from 'react-hammerjs';
 import utils from '../components/utils';
 const { DateTime } = require('luxon');
 
-import styles from '../styles/Create.module.css';
+import styles from '../styles/TimeSelection.module.css';
 
-const TimeSelectionDay = ({ day, i, onPaint, deltaTime }) => {
+/* Constants */
+const COLUMN_WIDTH = 125;
+const COLUMN_GAP = 25;
+const TITLE_HEIGHT = 42;
+const TITLE_BOTTOM_MARGIN = 16;
+
+/* Individual time selection columns */
+const TimeSelectionDay = ({ day, dateTitle, i, onPaint, deltaTime }) => {
   let slotHeightClassName = styles.height_15;
   if (deltaTime === 30) {
     slotHeightClassName = styles.height_30;
@@ -14,43 +21,57 @@ const TimeSelectionDay = ({ day, i, onPaint, deltaTime }) => {
   }
 
   return (
-    <Hammer
-      onPan={(e) => onPaint(e, i)}
-      onTap={(e) => onPaint(e, i)}
-      direction="DIRECTION_ALL"
-    >
-      <div className={styles.datebox__container}>
-        {groupDaySlots(day, deltaTime).map((slotGroup, i) => (
-          <div key={i} className={styles.slot_group}>
-            {slotGroup.map((slot, i) => (
-              <div
-                className={`${
-                  slot.available
-                    ? slot.selected
-                      ? styles.datebox__selected
-                      : styles.datebox
-                    : styles.datebox__unavailable
-                } ${slotHeightClassName} ${styles.timebox}`}
-                key={i}
-              ></div>
-            ))}
-            <div className={styles.time_str}>
-              {formatSlotTime(slotGroup[0].time)}
+    <div style={{ width: COLUMN_WIDTH - COLUMN_GAP }}>
+      <h4
+        className={styles.timeselection__datetitle}
+        style={{ height: TITLE_HEIGHT, marginBottom: TITLE_BOTTOM_MARGIN }}
+      >
+        {dateTitle}
+      </h4>
+      <Hammer
+        onPan={(e) => onPaint(e, i)}
+        onTap={(e) => onPaint(e, i)}
+        direction="DIRECTION_ALL"
+      >
+        <div className={styles.datebox__container}>
+          {groupDaySlots(day, deltaTime).map((slotGroup, i) => (
+            <div key={i} className={styles.slot_group}>
+              {slotGroup.map((slot, i) => (
+                <div
+                  className={`${
+                    slot.available
+                      ? slot.selected
+                        ? styles.datebox__selected
+                        : styles.datebox
+                      : styles.datebox__unavailable
+                  } ${slotHeightClassName} ${styles.timebox}`}
+                  key={i}
+                ></div>
+              ))}
+              <div className={styles.time_str}>
+                {formatSlotTime(slotGroup[0].time)}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </Hammer>
+          ))}
+        </div>
+      </Hammer>
+    </div>
   );
 };
 
-const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
-  /* Screen size detection */
+const TimeSelection = ({
+  timeslots,
+  setTimeslots,
+  deltaTime,
+  distanceFromTop,
+}) => {
+  /* To detect changes in screen size: re-render component */
   const [dimensions, setDimensions] = useState({
     height: 0,
     width: 0,
   });
 
+  /* Add listener for resizing */
   useEffect(() => {
     const handleResize = () => {
       setDimensions({
@@ -62,13 +83,16 @@ const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
     window.addEventListener('resize', handleResize);
   }, []);
 
-  const numberOfColumns = Math.floor(dimensions.width / 200);
+  /* Compute number of columns to show */
+  const numberOfColumns = Math.floor(dimensions.width / COLUMN_WIDTH);
 
+  /* Filter timeslots to show */
   const timeslotsToShow = timeslots.slice(0, numberOfColumns);
 
-  // TODO: refactor y offset
+  /* Finds index associated with y-coordinate */
+  const offsetDistance = distanceFromTop + TITLE_HEIGHT + TITLE_BOTTOM_MARGIN;
   const findTimeIndex = (coords) => {
-    return Math.floor((coords.y - 123) / (40 / (60 / deltaTime)));
+    return Math.floor((coords.y - offsetDistance) / (40 / (60 / deltaTime)));
   };
 
   /* Records whether the first actions has been taken, and if so, whether it
@@ -93,6 +117,11 @@ const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
 
     // Get slot of interest
     const slotToModify = timeslots[dayIndex][timeIndex];
+
+    // Check if the slot is not undefined
+    if (!slotToModify) {
+      return;
+    }
 
     // Set first action attributes
     if (!firstAction.taken) {
@@ -135,6 +164,8 @@ const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
     }
   };
 
+  /* Reset locks we placed on selection/deselection, now that the
+     mouse/finger has been released. */
   const resetLocks = () => {
     setTimeslots(
       timeslots.map((day) => day.map((slot) => ({ ...slot, editLock: false })))
@@ -142,31 +173,31 @@ const TimeSelection = ({ timeslots, setTimeslots, deltaTime }) => {
     setFirstAction({ taken: false, isSelection: false });
   };
 
-  const dates = utils.getStringDatesFromArray(timeslots);
+  /* Date titles */
+  const [dateTitles, setDateTitles] = useState(
+    utils.getStringDatesFromArray(timeslots)
+  );
 
   return (
-    <>
-      <div className={styles.day__headers}>
-        {dates.map((date, i) => (
-          <h4 key={i}>{date}</h4>
-        ))}
-      </div>
+    <div className={styles.timeselection}>
       <div
-        className={styles.selection__container}
+        className={styles.timeselection__container}
+        style={{ columnGap: COLUMN_GAP }}
         onTouchEnd={resetLocks}
         onMouseUp={resetLocks}
       >
         {timeslotsToShow.map((day, i) => (
           <TimeSelectionDay
             day={day}
+            dateTitle={dateTitles[i]}
             i={i}
             onPaint={onPaint}
-            key={i}
             deltaTime={deltaTime}
+            key={i}
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

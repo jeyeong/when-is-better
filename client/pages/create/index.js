@@ -50,7 +50,7 @@ const CreatePage = () => {
   /* States */
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(42);
+  const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(46);
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
   );
@@ -58,14 +58,15 @@ const CreatePage = () => {
   /* Additional hooks */
   const { query, isReady } = useRouter();
 
+  /* Generate start and end times */
   useEffect(() => {
     let initialStartDate = DateTime.fromHTTP(query.startDate).toLocal();
     let initialEndDate = DateTime.fromHTTP(query.endDate).toLocal();
 
     if (initialStartDate.invalid || initialEndDate.invalid) {
-      // Default dates:
-      // Start = 08:00 today
-      // End = 21:00 4 days from today
+      /* Default date range:
+         Start = 08:00 today
+         End = 21:00 4 days from today */
       initialStartDate = DateTime.now().set({ hour: 8, minute: 0 });
       initialEndDate = initialStartDate
         .plus({ day: 3 })
@@ -114,6 +115,12 @@ const CreatePage = () => {
         timeslots={timeslots}
         setTimeslots={setTimeslots}
         deltaTime={deltaTime}
+        distanceFromTop={
+          TOP_MARGIN +
+          TITLE_HEIGHT +
+          descriptionBoxHeight +
+          DESCRIPTION_BOTTOM_MARGIN
+        }
       />
 
       {/* Bottom settings */}

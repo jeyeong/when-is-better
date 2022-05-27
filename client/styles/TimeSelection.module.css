@@ -1,0 +1,207 @@
+/* Overall container */
+.timeselection {
+  display: flex;
+  justify-content: center;
+}
+
+.timeselection__container {
+  display: flex;
+  width: 100%;
+  padding: 0 2.5%;
+  margin-bottom: 12px;
+  touch-action: none;
+}
+
+/*  */
+.timeselection__datetitle {
+  font-size: 15px;
+  text-align: center;
+  white-space: pre-line;
+  margin: 0;
+}
+
+.datebox__container {
+  border: 2px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+
+
+
+
+.timeselection__header {
+  font-size: 32px;
+  margin: 20px 0;
+}
+
+.day__headers {
+  height: 20px;
+  display: flex;
+  width: 100%;
+  touch-action: none;
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+
+.day__headers h4 {
+  width: 23%;
+  margin: 0 1%;
+  font-size: 14px;
+  display: grid;
+  place-items: center;
+}
+
+.datebox,
+.datebox__selected,
+.datebox__unavailable,
+.intensity__0,
+.intensity__1,
+.intensity__2,
+.intensity__3 {
+  height: 40px;
+  width: 100%;
+  border-top: 1px dashed #bbb;
+  display: grid;
+  place-items: center;
+}
+
+.datebox__unavailable {
+  background-color: gray;
+  color: gray;
+}
+
+.datebox__selected {
+  background-color: #91e09b;
+  color: black;
+  /* border-top: 1px dashed #; */
+}
+
+.datebox:last-of-type,
+.datebox__selected:last-of-type {
+  border-bottom: none;
+}
+
+.intensity__1 {
+  background-color: #e9f9eb;
+}
+
+.intensity__2 {
+  background-color: #b2e9b9;
+}
+
+.intensity__3 {
+  background-color: #91e09b;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+.gear_wrapper {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #aaa;
+  border-radius: 9999px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input_name {
+  text-decoration: none;
+  /* width: 100%; */
+  padding: 5px 15px;
+  border: 1px solid #aaa;
+  border-radius: 9999px;
+  font: inherit;
+
+  height: 40px;
+  width: 100%;
+}
+
+.btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  text-decoration: none;
+  border: none;
+
+  display: flex;
+  justify-content: center;
+}
+
+.btn_test {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 999px;
+  background-color: inherit;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/**********************************/
+/* TimeSelection Component Style  */
+/**********************************/
+
+.slot_group {
+  position: relative;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+.slot_group:first-child {
+  border-top: none;
+}
+
+.slot_group:last-child {
+  border-bottom: none;
+}
+
+.time_str {
+  font-size: 14px;
+  font-weight: 500;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.timebox:first-child {
+  /* so we don't get border stacking at the top */
+  border-top: none;
+}
+
+.height_15 {
+  height: 10px;
+}
+.height_30 {
+  height: 20px;
+}
+.height_60 {
+  height: 40px;
+}
+
+/**********************************/
+/* Button container   */
+/**********************************/
+.button_container {
+  width: 100%;
+  padding: 0 20px;
+
+  display: grid;
+  grid-template-columns: 4fr 3fr 1fr;
+  column-gap: 10px;
+
+  align-items: center;
+  justify-content: center;
+
+  padding-bottom: 20px;
+}
