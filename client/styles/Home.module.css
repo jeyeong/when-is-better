@@ -1,11 +1,11 @@
 .container {
-  padding: 0 2rem;
+  padding: 0 20px;
   background-color: red;
 }
 
 .main {
   min-height: 100vh;
-  padding: 4rem 0;
+  padding: 40px 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -16,7 +16,7 @@
 .footer {
   display: flex;
   flex: 1;
-  padding: 2rem 0;
+  padding: 20px 0;
   border-top: 1px solid #eaeaea;
   justify-content: center;
   align-items: center;
@@ -38,14 +38,14 @@
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 4rem;
+  font-size: 40px;
 }
 
 .code {
   background: #fafafa;
   border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
+  padding: 7.5px;
+  font-size: 11px;
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
@@ -59,8 +59,8 @@
 }
 
 .card {
-  margin: 1rem;
-  padding: 1.5rem;
+  margin: 10px;
+  padding: 15px;
   text-align: left;
   color: inherit;
   text-decoration: none;
@@ -79,18 +79,18 @@
 
 .card h2 {
   margin: 0 0 1rem 0;
-  font-size: 1.5rem;
+  font-size: 15px;
 }
 
 .card p {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 12.5px;
   line-height: 1.5;
 }
 
 .logo {
-  height: 1em;
-  margin-left: 0.5rem;
+  height: 10px;
+  margin-left: 5px;
 }
 
 @media (max-width: 600px) {
@@ -119,11 +119,11 @@ FONT SIZE SYSTEM (px)
 
 .description {
   line-height: 1.5;
-  font-size: 1.4rem;
+  font-size: 14px;
 }
 
 .center_button {
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
 
 .accented {
@@ -131,17 +131,14 @@ FONT SIZE SYSTEM (px)
 }
 
 .margin_x {
-  margin-left: 0.8rem;
-  margin-right: 0.8rem;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .image_wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin-left: 2rem; */
-  /* margin-right: 1rem; */
-  /* margin-top: 1rem; */
 }
 
 .main_image {
@@ -150,10 +147,11 @@ FONT SIZE SYSTEM (px)
   height: auto;
   align-content: center;
   transition: transform 0.3s ease-in-out;
+  animation-fill-mode: forwards;
 }
 
 .main_image:hover {
-  transform: rotate(-25deg);
+  transform: rotate(var(--rotateDegree));
 }
 
 @keyframes rotateCool {

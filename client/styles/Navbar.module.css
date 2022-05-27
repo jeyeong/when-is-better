@@ -1,5 +1,5 @@
 .navbar {
-  height: 8rem;
+  height: 80px;
   position: sticky;
   top: 0;
 
@@ -11,14 +11,17 @@
 
   margin: 0;
 
-  font-size: 4rem;
+  font-size: 40px;
   color: #333;
 
   z-index: 100;
+
+  border-bottom: 1px solid #ccc;
 }
 
 .show_shadow {
-  box-shadow: 1px 1px 4px 2px rgb(51, 51, 51, 0.04);
+  box-shadow: 10px 10px 4px 2px rgb(51, 51, 51, 0.04);
+  /* box-shadow: 1px 1px 4px 2px rgb(51, 51, 51, 0.04); */
 }
 
 /**************************/
@@ -30,7 +33,6 @@
 /**************************/
 @media (min-width: 900px) {
   .navbar {
-    height: 8rem;
     position: sticky;
     top: 0;
 
@@ -42,7 +44,7 @@
 
     margin: 0;
 
-    font-size: 4rem;
+    font-size: 40px;
     color: #333;
 
     z-index: 100;

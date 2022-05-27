@@ -31,7 +31,7 @@ export const Increment = () => {
 
   const handleChange = () => {
     console.log('Yet to implement!!!');
-    // throw 'to-do';
+    throw 'to-do';
   };
 
   const control = {

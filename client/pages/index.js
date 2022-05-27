@@ -101,8 +101,8 @@ const LandingPage = () => {
                   style={{
                     backgroundColor: '#087f5b',
                     borderRadius: '999px',
-                    padding: '0.5rem 2rem',
-                    fontSize: '1.4rem',
+                    padding: '5px 20px',
+                    fontSize: '14px',
                   }}
                   onClick={takeToCreatePage}
                 >
