@@ -29,9 +29,9 @@ const children = [
 export const Increment = () => {
   const timeInterval = '15';
 
-  const handleChange = () => {
-    throw 'to-do';
-  };
+  // const handleChange = () => {
+  //   throw 'to-do';
+  // };
 
   const control = {
     value: timeInterval,
