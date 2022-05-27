@@ -44,35 +44,46 @@ const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
 const CreatePage = () => {
   /* startDate is beginning of first day, endDate is end of last day */
-  let [startDate, setStartDate] = useState(defaultStart);
-  let [endDate, setEndDate] = useState(defaultEnd);
+  let [startDate, setStartDate] = useState(null);
+  let [endDate, setEndDate] = useState(null);
 
   /* States */
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(42);
-
-  /* Configurations after initial render */
-
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
   );
+
+  /* Additional hooks */
   const { query, isReady } = useRouter();
 
   useEffect(() => {
-    if (!('startDate' in query && 'endDate' in query)) {
-      return;
+    let initialStartDate = DateTime.fromHTTP(query.startDate).toLocal();
+    let initialEndDate = DateTime.fromHTTP(query.endDate).toLocal();
+
+    if (initialStartDate.invalid || initialEndDate.invalid) {
+      // Default dates:
+      // Start = 08:00 today
+      // End = 21:00 4 days from today
+      initialStartDate = DateTime.now().set({ hour: 8, minute: 0 });
+      initialEndDate = initialStartDate
+        .plus({ day: 3 })
+        .set({ hour: 21 })
+        .toLocal();
+      initialStartDate = initialStartDate.toLocal();
     }
-    startDate = DateTime.fromHTTP(query.startDate).toLocal();
-    endDate = DateTime.fromHTTP(query.endDate).toLocal();
-    setStartDate(startDate);
-    setEndDate(endDate);
+
+    setStartDate(initialStartDate);
+    setEndDate(initialEndDate);
+
     const timeslots_arr = generateTimeSlotArray(
-      startDate,
-      endDate,
+      initialStartDate,
+      initialEndDate,
       deltaDuration,
       true
     );
+
     setTimeslots(timeslots_arr);
   }, [isReady]);
 
