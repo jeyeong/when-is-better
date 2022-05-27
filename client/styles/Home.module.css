@@ -119,45 +119,15 @@ FONT SIZE SYSTEM (px)
 
 .description {
   line-height: 1.5;
-  font-size: 1rem;
+  font-size: 1.4rem;
 }
 
 .center_button {
-  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
 .accented {
   color: #087f5b;
-}
-
-.hero_placeholder {
-  align-items: center;
-  width: 327px;
-  height: 300px;
-  border: 10px yellow solid;
-}
-
-.width_normal {
-  /* width: 80vw; */
-}
-
-.diagonal_box_top_left {
-  background-image: linear-gradient(45deg, #c9f2c7, #c9f2c7);
-  transform: skewY(11deg);
-}
-
-.undo_diagonal_top_left {
-  transform: skewY(-11deg);
-}
-
-.diagonal_box_top_right {
-  background-image: linear-gradient(45deg, #aceca1, #aceca1);
-  transform: skewY(-11deg);
-}
-
-.undo_diagonal_top_right {
-  transform: skewY(11deg);
 }
 
 .margin_x {
@@ -167,19 +137,88 @@ FONT SIZE SYSTEM (px)
 
 .image_wrapper {
   display: flex;
-  justify-content: flex-start;
-  margin-left: 2rem;
+  justify-content: center;
+  align-items: center;
+  /* margin-left: 2rem; */
   /* margin-right: 1rem; */
   /* margin-top: 1rem; */
 }
 
 .main_image {
   width: 80vw;
+  height: 80vw;
   height: auto;
   align-content: center;
+  transition: transform 0.3s ease-in-out;
 }
 
-.flex_and_center {
+.main_image:hover {
+  transform: rotate(-25deg);
+}
+
+@keyframes rotateCool {
+  100% {
+  }
+}
+
+.datepicker_container {
+  margin: 10px 0px 0px 0px;
   display: flex;
   justify-content: space-around;
+
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+}
+
+.highlight_red {
+  padding: 10px;
+  border: 2px solid red;
+  border-radius: 4px;
+}
+
+.invalid_date {
+  height: 16px;
+  color: red;
+}
+
+.home_box {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/**************************/
+/*     MEDIA QUERIES      */
+/**************************/
+
+/**************************/
+/* BELOW 1344px */
+/**************************/
+@media (min-width: 900px) {
+  /* sizing adjustments */
+  .main_image {
+    width: 200px;
+    height: 200px;
+  }
+  .home_box {
+    flex-direction: row;
+  }
+
+  .image_wrapper {
+    order: 2;
+  }
+
+  .home_box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 70px;
+  }
+
+  .datepicker_container {
+    margin: 20px 0px 0px 0px;
+  }
+
+  .center_button {
+    margin-top: 10px;
+  }
 }

@@ -58,6 +58,7 @@ const CreatePage = () => {
   /* Additional hooks */
   const { query, isReady } = useRouter();
 
+  /* generate the slots to display */
   useEffect(() => {
     let initialStartDate = DateTime.fromHTTP(query.startDate).toLocal();
     let initialEndDate = DateTime.fromHTTP(query.endDate).toLocal();
@@ -87,11 +88,13 @@ const CreatePage = () => {
     setTimeslots(timeslots_arr);
   }, [isReady]);
 
-  const [input, setInput] = useState('');
+  /* for stuff below the time select component */
+  const [name, setName] = useState('');
   const [showOptions, setShowOptions] = useState(false);
-
   const bottomRef = useRef();
   const topRef = useRef();
+
+  /* Define functions to control state of child elements */
 
   return (
     <div className={styles.createpage} style={{ marginTop: `${TOP_MARGIN}px` }}>
@@ -121,8 +124,8 @@ const CreatePage = () => {
         <div className={styles.flex}>
           <input
             type="text"
-            value={input}
-            onInput={(e) => setInput(e.target.value)}
+            value={name}
+            onInput={(e) => setName(e.target.value)}
             placeholder="John Doe"
             className={styles.input_name}
           />
