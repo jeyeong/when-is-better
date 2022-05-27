@@ -123,7 +123,7 @@ FONT SIZE SYSTEM (px)
 }
 
 .center_button {
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .accented {
@@ -176,6 +176,7 @@ FONT SIZE SYSTEM (px)
 }
 
 .invalid_date {
+  font-size: 14px;
   height: 16px;
   color: red;
 }
@@ -217,6 +218,6 @@ FONT SIZE SYSTEM (px)
   }
 
   .center_button {
-    margin-top: 10px;
+    margin-top: 20px;
   }
 }
