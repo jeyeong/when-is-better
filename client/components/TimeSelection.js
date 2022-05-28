@@ -91,14 +91,15 @@ const TimeSelection = ({
 
   /* Add listener for resizing */
   useEffect(() => {
-    const handleResize = () => {
+    const handleScreenChange = () => {
       setDimensions({
         height: window.innerHeight,
         width: window.innerWidth,
       });
     };
-    handleResize();
-    window.addEventListener('resize', handleResize);
+    handleScreenChange();
+    window.addEventListener('resize', handleScreenChange);
+    screen.orientation.addEventListener('change', handleScreenChange);
   }, []);
 
   /* Modify column dimensions on resizing */
