@@ -2,12 +2,12 @@ const { DateTime, Interval, Duration } = require('luxon');
 const luxon = require('luxon');
 const BACKEND_URL = 'https://when-is-better-backend.herokuapp.com';
 
-const generateTimesInInterval = (interval, delta_duration) => {
+const generateTimesInInterval = (interval, deltaDuration) => {
   let times = [];
   let cursor = DateTime.fromHTTP(interval.start.toHTTP());
   while (cursor < interval.end) {
     times.push(cursor);
-    cursor = cursor.plus(delta_duration);
+    cursor = cursor.plus(deltaDuration);
   }
   return times;
 };
@@ -36,7 +36,7 @@ const getDaysInIntervalFromEnd = (interval) => {
 /*
  * start - start of first day in range
  * end - end of last day in range
- * delta_duration - length of each time slot
+ * deltaDuration - length of each time slot
  *
  * timeslots are of type
  * {
@@ -46,20 +46,21 @@ const getDaysInIntervalFromEnd = (interval) => {
  *   editLock - bool
  * }
  */
-const generateTimeSlotArray = (start, end, delta_duration) => {
+const generateTimeSlotArray = (start, end, deltaDuration, available_default) => {
   const interval = Interval.fromDateTimes(start, end);
   const dayStarts = getDaysInIntervalFromStart(interval);
   const dayEnds = getDaysInIntervalFromEnd(interval);
   let times = [];
   for (let i = 0; i < dayEnds.length; i++) {
     const interval = Interval.fromDateTimes(dayStarts[i], dayEnds[i]);
-    const day_times = generateTimesInInterval(interval, delta_duration);
+    const day_times = generateTimesInInterval(interval, deltaDuration);
+
     const timeslots = day_times.map((time) => {
       return {
         editLock: false,
         people_available: [],
         selected: false,
-        available: false,
+        available: available_default,
         time,
       };
     });
@@ -91,14 +92,12 @@ const getEventObject = (event_id) => {
         event_name: resp.event.event_name,
         description: resp.event.description,
       };
-      const delta_duration = Duration.fromObject({
+      const deltaDuration = Duration.fromObject({
         minutes: resp.event.time_interval_min,
       });
-      let timeslots = generateTimeSlotArray(
-        DateTime.fromHTTP(resp.event.time_start),
-        DateTime.fromHTTP(resp.event.time_end),
-        delta_duration
-      );
+      const start = DateTime.fromHTTP(resp.event.time_start);
+      const end = DateTime.fromHTTP(resp.event.time_end);
+      let timeslots = generateTimeSlotArray(start, end, deltaDuration, false);
 
       resp.event.available_times.forEach((day, i) =>
         day.forEach((available_time_str) => {
@@ -153,9 +152,9 @@ export { generateTimeSlotArray, timeSlotSelect, getEventObject };
 
 // const start = DateTime.fromObject({year: 2022, month: 4, day: 3, hour: 8})
 // const end = DateTime.fromObject({year: 2022, month: 4, day: 7, hour: 21})
-// const delta_duration = luxon.Duration.fromObject({minutes: 60})
+// const deltaDuration = luxon.Duration.fromObject({minutes: 60})
 
-// const dateTimes = exports.generateTimeSlotArray(start, end, delta_duration)
+// const dateTimes = exports.generateTimeSlotArray(start, end, deltaDuration)
 
 // console.log("DATETIME ARRAY")
 // console.log(dateTimes)

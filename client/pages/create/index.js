@@ -1,206 +1,192 @@
-import { useState } from 'react';
-import Head from 'next/head';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import AdapterLuxon from '@mui/lab/AdapterLuxon';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
-import Hammer from 'react-hammerjs';
+/*****************
+ *    Imports    *
+ *****************/
+
+/* Library imports */
+import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { DateTime, Duration } from 'luxon';
-import Link from 'next/link';
-import Router from 'next/router';
+import { BsGear } from 'react-icons/bs';
 
-import { generateTimeSlotArray } from '../../models/timeslots';
+/* Component imports */
+import EventTitle from '../../components/create-page/EventTitle';
+import EventDescription from '../../components/create-page/EventDescription';
+import TimeSelection from '../../components/TimeSelection';
+import CreateEventButton from '../../components/create-page/CreateEventButton';
+import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 
+/* Other imports */
 import styles from '../../styles/Create.module.css';
-import timeslots, { getEventObject } from '../../models/timeslots';
+import { defaultStart, defaultEnd } from '../../constants.js';
+import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 
-const TIMES = [
-  '8am',
-  '9am',
-  '10am',
-  '11am',
-  '12pm',
-  '1pm',
-  '2pm',
-  '3pm',
-  '4pm',
-  '5pm',
-  '6pm',
-  '7pm',
-  '8pm',
-];
+/******************
+ *    Settings    *
+ ******************/
 
-const HARDCODED_DATES = ['Apr 4 Mon', 'Apr 5 Tue', 'Apr 6 Wed', 'Apr 7 Thu'];
+const sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
 
-const start = DateTime.fromObject({
-  year: 2022,
-  month: 4,
-  day: 4,
-  hour: 8,
-});
-const end = DateTime.fromObject({
-  year: 2022,
-  month: 4,
-  day: 7,
-  hour: 20,
-});
-const delta_duration = Duration.fromObject({ minutes: 60 });
+/* Constants */
+const TOP_PADDING = 12; // space above the title
+const TITLE_HEIGHT = 60;
+const DESCRIPTION_BOTTOM_MARGIN = 16;
 
-const TimeSelection = ({ timeslots, setTimeslots }) => {
-  const [firstAction, setFirstAction] = useState({
-    fixed: false,
-    isSelection: false,
-  });
+/* make deltaDuration programmatic */
+const MINUTES_15 = 15;
+const MINUTES_30 = 30;
+const MINUTES_60 = 60;
+const deltaTime = MINUTES_15;
+const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
-  const onPaint = (e, dayIndex) => {
-    const timeIndex = findTimeIndex(e.center);
+/****************
+ *     Main     *
+ ****************/
 
-    if (!firstAction.fixed) {
-      setFirstAction({
-        fixed: true,
-        isSelection: !timeslots[dayIndex][timeIndex].selected,
-      });
+const CreatePage = () => {
+  /* startDate is beginning of first day, endDate is end of last day */
+  let [startDate, setStartDate] = useState(null);
+  let [endDate, setEndDate] = useState(null);
+
+  /* States */
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(46);
+  const [timeslots, setTimeslots] = useState(
+    generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
+  );
+
+  /* Additional hooks */
+  const { query, isReady } = useRouter();
+
+  /* Generate start and end times */
+  useEffect(() => {
+    let initialStartDate = DateTime.fromHTTP(query.startDate)
+      .toLocal()
+      ?.set({ minute: 0, second: 0 });
+    let initialEndDate = DateTime.fromHTTP(query.endDate)
+      .toLocal()
+      ?.set({ minute: 0, second: 0 });
+
+    if (initialStartDate.invalid || initialEndDate.invalid) {
+      /* Default date range:
+         Start = 08:00 today
+         End = 21:00 4 days from today */
+      initialStartDate = DateTime.now().set({ hour: 8, minute: 0 });
+      initialEndDate = initialStartDate
+        .plus({ day: 3 })
+        .set({ hour: 21 })
+        .toLocal();
+      initialStartDate = initialStartDate.toLocal();
     }
 
-    if (!timeslots[dayIndex][timeIndex].editLock) {
-      setTimeslots(
-        timeslots.map((day, i) =>
-          i === dayIndex
-            ? day.map((slot, j) =>
-                j === timeIndex && !(firstAction.isSelection && slot.selected)
-                  ? {
-                      editLock: true,
-                      people_available: slot.people_available,
-                      selected: !slot.selected,
-                      time: slot.time,
-                    }
-                  : slot
-              )
-            : day
-        )
-      );
-    }
-  };
+    setStartDate(initialStartDate);
+    setEndDate(initialEndDate);
 
-  const resetEditLocks = () => {
-    setTimeslots(
-      timeslots.map((day) => day.map((slot) => ({ ...slot, editLock: false })))
-    );
-    setFirstAction({ fixed: false, isSelection: false });
-  };
-
-  const findTimeIndex = (coords) => {
-    return Math.floor((coords.y - 123) / 40);
-  };
-
-  const createEvent = () => {
-    const availableTimes = timeslots.map((day) =>
-      day.filter((slot) => slot.selected).map((slot) => slot.time.toHTTP())
+    const timeslots_arr = generateTimeSlotArray(
+      initialStartDate,
+      initialEndDate,
+      deltaDuration,
+      true
     );
 
-    const payload = {
-      creator: 'uncommon_hacks',
-      event_name: 'uncommon_hacks',
-      description: 'flames',
-      available_times: availableTimes,
-      time_start: start.toHTTP(),
-      time_end: end.toHTTP(),
-      time_interval_min: 60,
-    };
+    setTimeslots(timeslots_arr);
+  }, [isReady]);
 
-    fetch('https://when-is-better-backend.herokuapp.com/event', {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
+  /* for stuff below the time select component */
+  const [name, setName] = useState('');
+  const [showOptions, setShowOptions] = useState(false);
+  const bottomRef = useRef();
+  const topRef = useRef();
 
-        /* Redirect user to page to share link */
-        Router.push(`/create-success?event_id=${res.event_id}`);
-      });
-  };
+  /* Define functions to control state of child elements */
 
   return (
-    <div className={styles.timeselection}>
-      <h1 className={styles.timeselection__header}>Pick Time</h1>
-      <div className={styles.day__headers}>
-        {HARDCODED_DATES.map((date, i) => (
-          <h4 key={i}>{date}</h4>
-        ))}
-      </div>
-      <div
-        className={styles.selection__container}
-        onTouchEnd={resetEditLocks}
-        onMouseUp={resetEditLocks}
-      >
-        {timeslots.map((day, i) => (
-          <Hammer
-            onPan={(e) => onPaint(e, i)}
-            onTap={(e) => onPaint(e, i)}
-            direction="DIRECTION_ALL"
-            key={i}
+    <div
+      className={styles.createpage}
+      style={{ paddingTop: `${TOP_PADDING}px` }}
+    >
+      <div ref={topRef}></div>
+
+      <EventTitle
+        titleHeight={TITLE_HEIGHT}
+        title={title}
+        setTitle={setTitle}
+      />
+
+      <EventDescription
+        bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
+        description={description}
+        setDescription={setDescription}
+        setDescriptionBoxHeight={setDescriptionBoxHeight}
+      />
+
+      <TimeSelection
+        timeslots={timeslots}
+        setTimeslots={setTimeslots}
+        deltaTime={deltaTime}
+        distanceFromTop={
+          TOP_PADDING +
+          TITLE_HEIGHT +
+          descriptionBoxHeight +
+          DESCRIPTION_BOTTOM_MARGIN
+        }
+      />
+
+      {/* Bottom settings */}
+      <div className={styles.button_container}>
+        <div className={styles.flex}>
+          <input
+            type="text"
+            value={name}
+            onInput={(e) => setName(e.target.value)}
+            placeholder="John Doe"
+            className={styles.input_name}
+          />
+        </div>
+        <div className={styles.flex}>
+          <CreateEventButton
+            timeslots={timeslots}
+            start={startDate}
+            end={endDate}
+          />
+        </div>
+        <div className="flex">
+          <button
+            className={styles.btn_test}
+            onClick={async () => {
+              if (showOptions) {
+                topRef.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                  inline: 'nearest',
+                });
+                await sleep(200); /* wait to get to page top first */
+                setShowOptions(!showOptions);
+              } else {
+                setShowOptions(!showOptions);
+                await sleep(200); /* wait for menu to render first */
+                bottomRef.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                  inline: 'nearest',
+                });
+              }
+            }}
           >
-            <div className={styles.datebox__container}>
-              {day.map((slot, i) => (
-                <div
-                  className={
-                    slot.selected ? styles.datebox__selected : styles.datebox
-                  }
-                  key={i}
-                >
-                  {TIMES[i]}
-                </div>
-              ))}
-            </div>
-          </Hammer>
-        ))}
+            <BsGear size={30} />
+          </button>
+        </div>
       </div>
-      <Button
-        variant="contained"
-        onClick={createEvent}
-        style={{
-          backgroundColor: '#087f5b',
-          borderRadius: '50px',
-          padding: '0.5rem 2rem',
-          fontSize: '1rem',
-        }}
-      >
-        Create Event
-      </Button>
+
+      <div className={`${showOptions ? '' : 'hide'} w_100 `}>
+        <div className="container-padding-lg">
+          <OptionsMenu />
+        </div>
+      </div>
+
+      <div ref={bottomRef}></div>
     </div>
   );
 };
 
-const CreateForm = () => {
-  getEventObject('d39ec5');
-  const [timeslots, setTimeslots] = useState(
-    generateTimeSlotArray(start, end, delta_duration)
-  );
-  return (
-    <>
-      <Head>
-        {/* for the font */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="true"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Open+Sans:ital,wght@0,400;0,800;1,400&family=Raleway+Dots&family=Raleway:wght@100;400;900&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
-
-      <TimeSelection timeslots={timeslots} setTimeslots={setTimeslots} />
-    </>
-  );
-};
-
-export default CreateForm;
+export default CreatePage;

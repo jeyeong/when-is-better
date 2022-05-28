@@ -1,87 +1,47 @@
-.timeselection {
+.createpage {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 7.5%;
+  font-family: 'Open Sans';
 }
 
-.timeselection__header {
-  height: 45px;
-  font-size: 32px;
-  margin: 20px 0;
-  font-family: 'Open Sans', sans-serif;
-}
-
-.day__headers {
-  height: 20px;
+/* Title */
+.createpage__header {
   display: flex;
-  width: 100%;
-  touch-action: none;
-  padding: 0 12px;
-  margin-bottom: 8px;
+  place-items: center;
 }
 
-.day__headers h4 {
-  width: 23%;
-  margin: 0 1%;
+.createpage__header > input {
+  width: 50vw;
+  min-width: 400px;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-size: 28px;
+  color: #000000;
+  background-color: transparent;
+}
+
+.createpage__header > input::placeholder {
+  color: #000000;
+  text-align: center;
+}
+
+/* Description */
+.createpage__description {
+  width: 100%;
+  text-align: center;
+}
+
+.createpage__description > textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: center;
   font-size: 14px;
-  display: grid;
-  place-items: center;
-}
-
-.selection__container {
-  display: flex;
-  width: 100%;
-  touch-action: none;
-  margin-bottom: 0.7rem;
-  padding: 0 12px;
-}
-
-.datebox__container {
-  width: 23%;
-  margin: 0 1%;
-  border: 2px solid black;
-  border-radius: 8px;
+  resize: none;
   overflow: hidden;
-}
-
-.datebox,
-.datebox__selected,
-.datebox__unavailable,
-.intensity__0,
-.intensity__1,
-.intensity__2,
-.intensity__3 {
-  height: 40px;
-  width: 100%;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  display: grid;
-  place-items: center;
-}
-
-.datebox__unavailable {
-  background-color: gray;
-  color: gray;
-}
-
-.datebox__selected {
-  background-color: #91e09b;
-  color: black;
-}
-
-.datebox:last-of-type,
-.datebox__selected:last-of-type {
-  border-bottom: none;
-}
-
-.intensity__1 {
-  background-color: #e9f9eb;
-}
-
-.intensity__2 {
-  background-color: #b2e9b9;
-}
-
-.intensity__3 {
-  background-color: #91e09b;
+  color: rgb(64, 64, 64);
+  background-color: transparent;
 }
