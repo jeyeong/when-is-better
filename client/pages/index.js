@@ -11,12 +11,16 @@ import { DateTime } from 'luxon';
 const LandingPage = () => {
   const [startDate, _setStartDate] = useState('startDateNotSet');
   const [endDate, _setEndDate] = useState('endDateNotSet');
+  const [isInvalidDate, setIsInvalidDate] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
   const setStartDate = (startDate) => {
     let date = DateTime.fromHTTP(startDate)
       .toLocal()
       .set({ hour: 8, minute: 0 });
     _setStartDate(date.toHTTP());
   };
+
   const setEndDate = (endDate) => {
     let date = DateTime.fromHTTP(endDate)
       .toLocal()
@@ -24,75 +28,91 @@ const LandingPage = () => {
     _setEndDate(date.toHTTP());
   };
 
+  const takeToCreatePage = () => {
+    if (startDate === 'startDateNotSet' || endDate === 'endDateNotSet') {
+      setErrorMsg('Null dates are not allowed');
+      setIsInvalidDate(true);
+      return;
+    }
+
+    const startDateTime = DateTime.fromHTTP(startDate);
+    const endDateTime = DateTime.fromHTTP(endDate);
+    if (startDateTime > endDateTime) {
+      setErrorMsg('End date cannot be before start date');
+      setIsInvalidDate(true);
+      return;
+    }
+
+    Router.push({
+      pathname: 'create',
+      query: { startDate: startDate, endDate: endDate },
+    });
+  };
+
   return (
     <>
       <NavBar />
-      <div className={styles.image_wrapper}>
-        <img
-          src="icon.svg"
-          alt="Clock Icon Image"
-          className={styles.main_image}
-        />
-      </div>
 
-      <div className={styles.wrapper}>
-        <div className={styles.diagonal_box_top_left}>
-          <div className={styles.undo_diagonal_top_left}>
+      <div className="max-width-container">
+        <div className={styles.home_box}>
+          <div className={styles.image_wrapper}>
+            <img
+              src="icon.svg"
+              alt="Clock Icon Image"
+              className={styles.main_image}
+            />
+          </div>
+
+          <div className={styles.wrapper}>
             <div className="container-padding-lg">
               <h1 className={styles.title}>
                 When Is <span className={styles.accented}>Better</span>
               </h1>
             </div>
+            <div className="container-padding-lg">
+              <p className={styles.description}>
+                When Is Better is your hub for scheduling hangouts easily,
+                eliminating the hassle of back-and-forth messages so you can get
+                back to what matters most.
+              </p>
+              <p className={styles.description}>
+                To get started, on what dates could you hold your event?
+              </p>
 
-            <div className={styles.diagonal_box_top_right}>
-              <div className={styles.undo_diagonal_top_right}>
-                <div className="container-padding-lg">
-                  <p className={styles.description}>
-                    When Is Better is your hub for scheduling hangouts easily,
-                    eliminating the hassle of back-and-forth messages so you can
-                    get back to what matters most.
-                  </p>
-                  <p>
-                    To get started, on what dates could you hold your event?
-                  </p>
+              <div
+                className={`${styles.datepicker_container} ${
+                  isInvalidDate ? styles.highlight_red : ''
+                }`}
+              >
+                <BasicDatePicker
+                  label="Start"
+                  setDate={(val) => setStartDate(val)}
+                />
+                <BasicDatePicker
+                  label="End"
+                  setDate={(val) => setEndDate(val)}
+                />
+              </div>
+              <div className={styles.invalid_date}>{errorMsg}</div>
 
-                  <div className={styles.flex_and_center}>
-                    <BasicDatePicker
-                      label="Start"
-                      setDate={(val) => setStartDate(val)}
-                    />
-                    <BasicDatePicker
-                      label="End"
-                      setDate={(val) => setEndDate(val)}
-                    />
-                  </div>
-
-                  <div className={styles.center_button}>
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: '#087f5b',
-                        borderRadius: '999px',
-                        padding: '0.5rem 2rem',
-                        fontSize: '1rem',
-                      }}
-                      onClick={() => {
-                        Router.push({
-                          pathname: 'create',
-                          query: { startDate: startDate, endDate: endDate },
-                        });
-                      }}
-                    >
-                      Get Started
-                    </Button>
-                  </div>
-                </div>
+              <div className={styles.center_button}>
+                <Button
+                  variant="contained"
+                  style={{
+                    backgroundColor: '#087f5b',
+                    borderRadius: '999px',
+                    padding: '5px 20px',
+                    fontSize: '14px',
+                  }}
+                  onClick={takeToCreatePage}
+                >
+                  Get Started
+                </Button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
       <Footer />
     </>
   );
