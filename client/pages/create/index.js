@@ -60,8 +60,12 @@ const CreatePage = () => {
 
   /* Generate start and end times */
   useEffect(() => {
-    let initialStartDate = DateTime.fromHTTP(query.startDate).toLocal();
-    let initialEndDate = DateTime.fromHTTP(query.endDate).toLocal();
+    let initialStartDate = DateTime.fromHTTP(query.startDate)
+      .toLocal()
+      ?.set({ minute: 0, second: 0 });
+    let initialEndDate = DateTime.fromHTTP(query.endDate)
+      .toLocal()
+      ?.set({ minute: 0, second: 0 });
 
     if (initialStartDate.invalid || initialEndDate.invalid) {
       /* Default date range:

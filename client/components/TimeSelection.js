@@ -143,7 +143,6 @@ const TimeSelection = ({
      (2) One-change-per-session: A slot must only be changed once per
          "tap-and-drag" session. This is achieved using editLocks. */
   const onPaint = (e, dayIndex) => {
-    console.log('painted');
     const timeIndex = findTimeIndex(e.srcEvent.pageY);
 
     // Get slot of interest
@@ -208,6 +207,10 @@ const TimeSelection = ({
   const [dateTitles, setDateTitles] = useState(
     utils.getStringDatesFromArray(timeslots)
   );
+
+  useEffect(() => {
+    setDateTitles(utils.getStringDatesFromArray(timeslots));
+  }, [timeslots]);
 
   return (
     <div className={styles.timeselection}>
