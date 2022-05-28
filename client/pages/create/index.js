@@ -27,7 +27,7 @@ import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 const sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
 
 /* Constants */
-const TOP_MARGIN = 12; // space above the title
+const TOP_PADDING = 12; // space above the title
 const TITLE_HEIGHT = 60;
 const DESCRIPTION_BOTTOM_MARGIN = 16;
 
@@ -95,7 +95,10 @@ const CreatePage = () => {
   const topRef = useRef();
 
   return (
-    <div className={styles.createpage} style={{ marginTop: `${TOP_MARGIN}px` }}>
+    <div
+      className={styles.createpage}
+      style={{ paddingTop: `${TOP_PADDING}px` }}
+    >
       <div ref={topRef}></div>
 
       <EventTitle
@@ -116,7 +119,7 @@ const CreatePage = () => {
         setTimeslots={setTimeslots}
         deltaTime={deltaTime}
         distanceFromTop={
-          TOP_MARGIN +
+          TOP_PADDING +
           TITLE_HEIGHT +
           descriptionBoxHeight +
           DESCRIPTION_BOTTOM_MARGIN

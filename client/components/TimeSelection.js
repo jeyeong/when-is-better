@@ -6,13 +6,23 @@ const { DateTime } = require('luxon');
 import styles from '../styles/TimeSelection.module.css';
 
 /* Constants */
-const COLUMN_WIDTH = 125;
-const COLUMN_GAP = 25;
+const COLUMN_WIDTH_SM = 125;
+const COLUMN_GAP_SM = 25;
+const COLUMN_WIDTH_LG = 200;
+const COLUMN_GAP_LG = 40;
 const TITLE_HEIGHT = 42;
 const TITLE_BOTTOM_MARGIN = 16;
+const COLUMN_BORDER_WIDTH = 2;
 
 /* Individual time selection columns */
-const TimeSelectionDay = ({ day, dateTitle, i, onPaint, deltaTime }) => {
+const TimeSelectionDay = ({
+  day,
+  dateTitle,
+  i,
+  onPaint,
+  columnDimensions,
+  deltaTime,
+}) => {
   let slotHeightClassName = styles.height_15;
   if (deltaTime === 30) {
     slotHeightClassName = styles.height_30;
@@ -21,7 +31,7 @@ const TimeSelectionDay = ({ day, dateTitle, i, onPaint, deltaTime }) => {
   }
 
   return (
-    <div style={{ width: COLUMN_WIDTH - COLUMN_GAP }}>
+    <div style={{ width: columnDimensions.width - columnDimensions.gap }}>
       <h4
         className={styles.timeselection__datetitle}
         style={{ height: TITLE_HEIGHT, marginBottom: TITLE_BOTTOM_MARGIN }}
@@ -31,6 +41,7 @@ const TimeSelectionDay = ({ day, dateTitle, i, onPaint, deltaTime }) => {
       <Hammer
         onPan={(e) => onPaint(e, i)}
         onTap={(e) => onPaint(e, i)}
+        onPress={(e) => onPaint(e, i)}
         direction="DIRECTION_ALL"
       >
         <div className={styles.datebox__container}>
@@ -38,11 +49,11 @@ const TimeSelectionDay = ({ day, dateTitle, i, onPaint, deltaTime }) => {
             <div key={i} className={styles.slot_group}>
               {slotGroup.map((slot, i) => (
                 <div
-                  className={`${
+                  className={`${styles.datebox} ${
                     slot.available
                       ? slot.selected
                         ? styles.datebox__selected
-                        : styles.datebox
+                        : ''
                       : styles.datebox__unavailable
                   } ${slotHeightClassName} ${styles.timebox}`}
                   key={i}
@@ -70,6 +81,11 @@ const TimeSelection = ({
     height: 0,
     width: 0,
   });
+  const [columnDimensions, setColumnDimensions] = useState(
+    window.innerWidth > 550
+      ? { width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG }
+      : { width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM }
+  );
 
   /* Add listener for resizing */
   useEffect(() => {
@@ -83,16 +99,30 @@ const TimeSelection = ({
     window.addEventListener('resize', handleResize);
   }, []);
 
+  /* Modify column dimensions on resizing */
+  useEffect(() => {
+    if (dimensions.width > 550) {
+      setColumnDimensions({ width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG });
+    } else {
+      setColumnDimensions({ width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM });
+    }
+  }, [dimensions]);
+
   /* Compute number of columns to show */
-  const numberOfColumns = Math.floor(dimensions.width / COLUMN_WIDTH);
+  const numberOfColumns = Math.floor(dimensions.width / columnDimensions.width);
 
   /* Filter timeslots to show */
   const timeslotsToShow = timeslots.slice(0, numberOfColumns);
 
   /* Finds index associated with y-coordinate */
   const offsetDistance = distanceFromTop + TITLE_HEIGHT + TITLE_BOTTOM_MARGIN;
-  const findTimeIndex = (coords) => {
-    return Math.floor((coords.y - offsetDistance) / (40 / (60 / deltaTime)));
+  const findTimeIndex = (y) => {
+    const distanceFromTopOfColumn = y - offsetDistance;
+    const numBorders = Math.ceil(distanceFromTopOfColumn / 42);
+    return Math.floor(
+      (distanceFromTopOfColumn - numBorders * COLUMN_BORDER_WIDTH) /
+        (40 / (60 / deltaTime))
+    );
   };
 
   /* Records whether the first actions has been taken, and if so, whether it
@@ -113,7 +143,8 @@ const TimeSelection = ({
      (2) One-change-per-session: A slot must only be changed once per
          "tap-and-drag" session. This is achieved using editLocks. */
   const onPaint = (e, dayIndex) => {
-    const timeIndex = findTimeIndex(e.center);
+    console.log('painted');
+    const timeIndex = findTimeIndex(e.srcEvent.pageY);
 
     // Get slot of interest
     const slotToModify = timeslots[dayIndex][timeIndex];
@@ -182,7 +213,7 @@ const TimeSelection = ({
     <div className={styles.timeselection}>
       <div
         className={styles.timeselection__container}
-        style={{ columnGap: COLUMN_GAP }}
+        style={{ columnGap: columnDimensions.gap }}
         onTouchEnd={resetLocks}
         onMouseUp={resetLocks}
       >
@@ -192,6 +223,7 @@ const TimeSelection = ({
             dateTitle={dateTitles[i]}
             i={i}
             onPaint={onPaint}
+            columnDimensions={columnDimensions}
             deltaTime={deltaTime}
             key={i}
           />
