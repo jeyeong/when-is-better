@@ -99,7 +99,7 @@ const TimeSelection = ({
     };
     handleScreenChange();
     window.addEventListener('resize', handleScreenChange);
-    screen.orientation.addEventListener('change', handleScreenChange);
+    // screen.orientation.addEventListener('change', handleScreenChange);
   }, []);
 
   /* Modify column dimensions on resizing */
