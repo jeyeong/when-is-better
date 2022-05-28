@@ -82,9 +82,11 @@ const TimeSelection = ({
     width: 0,
   });
   const [columnDimensions, setColumnDimensions] = useState(
-    window.innerWidth > 550
-      ? { width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG }
-      : { width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM }
+    typeof window !== 'undefined'
+      ? window.innerWidth > 550
+        ? { width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG }
+        : { width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM }
+      : {}
   );
 
   /* Add listener for resizing */
