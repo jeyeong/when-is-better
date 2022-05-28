@@ -16,6 +16,7 @@ import CreateEventButton from '../../components/create-page/CreateEventButton';
 import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 
 /* Other imports */
+import Head from 'next/head';
 import styles from '../../styles/Create.module.css';
 import { defaultStart, defaultEnd } from '../../constants.js';
 import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
@@ -105,6 +106,13 @@ const CreatePage = () => {
       className={styles.createpage}
       style={{ paddingTop: `${TOP_PADDING}px` }}
     >
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
+      </Head>
+
       <div ref={topRef}></div>
 
       <EventTitle
