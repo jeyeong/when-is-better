@@ -8,13 +8,14 @@
 
 /* Title */
 .createpage__header {
+  width: 100%;
   display: flex;
   place-items: center;
 }
 
 .createpage__header > input {
   width: 50vw;
-  min-width: 400px;
+  min-width: min(100%, 400px);
   border: none;
   outline: none;
   text-align: center;
