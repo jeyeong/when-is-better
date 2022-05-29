@@ -10,7 +10,7 @@
 .createpage__header {
   width: 100%;
   display: flex;
-  place-items: center;
+  justify-content: center;
 }
 
 .createpage__header > input {
@@ -45,4 +45,77 @@
   overflow: hidden;
   color: rgb(64, 64, 64);
   background-color: transparent;
+}
+
+
+
+
+
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+.gear_wrapper {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #aaa;
+  border-radius: 9999px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input_name {
+  text-decoration: none;
+  /* width: 100%; */
+  padding: 5px 15px;
+  border: 1px solid #aaa;
+  border-radius: 9999px;
+  font: inherit;
+
+  height: 40px;
+  width: 100%;
+}
+
+.btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  text-decoration: none;
+  border: none;
+
+  display: flex;
+  justify-content: center;
+}
+
+.btn_test {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 999px;
+  background-color: inherit;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/**********************************/
+/* Button container   */
+/**********************************/
+.button_container {
+  width: 100%;
+  padding: 0 20px;
+
+  display: grid;
+  grid-template-columns: 4fr 3fr 1fr;
+  column-gap: 10px;
+
+  align-items: center;
+  justify-content: center;
+
+  padding-bottom: 20px;
 }

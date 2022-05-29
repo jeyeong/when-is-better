@@ -1,16 +1,17 @@
 /* External container: to center the timeselection element */
 .timeselection {
+  width: 100%;
   display: flex;
   justify-content: center;
-  width: 100%;
 }
 
 /* Contains the timeselection element */
 .timeselection__container {
   display: flex;
-  width: 100%;
+  width: min-content;
   margin-bottom: 12px;
   touch-action: pan-y;
+  position: relative;
 }
 
 /* Column styling */
@@ -24,7 +25,7 @@
 .datebox__container {
   border: 2px solid #555;
   border-radius: 6px;
-  box-shadow: 2px 2px 3px 1px #bbb;
+  box-shadow: 0 2px 6px 1px rgba(0,0,0,0.2);
   overflow: hidden;
 }
 
@@ -45,7 +46,6 @@
 
 /* Dateboxes */
 .datebox {
-  /* height: 40px; */
   width: 100%;
   border-top: 1px dashed #bbb;
   display: grid;
@@ -58,41 +58,54 @@
 }
 
 .datebox__selected {
-  background-color: #8DF29C;
-  color: black;
-  /* border-top: 1px dashed #; */
+  background-color: rgb(111, 241, 130);
 }
 
-
-
-
-
-.timeselection__header {
-  font-size: 32px;
-  margin: 20px 0;
-}
-
-.day__headers {
-  height: 20px;
-  display: flex;
-  width: 100%;
-  touch-action: none;
-  padding: 0 12px;
-  margin-bottom: 8px;
-}
-
-.day__headers h4 {
-  width: 23%;
-  margin: 0 1%;
+.time_str {
   font-size: 14px;
-  display: grid;
-  place-items: center;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
-.datebox:last-of-type,
-.datebox__selected:last-of-type {
-  border-bottom: none;
+.timebox:first-of-type {
+  /* Prevents dashed line on top */
+  border-top: none;
 }
+
+/* Navigation arrows */
+.timeselection__navleft,
+.timeselection__navright {
+  position: absolute;
+  top: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  color: rgba(0,0,0,0.9);
+}
+
+.timeselection__navleft {
+  left: -10px;
+}
+
+.timeselection__navright {
+  right: -10px;
+}
+
+.timeselection__nav__grayed {
+  color: #ccc;
+  cursor:default;
+}
+
+
+
+
+
+
 
 .intensity__1 {
   background-color: #e9f9eb;
@@ -106,100 +119,3 @@
   background-color: #91e09b;
 }
 
-.flex {
-  display: flex;
-  justify-content: center;
-}
-
-.gear_wrapper {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #aaa;
-  border-radius: 9999px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.input_name {
-  text-decoration: none;
-  /* width: 100%; */
-  padding: 5px 15px;
-  border: 1px solid #aaa;
-  border-radius: 9999px;
-  font: inherit;
-
-  height: 40px;
-  width: 100%;
-}
-
-.btn {
-  width: 40px;
-  height: 40px;
-  border: 1px solid black;
-  text-decoration: none;
-  border: none;
-
-  display: flex;
-  justify-content: center;
-}
-
-.btn_test {
-  width: 40px;
-  height: 40px;
-  border: 1px solid black;
-  border-radius: 999px;
-  background-color: inherit;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/**********************************/
-/* TimeSelection Component Style  */
-/**********************************/
-
-.time_str {
-  font-size: 14px;
-  font-weight: 500;
-  position: absolute;
-  width: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.timebox:first-child {
-  /* so we don't get border stacking at the top */
-  border-top: none;
-}
-
-.height_15 {
-  height: 10px;
-}
-.height_30 {
-  height: 20px;
-}
-.height_60 {
-  height: 40px;
-}
-
-/**********************************/
-/* Button container   */
-/**********************************/
-.button_container {
-  width: 100%;
-  padding: 0 20px;
-
-  display: grid;
-  grid-template-columns: 4fr 3fr 1fr;
-  column-gap: 10px;
-
-  align-items: center;
-  justify-content: center;
-
-  padding-bottom: 20px;
-}

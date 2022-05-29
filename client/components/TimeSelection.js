@@ -6,13 +6,19 @@ const { DateTime } = require('luxon');
 import styles from '../styles/TimeSelection.module.css';
 
 /* Constants */
-const COLUMN_WIDTH_SM = 125;
+const COLUMN_WIDTH_SM = 115;
 const COLUMN_GAP_SM = 25;
 const COLUMN_WIDTH_LG = 200;
 const COLUMN_GAP_LG = 40;
-const TITLE_HEIGHT = 42;
-const TITLE_BOTTOM_MARGIN = 16;
+const DATETITLE_HEIGHT = 42;
+const DATETITLE_BOTTOM_MARGIN = 12;
 const COLUMN_BORDER_WIDTH = 2;
+const LG_SM_CHANGING_POINT = 600;
+const SLOT_HEIGHTS = {
+  15: 12.5,
+  30: 20,
+  60: 40,
+};
 
 /* Individual time selection columns */
 const TimeSelectionDay = ({
@@ -23,18 +29,14 @@ const TimeSelectionDay = ({
   columnDimensions,
   deltaTime,
 }) => {
-  let slotHeightClassName = styles.height_15;
-  if (deltaTime === 30) {
-    slotHeightClassName = styles.height_30;
-  } else if (deltaTime === 60) {
-    slotHeightClassName = styles.height_60;
-  }
-
   return (
     <div style={{ width: columnDimensions.width - columnDimensions.gap }}>
       <h4
         className={styles.timeselection__datetitle}
-        style={{ height: TITLE_HEIGHT, marginBottom: TITLE_BOTTOM_MARGIN }}
+        style={{
+          height: DATETITLE_HEIGHT,
+          marginBottom: DATETITLE_BOTTOM_MARGIN,
+        }}
       >
         {dateTitle}
       </h4>
@@ -55,7 +57,10 @@ const TimeSelectionDay = ({
                         ? styles.datebox__selected
                         : ''
                       : styles.datebox__unavailable
-                  } ${slotHeightClassName} ${styles.timebox}`}
+                  } ${styles.timebox}`}
+                  style={{
+                    height: SLOT_HEIGHTS[deltaTime],
+                  }}
                   key={i}
                 ></div>
               ))}
@@ -83,7 +88,7 @@ const TimeSelection = ({
   });
   const [columnDimensions, setColumnDimensions] = useState(
     typeof window !== 'undefined'
-      ? window.innerWidth > 550
+      ? window.innerWidth > LG_SM_CHANGING_POINT
         ? { width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG }
         : { width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM }
       : {}
@@ -99,32 +104,29 @@ const TimeSelection = ({
     };
     handleScreenChange();
     window.addEventListener('resize', handleScreenChange);
-    // screen.orientation.addEventListener('change', handleScreenChange);
   }, []);
 
-  /* Modify column dimensions on resizing */
+  /* Modify column dimensions on resize */
   useEffect(() => {
-    if (dimensions.width > 550) {
+    if (dimensions.width > LG_SM_CHANGING_POINT) {
       setColumnDimensions({ width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG });
     } else {
       setColumnDimensions({ width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM });
     }
   }, [dimensions]);
 
-  /* Compute number of columns to show */
-  const numberOfColumns = Math.floor(dimensions.width / columnDimensions.width);
-
-  /* Filter timeslots to show */
-  const timeslotsToShow = timeslots.slice(0, numberOfColumns);
-
   /* Finds index associated with y-coordinate */
-  const offsetDistance = distanceFromTop + TITLE_HEIGHT + TITLE_BOTTOM_MARGIN;
+  const offsetDistance =
+    distanceFromTop + DATETITLE_HEIGHT + DATETITLE_BOTTOM_MARGIN;
   const findTimeIndex = (y) => {
     const distanceFromTopOfColumn = y - offsetDistance;
-    const numBorders = Math.ceil(distanceFromTopOfColumn / 42);
+    const numBorders = Math.ceil(
+      distanceFromTopOfColumn /
+        (SLOT_HEIGHTS[deltaTime] * (60 / deltaTime) + COLUMN_BORDER_WIDTH)
+    );
     return Math.floor(
       (distanceFromTopOfColumn - numBorders * COLUMN_BORDER_WIDTH) /
-        (40 / (60 / deltaTime))
+        SLOT_HEIGHTS[deltaTime]
     );
   };
 
@@ -206,6 +208,23 @@ const TimeSelection = ({
     setFirstAction({ taken: false, isSelection: false });
   };
 
+  /* Compute number of columns to show */
+  const numberOfColumns = Math.floor(dimensions.width / columnDimensions.width);
+
+  /* Current page */
+  const [page, setPage] = useState(0);
+  const maxPage = Math.ceil(timeslots.length / numberOfColumns) - 1;
+
+  useEffect(() => {
+    setPage(0);
+  }, [dimensions]);
+
+  /* Filter timeslots to show */
+  const timeslotsToShow = timeslots.slice(
+    page * numberOfColumns,
+    (page + 1) * numberOfColumns
+  );
+
   /* Date titles */
   const [dateTitles, setDateTitles] = useState(
     utils.getStringDatesFromArray(timeslots)
@@ -215,6 +234,12 @@ const TimeSelection = ({
     setDateTitles(utils.getStringDatesFromArray(timeslots));
   }, [timeslots]);
 
+  /* Filter timeslots to show */
+  const dateTitlesToShow = dateTitles.slice(
+    page * numberOfColumns,
+    (page + 1) * numberOfColumns
+  );
+
   return (
     <div className={styles.timeselection}>
       <div
@@ -223,17 +248,33 @@ const TimeSelection = ({
         onTouchEnd={resetLocks}
         onMouseUp={resetLocks}
       >
+        <div
+          className={`${styles.timeselection__navleft} ${
+            page === 0 ? styles.timeselection__nav__grayed : ''
+          }`}
+          onClick={() => setPage(Math.max(0, page - 1))}
+        >
+          ◀
+        </div>
         {timeslotsToShow.map((day, i) => (
           <TimeSelectionDay
             day={day}
-            dateTitle={dateTitles[i]}
-            i={i}
+            dateTitle={dateTitlesToShow[i]}
+            i={page * numberOfColumns + i}
             onPaint={onPaint}
             columnDimensions={columnDimensions}
             deltaTime={deltaTime}
             key={i}
           />
         ))}
+        <div
+          className={`${styles.timeselection__navright} ${
+            page === maxPage ? styles.timeselection__nav__grayed : ''
+          }`}
+          onClick={() => setPage(Math.min(maxPage, page + 1))}
+        >
+          ▶
+        </div>
       </div>
     </div>
   );
@@ -269,7 +310,3 @@ const formatSlotTime = (slotTime) => {
   const a = DateTime.fromISO(slotTime);
   return a.toFormat('h:mm a');
 };
-
-/*
-
-*/
