@@ -1,11 +1,14 @@
 import styles from '../../styles/Create.module.css';
 
-const EventTitle = ({ titleHeight, title, setTitle }) => {
+const EventTitle = ({ title, setTitle, titleHeight, titleBottomMargin }) => {
   return (
     <>
       <div
         className={styles.createpage__header}
-        style={{ height: `${titleHeight}px` }}
+        style={{
+          height: `${titleHeight}px`,
+          marginBottom: `${titleBottomMargin}px`,
+        }}
       >
         <input
           placeholder="Your Event Name Here"

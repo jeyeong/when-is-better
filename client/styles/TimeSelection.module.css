@@ -24,7 +24,7 @@
 .datebox__container {
   border: 2px solid #555;
   border-radius: 6px;
-  box-shadow: 2px 2px 3px 1px #bbb;
+  box-shadow: 0 2px 6px 1px rgba(0,0,0,0.2);
   overflow: hidden;
 }
 
@@ -45,7 +45,6 @@
 
 /* Dateboxes */
 .datebox {
-  /* height: 40px; */
   width: 100%;
   border-top: 1px dashed #bbb;
   display: grid;
@@ -58,41 +57,32 @@
 }
 
 .datebox__selected {
-  background-color: #8DF29C;
-  color: black;
-  /* border-top: 1px dashed #; */
+  background-color: rgb(111, 241, 130);
 }
 
-
-
-
-
-.timeselection__header {
-  font-size: 32px;
-  margin: 20px 0;
-}
-
-.day__headers {
-  height: 20px;
-  display: flex;
-  width: 100%;
-  touch-action: none;
-  padding: 0 12px;
-  margin-bottom: 8px;
-}
-
-.day__headers h4 {
-  width: 23%;
-  margin: 0 1%;
+.time_str {
   font-size: 14px;
-  display: grid;
-  place-items: center;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
-.datebox:last-of-type,
-.datebox__selected:last-of-type {
-  border-bottom: none;
+.timebox:first-of-type {
+  /* Prevents dashed line on top */
+  border-top: none;
 }
+
+
+
+
+
+
+
 
 .intensity__1 {
   background-color: #e9f9eb;
@@ -155,36 +145,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-/**********************************/
-/* TimeSelection Component Style  */
-/**********************************/
-
-.time_str {
-  font-size: 14px;
-  font-weight: 500;
-  position: absolute;
-  width: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.timebox:first-child {
-  /* so we don't get border stacking at the top */
-  border-top: none;
-}
-
-.height_15 {
-  height: 10px;
-}
-.height_30 {
-  height: 20px;
-}
-.height_60 {
-  height: 40px;
 }
 
 /**********************************/

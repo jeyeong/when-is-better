@@ -10,7 +10,7 @@
 .createpage__header {
   width: 100%;
   display: flex;
-  place-items: center;
+  justify-content: center;
 }
 
 .createpage__header > input {

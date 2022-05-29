@@ -30,14 +30,13 @@ const sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
 /* Constants */
 const TOP_PADDING = 12; // space above the title
 const TITLE_HEIGHT = 60;
+const TITLE_BOTTOM_MARGIN = 4;
 const DESCRIPTION_BOTTOM_MARGIN = 16;
 
 /* make deltaDuration programmatic */
 const MINUTES_15 = 15;
 const MINUTES_30 = 30;
 const MINUTES_60 = 60;
-const deltaTime = MINUTES_15;
-const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
 /****************
  *     Main     *
@@ -52,6 +51,8 @@ const CreatePage = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(46);
+  const [deltaTime, setDeltaTime] = useState(MINUTES_60);
+  const deltaDuration = Duration.fromObject({ minutes: deltaTime });
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
   );
@@ -116,9 +117,10 @@ const CreatePage = () => {
       <div ref={topRef}></div>
 
       <EventTitle
-        titleHeight={TITLE_HEIGHT}
         title={title}
         setTitle={setTitle}
+        titleHeight={TITLE_HEIGHT}
+        titleBottomMargin={TITLE_BOTTOM_MARGIN}
       />
 
       <EventDescription
@@ -135,10 +137,14 @@ const CreatePage = () => {
         distanceFromTop={
           TOP_PADDING +
           TITLE_HEIGHT +
+          TITLE_BOTTOM_MARGIN +
           descriptionBoxHeight +
           DESCRIPTION_BOTTOM_MARGIN
         }
       />
+
+      <br />
+      <br />
 
       {/* Bottom settings */}
       <div className={styles.button_container}>
