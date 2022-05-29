@@ -13,7 +13,7 @@ const COLUMN_GAP_LG = 40;
 const DATETITLE_HEIGHT = 42;
 const DATETITLE_BOTTOM_MARGIN = 12;
 const COLUMN_BORDER_WIDTH = 2;
-const LG_SM_CHANGING_POINT = 600;
+const LG_SM_THRESHOLD = 800;
 const SLOT_HEIGHTS = {
   15: 12.5,
   30: 20,
@@ -88,7 +88,7 @@ const TimeSelection = ({
   });
   const [columnDimensions, setColumnDimensions] = useState(
     typeof window !== 'undefined'
-      ? window.innerWidth > LG_SM_CHANGING_POINT
+      ? window.innerWidth > LG_SM_THRESHOLD
         ? { width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG }
         : { width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM }
       : {}
@@ -108,7 +108,7 @@ const TimeSelection = ({
 
   /* Modify column dimensions on resize */
   useEffect(() => {
-    if (dimensions.width > LG_SM_CHANGING_POINT) {
+    if (dimensions.width > LG_SM_THRESHOLD) {
       setColumnDimensions({ width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG });
     } else {
       setColumnDimensions({ width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM });
