@@ -50,7 +50,6 @@ const CreatePage = () => {
   /* States */
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(36);
   const [deltaTime, setDeltaTime] = useState(MINUTES_60);
   const deltaDuration = Duration.fromObject({ minutes: deltaTime });
   const [timeslots, setTimeslots] = useState(
@@ -127,7 +126,6 @@ const CreatePage = () => {
         bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
         description={description}
         setDescription={setDescription}
-        setDescriptionBoxHeight={setDescriptionBoxHeight}
       />
 
       <TimeSelection
@@ -138,7 +136,6 @@ const CreatePage = () => {
           TOP_PADDING +
           TITLE_HEIGHT +
           TITLE_BOTTOM_MARGIN +
-          descriptionBoxHeight +
           DESCRIPTION_BOTTOM_MARGIN
         }
       />

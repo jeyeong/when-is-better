@@ -121,9 +121,19 @@ const TimeSelection = ({
     }
   }, [dimensions]);
 
-  /* Finds index associated with y-coordinate */
+  /* Offset distance calculation */
+  const descriptionBoxHeight =
+    typeof document !== 'undefined'
+      ? document.querySelector('#createpage__description')?.scrollHeight ?? 0
+      : 0;
+
   const offsetDistance =
-    distanceFromTop + DATETITLE_HEIGHT + DATETITLE_BOTTOM_MARGIN;
+    distanceFromTop +
+    descriptionBoxHeight +
+    DATETITLE_HEIGHT +
+    DATETITLE_BOTTOM_MARGIN;
+
+  /* Finds index associated with y-coordinate */
   const findTimeIndex = (y) => {
     const distanceFromTopOfColumn = y - offsetDistance;
     const numBorders = Math.ceil(
@@ -224,7 +234,7 @@ const TimeSelection = ({
   const maxPage = Math.ceil(timeslots.length / numberOfColumns) - 1;
 
   useEffect(() => {
-    setPage(Math.min(page, maxPage));
+    setPage(Math.max(0, Math.min(page, maxPage)));
   }, [dimensions]);
 
   /* Filter timeslots to show */
