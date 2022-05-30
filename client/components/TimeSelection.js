@@ -216,7 +216,7 @@ const TimeSelection = ({
   const maxPage = Math.ceil(timeslots.length / numberOfColumns) - 1;
 
   useEffect(() => {
-    setPage(0);
+    setPage(Math.min(page, maxPage));
   }, [dimensions]);
 
   /* Filter timeslots to show */
