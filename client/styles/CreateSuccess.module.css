@@ -23,7 +23,7 @@
 }
 
 .hover__animation {
-  animation: MoveUpDown 2s linear infinite;
+  animation: MoveUpDown 1.5s linear infinite;
 }
 
 @keyframes MoveUpDown {
@@ -32,6 +32,6 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(10px);
+    transform: translateY(5px);
   }
 }

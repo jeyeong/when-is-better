@@ -46,18 +46,20 @@ export const BasicDatePicker = ({ label, setDate }) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <LocalizationProvider dateAdapter={AdapterLuxon}>
-        <DatePicker
-          label={label}
-          value={value}
-          onChange={onChange}
-          renderInput={(params) => <TextField {...params} />}
-          sx={{
-            color: '#087f5b',
-          }}
-        />
-      </LocalizationProvider>
-    </ThemeProvider>
+    <div>
+      <ThemeProvider theme={theme}>
+        <LocalizationProvider dateAdapter={AdapterLuxon}>
+          <DatePicker
+            label={label}
+            value={value}
+            onChange={onChange}
+            renderInput={(params) => <TextField {...params} />}
+            sx={{
+              color: '#087f5b',
+            }}
+          />
+        </LocalizationProvider>
+      </ThemeProvider>
+    </div>
   );
 };

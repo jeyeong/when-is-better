@@ -6,10 +6,16 @@ const { DateTime } = require('luxon');
 import styles from '../styles/TimeSelection.module.css';
 
 /* Constants */
-const COLUMN_WIDTH_SM = 115;
-const COLUMN_GAP_SM = 25;
-const COLUMN_WIDTH_LG = 200;
-const COLUMN_GAP_LG = 40;
+const COLUMN_SETTINGS_SM = {
+  width: 115,
+  gap: 25,
+  padding: 15,
+};
+const COLUMN_SETTINGS_LG = {
+  width: 200,
+  gap: 40,
+  padding: 100,
+};
 const DATETITLE_HEIGHT = 42;
 const DATETITLE_BOTTOM_MARGIN = 12;
 const COLUMN_BORDER_WIDTH = 2;
@@ -47,7 +53,7 @@ const TimeSelectionDay = ({
         direction="DIRECTION_ALL"
       >
         <div className={styles.datebox__container}>
-          {groupDaySlots(day, deltaTime).map((slotGroup, i) => (
+          {utils.groupDaySlots(day, deltaTime).map((slotGroup, i) => (
             <div key={i} className={styles.slot_group}>
               {slotGroup.map((slot, i) => (
                 <div
@@ -65,7 +71,7 @@ const TimeSelectionDay = ({
                 ></div>
               ))}
               <div className={styles.time_str}>
-                {formatSlotTime(slotGroup[0].time)}
+                {utils.formatSlotTime(slotGroup[0].time)}
               </div>
             </div>
           ))}
@@ -89,8 +95,8 @@ const TimeSelection = ({
   const [columnDimensions, setColumnDimensions] = useState(
     typeof window !== 'undefined'
       ? window.innerWidth > LG_SM_THRESHOLD
-        ? { width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG }
-        : { width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM }
+        ? COLUMN_SETTINGS_LG
+        : COLUMN_SETTINGS_SM
       : {}
   );
 
@@ -109,15 +115,25 @@ const TimeSelection = ({
   /* Modify column dimensions on resize */
   useEffect(() => {
     if (dimensions.width > LG_SM_THRESHOLD) {
-      setColumnDimensions({ width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG });
+      setColumnDimensions(COLUMN_SETTINGS_LG);
     } else {
-      setColumnDimensions({ width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM });
+      setColumnDimensions(COLUMN_SETTINGS_SM);
     }
   }, [dimensions]);
 
-  /* Finds index associated with y-coordinate */
+  /* Offset distance calculation */
+  const descriptionBoxHeight =
+    typeof document !== 'undefined'
+      ? document.querySelector('#createpage__description')?.scrollHeight ?? 0
+      : 0;
+
   const offsetDistance =
-    distanceFromTop + DATETITLE_HEIGHT + DATETITLE_BOTTOM_MARGIN;
+    distanceFromTop +
+    descriptionBoxHeight +
+    DATETITLE_HEIGHT +
+    DATETITLE_BOTTOM_MARGIN;
+
+  /* Finds index associated with y-coordinate */
   const findTimeIndex = (y) => {
     const distanceFromTopOfColumn = y - offsetDistance;
     const numBorders = Math.ceil(
@@ -125,7 +141,7 @@ const TimeSelection = ({
         (SLOT_HEIGHTS[deltaTime] * (60 / deltaTime) + COLUMN_BORDER_WIDTH)
     );
     return Math.floor(
-      (distanceFromTopOfColumn - numBorders * COLUMN_BORDER_WIDTH) /
+      (distanceFromTopOfColumn - numBorders * COLUMN_BORDER_WIDTH - 0.5) /
         SLOT_HEIGHTS[deltaTime]
     );
   };
@@ -209,14 +225,16 @@ const TimeSelection = ({
   };
 
   /* Compute number of columns to show */
-  const numberOfColumns = Math.floor(dimensions.width / columnDimensions.width);
+  const numberOfColumns = Math.floor(
+    (dimensions.width - columnDimensions.padding) / columnDimensions.width
+  );
 
   /* Current page */
   const [page, setPage] = useState(0);
   const maxPage = Math.ceil(timeslots.length / numberOfColumns) - 1;
 
   useEffect(() => {
-    setPage(Math.min(page, maxPage));
+    setPage(Math.max(0, Math.min(page, maxPage)));
   }, [dimensions]);
 
   /* Filter timeslots to show */
@@ -281,33 +299,3 @@ const TimeSelection = ({
 };
 
 export default TimeSelection;
-
-/*
-  groupDaySlots– a helper Function that groups slots into groups so that 
-  they sum to an hour
-*/
-const groupDaySlots = (day, deltaTime) => {
-  const groupSize = 60 / deltaTime;
-  const clonedDay = JSON.parse(
-    JSON.stringify(day)
-  ); /* clone so we don't modify day which is an array inside timeslots that is passed in by reference*/
-  let arrays = [];
-  while (clonedDay.length > 0) {
-    arrays.push(clonedDay.splice(0, groupSize));
-  }
-  return arrays;
-};
-
-/* 
-Here is the issue: we have a day which is an array of intervals, eg. [[8-815],[815-830],...]
-Now, we want to group up these intervals into groups so that each group is an hour. 
-This will make styling the front end easier. 
-But you can't modify the day array itself as it is is an array within the timeSelection array. 
-Hence, you must make a deep copy. 
-But when you make a copy, the items inside day no longer have access to the same 
-methods; they becomes strings --> Need (date) string to format function. 
-*/
-const formatSlotTime = (slotTime) => {
-  const a = DateTime.fromISO(slotTime);
-  return a.toFormat('h:mm a');
-};

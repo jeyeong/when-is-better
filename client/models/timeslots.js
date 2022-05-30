@@ -49,6 +49,7 @@ const getDaysInIntervalFromEnd = (interval) => {
 const generateTimeSlotArray = (start, end, deltaTime, available_default) => {
   const deltaDuration = Duration.fromObject({ minutes: deltaTime });
   const interval = Interval.fromDateTimes(start, end);
+  console.log('interval: ', interval);
   const dayStarts = getDaysInIntervalFromStart(interval);
   const dayEnds = getDaysInIntervalFromEnd(interval);
   let times = [];

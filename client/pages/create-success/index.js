@@ -24,9 +24,9 @@ const CreateSuccess = () => {
     <>
       <NavBar />
       <div className={styles.createsuccess}>
-        <h1 className={styles.header_font}>Success</h1>
+        <h1 className={styles.header_font}>Success!</h1>
         <span>
-          Click to copy, then forward this link to your event attendees!
+          Click to copy, then forward this link to your event attendees
         </span>
         <div className={styles.margin_top}>
           <button

@@ -14,6 +14,7 @@ import EventDescription from '../../components/create-page/EventDescription';
 import TimeSelection from '../../components/TimeSelection';
 import CreateEventButton from '../../components/create-page/CreateEventButton';
 import { OptionsMenu } from '../../components/create-page/OptionsMenu';
+import { Footer } from '../../components/general/Footer';
 
 /* Other imports */
 import Head from 'next/head';
@@ -131,7 +132,6 @@ const CreatePage = () => {
         bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
         description={description}
         setDescription={setDescription}
-        setDescriptionBoxHeight={setDescriptionBoxHeight}
       />
 
       <TimeSelection
@@ -142,7 +142,6 @@ const CreatePage = () => {
           TOP_PADDING +
           TITLE_HEIGHT +
           TITLE_BOTTOM_MARGIN +
-          descriptionBoxHeight +
           DESCRIPTION_BOTTOM_MARGIN
         }
       />
@@ -178,11 +177,11 @@ const CreatePage = () => {
                   block: 'start',
                   inline: 'nearest',
                 });
-                await sleep(200); /* wait to get to page top first */
+                await sleep(700); /* wait to get to page top first */
                 setShowOptions(!showOptions);
               } else {
                 setShowOptions(!showOptions);
-                await sleep(200); /* wait for menu to render first */
+                await sleep(300); /* wait for menu to render first */
                 bottomRef.current.scrollIntoView({
                   behavior: 'smooth',
                   block: 'start',
@@ -210,6 +209,8 @@ const CreatePage = () => {
       </div>
 
       <div ref={bottomRef}></div>
+
+      <Footer />
     </div>
   );
 };
