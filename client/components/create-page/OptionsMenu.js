@@ -22,7 +22,14 @@ const ToggleButton = styled(MuiToggleButton)({
   },
 });
 
-export const OptionsMenu = () => {
+export const OptionsMenu = ({
+  deltaTime,
+  setDeltaTime,
+  setHourRange,
+  setStartDate,
+  setEndDate,
+  setTimeZone,
+}) => {
   /* Code for TimeZone */
   const [selectedTimezone, setSelectedTimezone] = useState(
     Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -91,7 +98,7 @@ export const OptionsMenu = () => {
             </li>
             <li>
               Increment
-              <Increment />
+              <Increment deltaTime={deltaTime} setDeltaTime={setDeltaTime} />
             </li>
           </ul>
         </div>

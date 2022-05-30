@@ -18,7 +18,13 @@ import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 /* Other imports */
 import Head from 'next/head';
 import styles from '../../styles/Create.module.css';
-import { defaultStart, defaultEnd } from '../../constants.js';
+import {
+  defaultStart,
+  defaultEnd,
+  MINUTES_15,
+  MINUTES_30,
+  MINUTES_60,
+} from '../../constants.js';
 import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 
 /******************
@@ -33,29 +39,26 @@ const TITLE_HEIGHT = 60;
 const TITLE_BOTTOM_MARGIN = 4;
 const DESCRIPTION_BOTTOM_MARGIN = 16;
 
-/* make deltaDuration programmatic */
-const MINUTES_15 = 15;
-const MINUTES_30 = 30;
-const MINUTES_60 = 60;
-
 /****************
  *     Main     *
  ****************/
 
 const CreatePage = () => {
-  /* startDate is beginning of first day, endDate is end of last day */
-  let [startDate, setStartDate] = useState(null);
-  let [endDate, setEndDate] = useState(null);
-
-  /* States */
+  /* States for user input */
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [name, setName] = useState('');
   const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(46);
+
+  /* States for functionality */
   const [deltaTime, setDeltaTime] = useState(MINUTES_60);
-  const deltaDuration = Duration.fromObject({ minutes: deltaTime });
   const [timeslots, setTimeslots] = useState(
-    generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
+    generateTimeSlotArray(defaultStart, defaultEnd, deltaTime, true)
   );
+  const [timeZone, setTimeZone] = useState('Chicago');
+  const [hourRange, setHourRange] = useState([8, 20]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null); /* up to and including */
 
   /* Additional hooks */
   const { query, isReady } = useRouter();
@@ -87,15 +90,16 @@ const CreatePage = () => {
     const timeslots_arr = generateTimeSlotArray(
       initialStartDate,
       initialEndDate,
-      deltaDuration,
+      deltaTime,
       true
     );
 
     setTimeslots(timeslots_arr);
   }, [isReady]);
 
+  console.log('timeslots: ', timeslots);
+
   /* for stuff below the time select component */
-  const [name, setName] = useState('');
   const [showOptions, setShowOptions] = useState(false);
   const bottomRef = useRef();
   const topRef = useRef();
@@ -194,7 +198,14 @@ const CreatePage = () => {
 
       <div className={`${showOptions ? '' : 'hide'} w_100 `}>
         <div className="container-padding-lg">
-          <OptionsMenu />
+          <OptionsMenu
+            deltaTime={deltaTime}
+            setDeltaTime={setDeltaTime}
+            setHourRange={setHourRange}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            setTimeZone={setTimeZone}
+          />
         </div>
       </div>
 

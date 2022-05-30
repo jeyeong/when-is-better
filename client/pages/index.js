@@ -34,7 +34,6 @@ const LandingPage = () => {
       setIsInvalidDate(true);
       return;
     }
-
     const startDateTime = DateTime.fromHTTP(startDate);
     const endDateTime = DateTime.fromHTTP(endDate);
     if (startDateTime > endDateTime) {
@@ -42,7 +41,6 @@ const LandingPage = () => {
       setIsInvalidDate(true);
       return;
     }
-
     Router.push({
       pathname: 'create',
       query: { startDate: startDate, endDate: endDate },

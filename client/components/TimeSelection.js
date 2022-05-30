@@ -282,9 +282,11 @@ const TimeSelection = ({
 
 export default TimeSelection;
 
+/*
+  groupDaySlots– a helper Function that groups slots into groups so that 
+  they sum to an hour
+*/
 const groupDaySlots = (day, deltaTime) => {
-  /* group the slot into groups of n. I.e slots of 15 min get grouped 
-     into 4. */
   const groupSize = 60 / deltaTime;
   const clonedDay = JSON.parse(
     JSON.stringify(day)
@@ -293,7 +295,6 @@ const groupDaySlots = (day, deltaTime) => {
   while (clonedDay.length > 0) {
     arrays.push(clonedDay.splice(0, groupSize));
   }
-
   return arrays;
 };
 

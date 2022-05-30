@@ -46,7 +46,8 @@ const getDaysInIntervalFromEnd = (interval) => {
  *   editLock - bool
  * }
  */
-const generateTimeSlotArray = (start, end, deltaDuration, available_default) => {
+const generateTimeSlotArray = (start, end, deltaTime, available_default) => {
+  const deltaDuration = Duration.fromObject({ minutes: deltaTime });
   const interval = Interval.fromDateTimes(start, end);
   const dayStarts = getDaysInIntervalFromStart(interval);
   const dayEnds = getDaysInIntervalFromEnd(interval);
