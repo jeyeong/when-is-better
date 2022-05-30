@@ -50,7 +50,7 @@ const CreatePage = () => {
   /* States */
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(46);
+  const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(36);
   const [deltaTime, setDeltaTime] = useState(MINUTES_60);
   const deltaDuration = Duration.fromObject({ minutes: deltaTime });
   const [timeslots, setTimeslots] = useState(

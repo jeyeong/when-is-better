@@ -6,10 +6,16 @@ const { DateTime } = require('luxon');
 import styles from '../styles/TimeSelection.module.css';
 
 /* Constants */
-const COLUMN_WIDTH_SM = 115;
-const COLUMN_GAP_SM = 25;
-const COLUMN_WIDTH_LG = 200;
-const COLUMN_GAP_LG = 40;
+const COLUMN_SETTINGS_SM = {
+  width: 115,
+  gap: 25,
+  padding: 15,
+};
+const COLUMN_SETTINGS_LG = {
+  width: 200,
+  gap: 40,
+  padding: 100,
+};
 const DATETITLE_HEIGHT = 42;
 const DATETITLE_BOTTOM_MARGIN = 12;
 const COLUMN_BORDER_WIDTH = 2;
@@ -89,8 +95,8 @@ const TimeSelection = ({
   const [columnDimensions, setColumnDimensions] = useState(
     typeof window !== 'undefined'
       ? window.innerWidth > LG_SM_THRESHOLD
-        ? { width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG }
-        : { width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM }
+        ? COLUMN_SETTINGS_LG
+        : COLUMN_SETTINGS_SM
       : {}
   );
 
@@ -109,9 +115,9 @@ const TimeSelection = ({
   /* Modify column dimensions on resize */
   useEffect(() => {
     if (dimensions.width > LG_SM_THRESHOLD) {
-      setColumnDimensions({ width: COLUMN_WIDTH_LG, gap: COLUMN_GAP_LG });
+      setColumnDimensions(COLUMN_SETTINGS_LG);
     } else {
-      setColumnDimensions({ width: COLUMN_WIDTH_SM, gap: COLUMN_GAP_SM });
+      setColumnDimensions(COLUMN_SETTINGS_SM);
     }
   }, [dimensions]);
 
@@ -125,7 +131,7 @@ const TimeSelection = ({
         (SLOT_HEIGHTS[deltaTime] * (60 / deltaTime) + COLUMN_BORDER_WIDTH)
     );
     return Math.floor(
-      (distanceFromTopOfColumn - numBorders * COLUMN_BORDER_WIDTH) /
+      (distanceFromTopOfColumn - numBorders * COLUMN_BORDER_WIDTH - 0.5) /
         SLOT_HEIGHTS[deltaTime]
     );
   };
@@ -209,7 +215,9 @@ const TimeSelection = ({
   };
 
   /* Compute number of columns to show */
-  const numberOfColumns = Math.floor(dimensions.width / columnDimensions.width);
+  const numberOfColumns = Math.floor(
+    (dimensions.width - columnDimensions.padding) / columnDimensions.width
+  );
 
   /* Current page */
   const [page, setPage] = useState(0);
