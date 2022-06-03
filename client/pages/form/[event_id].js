@@ -83,13 +83,14 @@ const CreateForm = () => {
           rel="stylesheet"
         />
       </Head>
-      <h1 className={styles.timeselection__header}>
+      <h1 className={styles.timeselection__header} style={{ display: 'flex', justify: 'center' }}>
         WhenIs<span style={{ color: '#087f5b' }}>Better</span>
       </h1>
       <TimeSelection
         timeslots={timeslots}
         setTimeslots={setTimeslots}
         deltaTime={deltaTime}
+        distanceFromTop={39}
       />
       <Button
         variant="contained"
