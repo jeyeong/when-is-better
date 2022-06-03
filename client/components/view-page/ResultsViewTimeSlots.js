@@ -4,7 +4,7 @@ import Hammer from 'react-hammerjs';
 import utils from '../utils';
 const { DateTime } = require('luxon');
 
-import styles from '../styles/TimeSelection.module.css';
+import styles from '../../styles/TimeSelection.module.css'
 
 /* Constants */
 const COLUMN_SETTINGS_SM = {

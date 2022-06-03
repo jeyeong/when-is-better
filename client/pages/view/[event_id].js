@@ -4,7 +4,8 @@ import Router, { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
 import Hammer from 'react-hammerjs';
 import { DateTime, Duration } from 'luxon';
-import ResultsView from '../../components/ResultsViewTimeSlots';
+import ResultsViewTimeSlots from '../../components/view-page/ResultsViewTimeSlots'
+import TimeSlotsAvailable from '../../components/view-page/TimeSlotsAvailable'
 import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 import styles from '../../styles/Create.module.css';
 
@@ -86,11 +87,14 @@ const CreateForm = () => {
       <h1 className={styles.timeselection__header} style={{ display: 'flex', justify: 'center' }}>
         WhenIs<span style={{ color: '#087f5b' }}>Better</span>
       </h1>
-      <ResultsView
+      <ResultsViewTimeSlots
         timeslots={timeslots}
         setTimeslots={setTimeslots}
         deltaTime={deltaTime}
         distanceFromTop={39}
+      />
+      <TimeSlotsAvailable
+        timeslots={timeslots}
       />
     </>
   );
