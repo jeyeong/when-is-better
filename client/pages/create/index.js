@@ -57,14 +57,14 @@ const CreatePage = () => {
     generateTimeSlotArray(defaultStart, defaultEnd, deltaTime, true)
   );
   const [timeZone, setTimeZone] = useState('Chicago');
-  const [hourRange, setHourRange] = useState([8, 20]);
+  const [startHour, setStartHour] = useState(8);
+  const [endHour, setEndHour] = useState(20);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null); /* up to and including */
   const [initialLoadDone, setInitialLoadDone] = useState(false);
 
   /* Additional hooks */
   const { query, isReady } = useRouter();
-
   /* Initial page load */
   useEffect(() => {
     let initialStartDate = DateTime.fromHTTP(query.startDate)
@@ -112,6 +112,9 @@ const CreatePage = () => {
       setTimeslots(timeslots_arr);
     }
   }, [startDate, endDate, deltaTime]);
+
+  console.log('startDate: ', startDate);
+  console.log('endDate: ', endDate);
 
   /* For stuff below the time select component */
   const [showOptions, setShowOptions] = useState(false);
@@ -166,7 +169,9 @@ const CreatePage = () => {
           <input
             type="text"
             value={name}
-            onInput={(e) => setName(e.target.value)}
+            onInput={(e) => {
+              setName(e.target.value);
+            }}
             placeholder="John Doe"
             className={styles.input_name}
           />
@@ -179,6 +184,7 @@ const CreatePage = () => {
             event_name={title}
             description={description}
             creator={name}
+            deltaTime={deltaTime}
           />
         </div>
         <div className="flex">
@@ -214,8 +220,13 @@ const CreatePage = () => {
           <OptionsMenu
             deltaTime={deltaTime}
             setDeltaTime={setDeltaTime}
-            setHourRange={setHourRange}
+            startHour={startHour}
+            setStartHour={setStartHour}
+            endHour={endHour}
+            setEndHour={setEndHour}
+            startDate={startDate}
             setStartDate={setStartDate}
+            endDate={endDate}
             setEndDate={setEndDate}
             setTimeZone={setTimeZone}
           />
@@ -223,7 +234,6 @@ const CreatePage = () => {
       </div>
 
       <div ref={bottomRef}></div>
-
       <Footer />
     </div>
   );

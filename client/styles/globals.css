@@ -45,6 +45,10 @@ a {
   display: flex;
 }
 
+.justify-content {
+  justify-content: center;
+}
+
 .w_100 {
   width: 100%;
 }

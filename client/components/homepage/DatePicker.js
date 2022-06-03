@@ -35,8 +35,9 @@ const theme = createTheme({
   },
 });
 
-export const BasicDatePicker = ({ label, setDate }) => {
-  const [value, setValue] = React.useState(null);
+export const BasicDatePicker = ({ label, setDate, defaultDate }) => {
+  const [value, setValue] = React.useState(defaultDate);
+  console.log('defaultDate: ', defaultDate);
 
   const onChange = (newValue) => {
     setValue(newValue);
@@ -53,7 +54,9 @@ export const BasicDatePicker = ({ label, setDate }) => {
             label={label}
             value={value}
             onChange={onChange}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => (
+              <TextField {...params} fullWidth size="small" />
+            )}
             sx={{
               color: '#087f5b',
             }}

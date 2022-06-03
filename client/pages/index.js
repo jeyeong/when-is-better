@@ -84,10 +84,12 @@ const LandingPage = () => {
               >
                 <BasicDatePicker
                   label="Start"
+                  defaultDate={null}
                   setDate={(val) => setStartDate(val)}
                 />
                 <BasicDatePicker
                   label="End"
+                  defaultDate={null}
                   setDate={(val) => setEndDate(val)}
                 />
               </div>

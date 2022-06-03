@@ -27,5 +27,6 @@
 @media (min-width: 900px) {
   .options_list {
     gap: 40px;
+    width: 200px;
   }
 }

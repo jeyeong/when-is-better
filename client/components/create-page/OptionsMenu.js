@@ -25,8 +25,13 @@ const ToggleButton = styled(MuiToggleButton)({
 export const OptionsMenu = ({
   deltaTime,
   setDeltaTime,
-  setHourRange,
+  startHour,
+  setStartHour,
+  endHour,
+  setEndHour,
+  startDate,
   setStartDate,
+  endDate,
   setEndDate,
   setTimeZone,
 }) => {
@@ -54,36 +59,44 @@ export const OptionsMenu = ({
   return (
     <div className="container-padding-sm">
       <div className={`${styles.options_container}`}>
-        <div>
+        <div className="flex justify-content">
           <ul className={styles.options_list}>
             <li>
-              start Date
+              Start Date
               <div>
                 <BasicDatePicker
-                  label="Start"
+                  defaultDate={startDate}
                   setDate={(val) => setStartDate(val)}
                 />
               </div>
             </li>
             <li>
-              end Date
+              End Date
               <div>
-                <BasicDatePicker
-                  label="Start"
-                  setDate={(val) => setStartDate(val)}
+                {/* defaultDate={endDate} */}
+                <BasicDatePicker setDate={(val) => setEndDate(val)} />
+              </div>
+            </li>
+
+            {/* start hour has to be before end hour */}
+            <li>
+              Hour Start
+              <div>
+                <SelectHour
+                  defaultHour={startHour}
+                  setHour={setStartHour}
+                  isStartHour={true}
                 />
               </div>
             </li>
             <li>
-              Hour Start:
+              Hour End
               <div>
-                <SelectHour />
-              </div>
-            </li>
-            <li>
-              Hour End:
-              <div>
-                <SelectHour />
+                <SelectHour
+                  defaultHour={endHour}
+                  setHour={setEndHour}
+                  isStartHour={false}
+                />
               </div>
             </li>
             <li>
@@ -94,7 +107,6 @@ export const OptionsMenu = ({
                   onChange={setSelectedTimezone}
                 />
               </div>
-              <div>currTZ: {currTZ}</div>
             </li>
             <li>
               Increment
