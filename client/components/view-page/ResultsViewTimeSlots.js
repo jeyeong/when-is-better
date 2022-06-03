@@ -1,7 +1,7 @@
 import { boxSizing } from '@mui/system';
 import { useEffect, useState } from 'react';
 import Hammer from 'react-hammerjs';
-import utils from './utils';
+import utils from '../utils';
 const { DateTime } = require('luxon');
 
 import styles from '../styles/TimeSelection.module.css';
@@ -182,7 +182,6 @@ const ResultsViewTimeSlots = ({
   );
   
   const handleSlotClick = (dayIndex, timeIndex) => {
-    console.log("HERE")
     setTimeslots(
       timeslots.map((day, i) =>
         i === dayIndex
@@ -198,8 +197,6 @@ const ResultsViewTimeSlots = ({
           : day
         )
       );
-      console.log(`selected day ${dayIndex} time ${timeIndex}`)
-      console.log(timeslots)
     }
 
   return (
