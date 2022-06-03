@@ -52,7 +52,7 @@ const CreatePage = () => {
   const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(46);
 
   /* States for functionality */
-  const [deltaTime, setDeltaTime] = useState(MINUTES_15);
+  const [deltaTime, setDeltaTime] = useState(MINUTES_60);
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(defaultStart, defaultEnd, deltaTime, true)
   );
@@ -60,11 +60,12 @@ const CreatePage = () => {
   const [hourRange, setHourRange] = useState([8, 20]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null); /* up to and including */
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
 
   /* Additional hooks */
   const { query, isReady } = useRouter();
 
-  /* Generate start and end times */
+  /* Initial page load */
   useEffect(() => {
     let initialStartDate = DateTime.fromHTTP(query.startDate)
       .toLocal()
@@ -96,16 +97,26 @@ const CreatePage = () => {
     );
 
     setTimeslots(timeslots_arr);
+    setInitialLoadDone(true);
   }, [isReady]);
 
-  console.log('timeslots: ', timeslots);
+  /* Subsequent changes to settings */
+  useEffect(() => {
+    if (initialLoadDone) {
+      const timeslots_arr = generateTimeSlotArray(
+        startDate,
+        endDate,
+        deltaTime,
+        true
+      );
+      setTimeslots(timeslots_arr);
+    }
+  }, [startDate, endDate, deltaTime]);
 
-  /* for stuff below the time select component */
+  /* For stuff below the time select component */
   const [showOptions, setShowOptions] = useState(false);
   const bottomRef = useRef();
   const topRef = useRef();
-
-  /* Define functions to control state of child elements */
 
   return (
     <div
@@ -165,6 +176,9 @@ const CreatePage = () => {
             timeslots={timeslots}
             start={startDate}
             end={endDate}
+            event_name={title}
+            description={description}
+            creator={name}
           />
         </div>
         <div className="flex">
