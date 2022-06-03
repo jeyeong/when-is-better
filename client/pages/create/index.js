@@ -43,11 +43,9 @@ const MINUTES_60 = 60;
  ****************/
 
 const CreatePage = () => {
-  /* startDate is beginning of first day, endDate is end of last day */
-  let [startDate, setStartDate] = useState(null);
-  let [endDate, setEndDate] = useState(null);
-
   /* States */
+  const [startDate, setStartDate] = useState(null); // startDate is beginning of first day
+  const [endDate, setEndDate] = useState(null);     // endDate is end of last day
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [deltaTime, setDeltaTime] = useState(MINUTES_60);
@@ -55,11 +53,12 @@ const CreatePage = () => {
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
   );
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
 
   /* Additional hooks */
   const { query, isReady } = useRouter();
 
-  /* Generate start and end times */
+  /* Initial page load */
   useEffect(() => {
     let initialStartDate = DateTime.fromHTTP(query.startDate)
       .toLocal()
@@ -91,15 +90,27 @@ const CreatePage = () => {
     );
 
     setTimeslots(timeslots_arr);
+    setInitialLoadDone(true);
   }, [isReady]);
 
-  /* for stuff below the time select component */
+  /* Subsequent changes to settings */
+  useEffect(() => {
+    if (initialLoadDone) {
+      const timeslots_arr = generateTimeSlotArray(
+        startDate,
+        endDate,
+        deltaDuration,
+        true
+      );
+      setTimeslots(timeslots_arr);
+    }
+  }, [startDate, endDate, deltaTime])
+
+  /* For stuff below the time select component */
   const [name, setName] = useState('');
   const [showOptions, setShowOptions] = useState(false);
   const bottomRef = useRef();
   const topRef = useRef();
-
-  /* Define functions to control state of child elements */
 
   return (
     <div
