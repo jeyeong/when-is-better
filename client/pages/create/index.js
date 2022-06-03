@@ -52,7 +52,7 @@ const CreatePage = () => {
   const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(46);
 
   /* States for functionality */
-  const [deltaTime, setDeltaTime] = useState(MINUTES_60);
+  const [deltaTime, setDeltaTime] = useState(MINUTES_15);
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(defaultStart, defaultEnd, deltaTime, true)
   );
