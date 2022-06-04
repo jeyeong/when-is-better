@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Hammer from 'react-hammerjs';
 import utils from '../utils';
 const { DateTime } = require('luxon');
+import Tooltip from '@mui/material/Tooltip'
 
 import styles from '../../styles/TimeSelection.module.css'
 
@@ -34,9 +35,10 @@ const TimeSelectionDay = ({
   dateTitle,
   columnDimensions,
   deltaTime,
-  num_responses,
+  allRespondents,
   handleSlotClick,
   setHoverSlot,
+  maxAvailable,
 }) => {
   const handleClick = (groupIndex, timeIndexInGroup) => {
     const groupSize = 60 / deltaTime;
@@ -59,13 +61,9 @@ const TimeSelectionDay = ({
           {groupDaySlots(day, deltaTime).map((slotGroup, groupIndex) => (
             <div key={groupIndex} className={styles.slot_group}>
               {slotGroup.map((slot, timeIndex) => (
-                <div
-                  style = {{
-                    // TODO: box expands
-                    border: slot.selected ? '2.5px solid black' : '',
-                    // height: SLOT_HEIGHTS[deltaTime],
-                    // boxSizing: 'border-box'
-                  }}
+                <Tooltip 
+                  placement="left"
+                  title={`Available: ${slot.people_available.length}\nUnavailable: ${allRespondents.length - slot.people_available.length}`}
                 >
                   <div
                     className={`${styles.datebox} ${
@@ -75,14 +73,27 @@ const TimeSelectionDay = ({
                     } ${styles.timebox}`}
                     style={{
                       height: SLOT_HEIGHTS[deltaTime],
-                      opacity: slot.available
-                        ? slot.people_available.length / num_responses                    
-                        : 1,
+                      // TODO: this isn't great style, but I'm not sure what else to do
+                      backgroundColor: 
+                        slot.available
+                          ? `rgba(145,224,155,${slot.people_available.length / maxAvailable})`
+                          : 'gray'
                     }}
                     key={timeIndex}
                     onClick={() => handleClick(groupIndex, timeIndex)}
-                  ></div>
-                </div>
+                  >
+                  <div
+                    style = {{
+                      // TODO: box expands
+                      border: slot.selected ? '2.5px solid black' : '',
+                      height: SLOT_HEIGHTS[deltaTime],
+                      boxSizing: 'border-box',
+                      opacity: 1,
+                      width:'100%'
+                    }}
+                  />
+                  </div>
+                </Tooltip>
               ))}
               <div 
                 className={styles.time_str}
@@ -103,6 +114,7 @@ const ResultsViewTimeSlots = ({
   timeslots,
   setTimeslots,
   deltaTime,
+  allRespondents,
 }) => {
   /* To detect changes in screen size: re-render component */
   const [dimensions, setDimensions] = useState({
@@ -216,7 +228,8 @@ const ResultsViewTimeSlots = ({
             columnDimensions={columnDimensions}
             deltaTime={deltaTime}
             key={i}
-            num_responses={max_available}
+            maxAvailable={max_available}
+            allRespondents={allRespondents}
             handleSlotClick={handleSlotClick}
           />
         ))}

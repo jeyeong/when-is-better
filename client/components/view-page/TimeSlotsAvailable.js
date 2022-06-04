@@ -2,6 +2,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
 import Paper from '@mui/material/Paper'
+import Chip from '@mui/material/Chip'
 
 /* this mutates A, so pass a clone */
 const setMinusMultiple = (A, B) => {
@@ -25,14 +26,29 @@ const TimeSlotAvailable = ({
     const timeEnd = localTime.plus(timeDelta).toFormat('hh:mm')
     const date = localTime.toFormat("ccc LLL d")
     const people_unavailable = setMinusMultiple([...allRespondents], timeslot.people_available)
+    const percent_available_str = (timeslot.people_available.length / allRespondents.length).toLocaleString(undefined, {style: 'percent'})
     return (
         <Grid item xs={12} md={6} lg={4}>
             <Paper elevation={5} style={{
                 padding: '0.5em'
             }}>
-                <Typography variant="h6">
-                    {timeStart}-{timeEnd} {date}
-                </Typography>
+                <Grid container alignItems="center" width="100%">
+                    <Grid item xs={9}>
+                        <Typography component="div" variant="h6">
+                            {timeStart}-{timeEnd} {date}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Typography align="right" component="div">
+                            <Chip
+                                label={`${percent_available_str} Available`}
+                                style={{
+                                    backgroundColor: `rgba(145,224,155,${timeslot.people_available.length / allRespondents.length})`
+                                }}
+                            />
+                        </Typography>
+                    </Grid>
+                </Grid>
                 <Divider></Divider>
                 <Typography
                     color="text.secondary"
@@ -70,7 +86,7 @@ const TimeSlotsAvailable = ({
     console.log(selected)
     return (
         <div>
-            <Typography variant="h4">
+            <Typography variant="h5">
                 Availabilities
             </Typography>
             <Divider/>

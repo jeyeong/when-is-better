@@ -95,6 +95,7 @@ const CreateForm = () => {
         setTimeslots={setTimeslots}
         deltaTime={deltaTime}
         distanceFromTop={39}
+        allRespondents={eventRespondents}
       />
       <TimeSlotsAvailable
         timeslots={timeslots}
