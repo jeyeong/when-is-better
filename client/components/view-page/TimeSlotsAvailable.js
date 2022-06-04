@@ -83,7 +83,6 @@ const TimeSlotsAvailable = ({
     if (timeslots !== undefined) {
         selected = timeslots.flat().filter(ts => ts.selected)
     }
-    console.log(selected)
     return (
         <div>
             <Typography variant="h5">
