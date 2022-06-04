@@ -22,8 +22,8 @@ const TimeSlotAvailable = ({
     allRespondents
 }) => {
     const localTime = timeslot.time.toLocal()
-    const timeStart = localTime.toFormat('hh:mm')
-    const timeEnd = localTime.plus(timeDelta).toFormat('hh:mm')
+    const timeStart = localTime.toFormat('h:mm').toLowerCase()
+    const timeEnd = localTime.plus(timeDelta).toFormat('h:mma').toLowerCase()
     const date = localTime.toFormat("ccc LLL d")
     const people_unavailable = setMinusMultiple([...allRespondents], timeslot.people_available)
     const percent_available_str = (timeslot.people_available.length / allRespondents.length).toLocaleString(undefined, {style: 'percent'})
@@ -33,12 +33,12 @@ const TimeSlotAvailable = ({
                 padding: '0.5em'
             }}>
                 <Grid container alignItems="center" width="100%">
-                    <Grid item xs={9}>
+                    <Grid item xs={8}>
                         <Typography component="div" variant="h6">
                             {timeStart}-{timeEnd} {date}
                         </Typography>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                         <Typography align="right" component="div">
                             <Chip
                                 label={`${percent_available_str} Available`}
