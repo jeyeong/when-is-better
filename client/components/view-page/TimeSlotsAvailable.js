@@ -90,11 +90,12 @@ const TimeSlotsAvailable = ({
             </Typography>
             <Divider/>
             <Grid container spacing={2}>
-                {selected.map(ts => (
+                {selected.map((ts, i) => (
                     <TimeSlotAvailable
                         timeslot={ts}
                         timeDelta={timeDelta}
                         allRespondents={allRespondents}
+                        key={i}
                     />
                 ))}
             </Grid>

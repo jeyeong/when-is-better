@@ -63,6 +63,7 @@ const TimeSelectionDay = ({
                 <Tooltip 
                   placement="left"
                   title={`Available: ${slot.people_available.length}\nUnavailable: ${allRespondents.length - slot.people_available.length}`}
+                  key={timeIndex}
                 >
                   <div
                     className={`${styles.datebox} ${

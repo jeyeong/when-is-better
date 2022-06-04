@@ -22,7 +22,6 @@ const CreateForm = () => {
     generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
   );
   const { query, isReady } = useRouter();
-  let event_id = undefined;
   
   const [eventRespondents, setEventRespondents] = useState([])
 
@@ -30,7 +29,6 @@ const CreateForm = () => {
     if (!('event_id' in query)) {
       return;
     }
-    event_id = query.event_id;
     getEventObject(query.event_id).then((res) => {
       setEventRespondents(res.respondents)
       setTimeslots(res.timeslots);
