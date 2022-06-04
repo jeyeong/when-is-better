@@ -23,6 +23,8 @@ const CreateForm = () => {
   );
   const { query, isReady } = useRouter();
   let event_id = undefined;
+  
+  const [eventRespondents, setEventRespondents] = useState([])
 
   useEffect(() => {
     if (!('event_id' in query)) {
@@ -30,6 +32,7 @@ const CreateForm = () => {
     }
     event_id = query.event_id;
     getEventObject(query.event_id).then((res) => {
+      setEventRespondents(res.respondents)
       setTimeslots(res.timeslots);
     });
   }, [isReady]);
@@ -95,6 +98,8 @@ const CreateForm = () => {
       />
       <TimeSlotsAvailable
         timeslots={timeslots}
+        timeDelta={deltaDuration}
+        allRespondents={eventRespondents}
       />
     </>
   );

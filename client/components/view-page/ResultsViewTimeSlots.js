@@ -38,16 +38,10 @@ const TimeSelectionDay = ({
   handleSlotClick,
   setHoverSlot,
 }) => {
-  const [selectedSlot, setSelectedSlot] = useState(false)
   const handleClick = (groupIndex, timeIndexInGroup) => {
     const groupSize = 60 / deltaTime;
     const timeIndex = groupIndex * groupSize + timeIndexInGroup
     handleSlotClick(dayIndex, timeIndex)
-  }
-  const selectSlot = (groupIndex, timeIndexInGroup) => {
-    const groupSize = 60 / deltaTime;
-    const timeIndex = groupIndex * groupSize + timeIndexInGroup
-    setHoverSlot(dayIndex, timeIndex)
   }
 
   return (
@@ -195,9 +189,9 @@ const ResultsViewTimeSlots = ({
                 : slot
             )
           : day
-        )
-      );
-    }
+      )
+    );
+  }
 
   return (
     <div className={styles.timeselection}>
