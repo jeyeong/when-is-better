@@ -37,39 +37,6 @@ const CreateForm = () => {
     });
   }, [isReady]);
 
-  const submitForm = () => {
-    const availableTimes = [];
-
-    for (let day of timeslots) {
-      for (let slot of day) {
-        if (slot.available && slot.selected) {
-          availableTimes.push(slot.time.toHTTP());
-        }
-      }
-    }
-
-    const payload = {
-      event_id: event_id,
-      name: 'james',
-      comments: 'flames',
-      selected_times: availableTimes,
-      time_interval_min: 60,
-    };
-
-    fetch('https://when-is-better-backend.herokuapp.com/response', {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        Router.push(`/view?event_id=d39ec5`);
-      });
-  };
-
   return (
     <>
       <Head>

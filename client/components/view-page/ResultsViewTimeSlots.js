@@ -37,7 +37,6 @@ const TimeSelectionDay = ({
   deltaTime,
   allRespondents,
   handleSlotClick,
-  setHoverSlot,
   maxAvailable,
 }) => {
   const handleClick = (groupIndex, timeIndexInGroup) => {
