@@ -125,6 +125,7 @@ const getEventObject = (event_id) => {
           }
         });
       });
+      event.respondents = resp.responses.map(r => r.name)
 
       timeslots.forEach((day_timeslots) => {
         day_timeslots.forEach((timeslot) => {
