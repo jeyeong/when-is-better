@@ -1,11 +1,17 @@
 import { Button } from '@mui/material';
 import { DateTime, Duration } from 'luxon';
 import Router from 'next/router';
+import { useState } from 'react';
+import styles from '../../styles/Create.module.css';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const deltaDuration = Duration.fromObject({ minutes: 60 });
 
 const CreateEventButton = ({ timeslots, start, end }) => {
+  const [statusString, setStatusString] = useState('')
+
   const createEvent = () => {
+    setStatusString(<CircularProgress size={20} className={styles.loadingRing}/>)
     const availableTimes = timeslots.map((day) =>
       day.filter((slot) => slot.selected).map((slot) => slot.time.toHTTP())
     );
@@ -47,7 +53,7 @@ const CreateEventButton = ({ timeslots, start, end }) => {
         fontSize: '16px',
       }}
     >
-      Create
+      Create {statusString}
     </Button>
   );
 };

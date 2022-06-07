@@ -119,3 +119,8 @@
 
   padding-bottom: 20px;
 }
+
+.loadingRing {
+  color: white;
+  margin-left: 8px;
+}

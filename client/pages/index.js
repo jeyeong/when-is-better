@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Footer } from '../components/general/Footer';
 import { NavBar } from '../components/general/NavBar';
 import Router from 'next/router';
+import CircularProgress from '@mui/material/CircularProgress';
 import { DateTime } from 'luxon';
 
 const LandingPage = () => {
@@ -13,6 +14,7 @@ const LandingPage = () => {
   const [endDate, _setEndDate] = useState('endDateNotSet');
   const [isInvalidDate, setIsInvalidDate] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [statusString, setStatusString] = useState('')
 
   const setStartDate = (startDate) => {
     let date = DateTime.fromHTTP(startDate)
@@ -29,9 +31,11 @@ const LandingPage = () => {
   };
 
   const takeToCreatePage = () => {
+    setStatusString(<CircularProgress size={20} className={styles.loadingRing}/>)
     if (startDate === 'startDateNotSet' || endDate === 'endDateNotSet') {
       setErrorMsg('Null dates are not allowed');
       setIsInvalidDate(true);
+      setStatusString("")
       return;
     }
 
@@ -40,6 +44,7 @@ const LandingPage = () => {
     if (startDateTime > endDateTime) {
       setErrorMsg('End date cannot be before start date');
       setIsInvalidDate(true);
+      setStatusString("")
       return;
     }
 
@@ -106,7 +111,7 @@ const LandingPage = () => {
                   }}
                   onClick={takeToCreatePage}
                 >
-                  Get Started
+                  Get Started {statusString}
                 </Button>
               </div>
             </div>

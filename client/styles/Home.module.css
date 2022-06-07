@@ -221,3 +221,8 @@ FONT SIZE SYSTEM (px)
     margin-top: 20px;
   }
 }
+
+.loadingRing {
+  color: white;
+  margin-left: 8px;
+}
