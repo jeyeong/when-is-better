@@ -64,7 +64,7 @@ const CreateForm = () => {
       .then((res) => {
         console.log(res);
 
-        Router.push(`/view?event_id=d39ec5`);
+        Router.push(`/view/d39ec5`);
       });
   };
 
