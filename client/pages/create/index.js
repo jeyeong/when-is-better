@@ -19,7 +19,7 @@ import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 import Head from 'next/head';
 import styles from '../../styles/Create.module.css';
 import { defaultStart, defaultEnd } from '../../constants.js';
-import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
+import { generateTimeSlotArray } from '../../models/timeslots';
 
 /******************
  *    Settings    *

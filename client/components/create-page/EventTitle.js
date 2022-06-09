@@ -11,7 +11,7 @@ const EventTitle = ({ title, setTitle, titleHeight, titleBottomMargin }) => {
         }}
       >
         <input
-          placeholder="Your Event Name Here"
+          placeholder="What's the occasion?"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
