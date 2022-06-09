@@ -32,6 +32,8 @@ const TOP_PADDING = 12; // space above the title
 const TITLE_HEIGHT = 60;
 const TITLE_BOTTOM_MARGIN = 4;
 const DESCRIPTION_BOTTOM_MARGIN = 16;
+const TS_CONTAINER_BORDER_WIDTH = 1;
+const TS_CONTAINER_TB_PADDING = 25;
 
 /* make deltaDuration programmatic */
 const MINUTES_15 = 15;
@@ -45,10 +47,10 @@ const MINUTES_60 = 60;
 const CreatePage = () => {
   /* States */
   const [startDate, setStartDate] = useState(null); // startDate is beginning of first day
-  const [endDate, setEndDate] = useState(null);     // endDate is end of last day
+  const [endDate, setEndDate] = useState(null); // endDate is end of last day
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [deltaTime, setDeltaTime] = useState(MINUTES_60);
+  const [deltaTime, setDeltaTime] = useState(MINUTES_30);
   const deltaDuration = Duration.fromObject({ minutes: deltaTime });
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
@@ -104,7 +106,7 @@ const CreatePage = () => {
       );
       setTimeslots(timeslots_arr);
     }
-  }, [startDate, endDate, deltaTime])
+  }, [startDate, endDate, deltaTime]);
 
   /* For stuff below the time select component */
   const [name, setName] = useState('');
@@ -139,17 +141,27 @@ const CreatePage = () => {
         setDescription={setDescription}
       />
 
-      <TimeSelection
-        timeslots={timeslots}
-        setTimeslots={setTimeslots}
-        deltaTime={deltaTime}
-        distanceFromTop={
-          TOP_PADDING +
-          TITLE_HEIGHT +
-          TITLE_BOTTOM_MARGIN +
-          DESCRIPTION_BOTTOM_MARGIN
-        }
-      />
+      <div
+        className={styles.createpage__tscontainer}
+        style={{
+          paddingTop: `${TS_CONTAINER_TB_PADDING}px`,
+          paddingBottom: `${TS_CONTAINER_TB_PADDING}px`,
+        }}
+      >
+        <TimeSelection
+          timeslots={timeslots}
+          setTimeslots={setTimeslots}
+          deltaTime={deltaTime}
+          distanceFromTop={
+            TOP_PADDING +
+            TITLE_HEIGHT +
+            TITLE_BOTTOM_MARGIN +
+            DESCRIPTION_BOTTOM_MARGIN +
+            TS_CONTAINER_BORDER_WIDTH +
+            TS_CONTAINER_TB_PADDING
+          }
+        />
+      </div>
 
       <br />
       <br />
