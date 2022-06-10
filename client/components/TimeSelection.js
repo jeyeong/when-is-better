@@ -56,7 +56,16 @@ const TimeSelectionDay = ({
       >
         <div className={styles.datebox__container}>
           {groupDaySlots(day, deltaTime).map((slotGroup, i) => (
-            <div key={i} className={styles.slot_group}>
+            <div
+              key={i}
+              className={`${styles.slot_group} ${
+                slotGroup[0].selected ? styles.slot_group_firstselected : ''
+              } ${
+                slotGroup[slotGroup.length - 1].selected
+                  ? styles.slot_group_lastselected
+                  : ''
+              }`}
+            >
               {slotGroup.map((slot, i) => (
                 <div
                   className={`${styles.datebox} ${

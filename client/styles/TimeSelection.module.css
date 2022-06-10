@@ -15,7 +15,7 @@
 
 /* Column styling */
 .timeselection__datetitle {
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.3px;
   text-align: center;
   white-space: pre-line;
@@ -33,7 +33,7 @@
 /* Slot group */
 .slot_group {
   position: relative;
-  border-bottom: 1px solid rgba(0,0,0,.4);
+  border-top: 1px solid rgba(0,0,0,.4);
 }
 
 .slot_group:first-child {
@@ -44,10 +44,18 @@
   border-bottom: none;
 }
 
+.slot_group_firstselected {
+  border-top-color: transparent;
+}
+
+.slot_group_lastselected + .slot_group {
+  border-top-color: transparent;
+}
+
 /* Dateboxes */
 .datebox {
   width: 100%;
-  border-top: 1px dashed #bbb;
+  border-top: 1.5px dashed #bbb;
   display: grid;
   place-items: center;
 }
@@ -58,7 +66,7 @@
 }
 
 .datebox__selected {
-  background-color: #52F56A;
+  background-color: #52f56a;
   border-top-color: transparent;
 }
 
@@ -67,7 +75,7 @@
 }
 
 .time_str {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.3px;
   position: absolute;
@@ -76,6 +84,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  z-index: 98;
 }
 
 .timebox:first-of-type {
@@ -106,6 +115,12 @@
   cursor: default;
 }
 
+/* Media queries */
+@media only screen and (max-width: 800px) {
+  .timeselection__datetitle, .time_str {
+    font-size: 12px;
+  }
+}
 
 
 
