@@ -28,6 +28,7 @@
 .createpage__title > input::placeholder {
   color: #000000;
   text-align: center;
+  transition: color 0.3s;
 }
 
 .createpage__title__error > input::placeholder {
@@ -56,6 +57,7 @@
 .createpage__tscontainer {
   width: max-content;
   max-width: 100%;
+  background-color: #ffffff;
   border: 1px solid #dddce3;
   border-radius: 5px;
   padding: 0 55px;

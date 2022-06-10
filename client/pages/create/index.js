@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { DateTime, Duration } from 'luxon';
 
 /* Component imports */
-import Header from '../../components/Header';
+import Header from '../../components/general/Header';
 import EventTitle from '../../components/create-page/EventTitle';
 import EventDescription from '../../components/create-page/EventDescription';
 import TimeSelection from '../../components/TimeSelection';
@@ -172,6 +172,7 @@ const CreatePage = () => {
           />
         </div>
 
+        <br />
         <br />
 
         <div className={styles.createpage__bottombar}>
