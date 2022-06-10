@@ -55,7 +55,7 @@
 /* Dateboxes */
 .datebox {
   width: 100%;
-  border-top: 1.5px dashed #bbb;
+  border-top: 1.5px dashed #bbbb;
   display: grid;
   place-items: center;
 }
