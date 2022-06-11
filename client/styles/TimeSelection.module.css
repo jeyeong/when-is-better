@@ -61,8 +61,7 @@
 }
 
 .datebox__unavailable {
-  background-color: gray;
-  color: gray;
+  background-color: #777c;
 }
 
 .datebox__selected {
@@ -100,6 +99,7 @@
   font-size: 16px;
   cursor: pointer;
   color: rgba(0,0,0,0.9);
+  user-select: none;
 }
 
 .timeselection__navleft {

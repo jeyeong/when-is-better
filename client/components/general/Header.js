@@ -6,7 +6,6 @@ const Header = () => {
       style={{
         width: '100%',
         height: '26px',
-        // backgroundColor: '#a8f4b4', // green color
         backgroundColor: '#ffffff',
         borderBottom: '1px solid rgb(204, 204, 204)',
         fontSize: '14px',
