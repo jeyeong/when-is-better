@@ -1,32 +1,34 @@
 import { boxSizing } from '@mui/system';
 import { useEffect, useState } from 'react';
-import Hammer from 'react-hammerjs';
 import utils from '../utils';
 const { DateTime } = require('luxon');
-import Tooltip from '@mui/material/Tooltip'
+import Tooltip from '@mui/material/Tooltip';
 
-import styles from '../../styles/TimeSelection.module.css'
+import styles from '../../styles/TimeSelection.module.css';
 
 /* Constants */
 const COLUMN_SETTINGS_SM = {
-  width: 115,
-  gap: 25,
+  width: 100,
+  gap: 20,
   padding: 15,
 };
 const COLUMN_SETTINGS_LG = {
-  width: 200,
-  gap: 40,
+  width: 175,
+  gap: 35,
   padding: 100,
 };
-const DATETITLE_HEIGHT = 42;
+const DATETITLE_HEIGHT = 38;
 const DATETITLE_BOTTOM_MARGIN = 12;
-const COLUMN_BORDER_WIDTH = 2;
+const COLUMN_BORDER_WIDTH = 1;
 const LG_SM_THRESHOLD = 800;
 const SLOT_HEIGHTS = {
   15: 12.5,
   30: 20,
   60: 40,
 };
+const PAGE_PADDING_CONST_LG = 0.8;
+const PAGE_PADDING_CONST_MD = 0.75;
+const PAGE_PADDING_CONST_SM = 0.9;
 
 /* Individual time selection columns */
 const TimeSelectionDay = ({
@@ -41,9 +43,9 @@ const TimeSelectionDay = ({
 }) => {
   const handleClick = (groupIndex, timeIndexInGroup) => {
     const groupSize = 60 / deltaTime;
-    const timeIndex = groupIndex * groupSize + timeIndexInGroup
-    handleSlotClick(dayIndex, timeIndex)
-  }
+    const timeIndex = groupIndex * groupSize + timeIndexInGroup;
+    handleSlotClick(dayIndex, timeIndex);
+  };
 
   return (
     <div style={{ width: columnDimensions.width - columnDimensions.gap }}>
@@ -56,56 +58,62 @@ const TimeSelectionDay = ({
       >
         {dateTitle}
       </h4>
-        <div className={styles.datebox__container}>
-          {groupDaySlots(day, deltaTime).map((slotGroup, groupIndex) => (
-            <div key={groupIndex} className={styles.slot_group}>
-              {slotGroup.map((slot, timeIndex) => (
-                <Tooltip 
-                  placement="left"
-                  title={`Available: ${slot.people_available.length}\nUnavailable: ${allRespondents.length - slot.people_available.length}`}
+      <div className={styles.datebox__container}>
+        {groupDaySlots(day, deltaTime).map((slotGroup, groupIndex) => (
+          <div key={groupIndex} className={styles.slot_group}>
+            {slotGroup.map((slot, timeIndex) => (
+              <Tooltip
+                placement="left"
+                title={`Available: ${
+                  slot.people_available.length
+                }\nUnavailable: ${
+                  allRespondents.length - slot.people_available.length
+                }`}
+                key={timeIndex}
+              >
+                <div
+                  className={`${styles.datebox} ${
+                    slot.available
+                      ? styles.intensity__3
+                      : styles.datebox__unavailable
+                  } ${styles.timebox}`}
+                  style={{
+                    height: SLOT_HEIGHTS[deltaTime],
+                    // TODO: this isn't great style, but I'm not sure what else to do
+                    backgroundColor: slot.available
+                      ? `rgba(145,224,155,${
+                          slot.people_available.length / maxAvailable
+                        })`
+                      : 'gray',
+                    color: 'black',
+                  }}
                   key={timeIndex}
+                  onClick={() => handleClick(groupIndex, timeIndex)}
                 >
                   <div
-                    className={`${styles.datebox} ${
-                      slot.available
-                        ? styles.intensity__3
-                        : styles.datebox__unavailable
-                    } ${styles.timebox}`}
                     style={{
-                      height: SLOT_HEIGHTS[deltaTime],
-                      // TODO: this isn't great style, but I'm not sure what else to do
-                      backgroundColor: 
-                        slot.available
-                          ? `rgba(145,224,155,${slot.people_available.length / maxAvailable})`
-                          : 'gray'
-                    }}
-                    key={timeIndex}
-                    onClick={() => handleClick(groupIndex, timeIndex)}
-                  >
-                  <div
-                    style = {{
                       // TODO: box expands
                       border: slot.selected ? '2.5px solid black' : '',
                       height: SLOT_HEIGHTS[deltaTime],
                       boxSizing: 'border-box',
                       opacity: 1,
-                      width:'100%'
+                      width: '100%',
                     }}
                   />
-                  </div>
-                </Tooltip>
-              ))}
-              <div 
-                className={styles.time_str}
-                style={{
-                  pointerEvents: 'none'
-                }}
-              >
-                {formatSlotTime(slotGroup[0].time)}
-              </div>
+                </div>
+              </Tooltip>
+            ))}
+            <div
+              className={styles.time_str}
+              style={{
+                pointerEvents: 'none',
+              }}
+            >
+              {formatSlotTime(slotGroup[0].time)}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -150,10 +158,18 @@ const ResultsViewTimeSlots = ({
     }
   }, [dimensions]);
 
+  /* Page padding constant to use */
+  const pagePaddingConst =
+    dimensions.width > 500
+      ? dimensions.width > 800
+        ? PAGE_PADDING_CONST_LG
+        : PAGE_PADDING_CONST_MD
+      : PAGE_PADDING_CONST_SM;
 
   /* Compute number of columns to show */
   const numberOfColumns = Math.floor(
-    (dimensions.width - columnDimensions.padding) / columnDimensions.width
+    (dimensions.width * pagePaddingConst - columnDimensions.padding) /
+      columnDimensions.width
   );
 
   /* Current page */
@@ -174,19 +190,29 @@ const ResultsViewTimeSlots = ({
   const [dateTitles, setDateTitles] = useState(
     utils.getStringDatesFromArray(timeslots)
   );
-    
+
   useEffect(() => {
     setDateTitles(utils.getStringDatesFromArray(timeslots));
   }, [timeslots]);
-  
-  const max_available = timeslots.reduce((max, day) => day.reduce((day_max, slot) => day_max > slot.people_available.length ? day_max : slot.people_available.length, max),0)
+
+  const max_available = timeslots.reduce(
+    (max, day) =>
+      day.reduce(
+        (day_max, slot) =>
+          day_max > slot.people_available.length
+            ? day_max
+            : slot.people_available.length,
+        max
+      ),
+    1 // to avoid divide by zero in the TimeSelectionDay component
+  );
 
   /* Filter timeslots to show */
   const dateTitlesToShow = dateTitles.slice(
     page * numberOfColumns,
     (page + 1) * numberOfColumns
   );
-  
+
   const handleSlotClick = (dayIndex, timeIndex) => {
     setTimeslots(
       timeslots.map((day, i) =>
@@ -203,7 +229,7 @@ const ResultsViewTimeSlots = ({
           : day
       )
     );
-  }
+  };
 
   return (
     <div className={styles.timeselection}>

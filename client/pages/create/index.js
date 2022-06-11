@@ -10,6 +10,7 @@ import Head from 'next/head';
 import { CircularProgress } from '@mui/material';
 
 /* Component imports */
+import Loading from '../../components/general/Loading';
 import Header from '../../components/general/Header';
 import EventTitle from '../../components/create-page/EventTitle';
 import EventDescription from '../../components/create-page/EventDescription';
@@ -117,7 +118,12 @@ const CreatePage = () => {
   const topRef = useRef();
 
   if (!loadDone) {
-    return <Loading />;
+    return (
+      <>
+        <Header />
+        <Loading />
+      </>
+    );
   }
 
   return (
@@ -260,21 +266,5 @@ const CreatePage = () => {
     </>
   );
 };
-
-const Loading = () => (
-  <>
-    <Header />
-    <div
-      style={{
-        height: '100vh',
-        width: '100%',
-        display: 'grid',
-        placeItems: 'center',
-      }}
-    >
-      <CircularProgress color="success" />
-    </div>
-  </>
-);
 
 export default CreatePage;

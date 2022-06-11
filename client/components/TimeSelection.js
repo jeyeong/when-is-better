@@ -26,6 +26,7 @@ const SLOT_HEIGHTS = {
   60: 40,
 };
 const PAGE_PADDING_CONST_LG = 0.8;
+const PAGE_PADDING_CONST_MD = 0.75;
 const PAGE_PADDING_CONST_SM = 0.9;
 
 /* Individual time selection columns */
@@ -244,7 +245,11 @@ const TimeSelection = ({
 
   /* Page padding constant to use */
   const pagePaddingConst =
-    dimensions.width > 500 ? PAGE_PADDING_CONST_LG : PAGE_PADDING_CONST_SM;
+    dimensions.width > 500
+      ? dimensions.width > 800
+        ? PAGE_PADDING_CONST_LG
+        : PAGE_PADDING_CONST_MD
+      : PAGE_PADDING_CONST_SM;
 
   /* Compute number of columns to show */
   const numberOfColumns = Math.floor(
