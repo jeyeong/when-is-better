@@ -1,40 +1,56 @@
-import Head from 'next/head';
-
 import styles from '../../styles/CreateSuccess.module.css';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import { NavBar } from '../../components/general/NavBar';
 import { Footer } from '../../components/general/Footer';
-import { useState } from 'react';
 
 const DOMAIN_NAME = 'https://when-is-better.vercel.app/';
 
 const CreateSuccess = () => {
-  const router = useRouter();
-  const { event_id } = router.query;
+  /* Get event ID */
+  const { query, isReady } = useRouter();
+
+  /* Craft form link */
+  const link = `${DOMAIN_NAME}form/${query.event_id}`;
+
+  /* Copied state */
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
-    console.log('yo');
+    navigator.clipboard.writeText(link);
     setCopied(true);
-    navigator.clipboard.writeText(`${DOMAIN_NAME}form/${event_id}`);
+    setTimeout(() => setCopied(false), 2500);
   };
 
   return (
     <>
       <NavBar />
       <div className={styles.createsuccess}>
-        <h1 className={styles.header_font}>Success</h1>
-        <span>
+        <h1>Success</h1>
+        <span style={{ marginTop: '12px' }}>
           Click to copy, then forward this link to your event attendees!
         </span>
-        <div className={styles.margin_top}>
-          <button
-            className={`btn ${styles.hover__animation}`}
-            onClick={copyToClipboard}
-          >
-            {`${DOMAIN_NAME}form/${event_id}`}
-          </button>
+        <div style={{ marginTop: '20px' }}>
+          {isReady ? (
+            <Button
+              variant="contained"
+              className={styles.createsuccess__link}
+              onClick={copyToClipboard}
+            >
+              {link}
+            </Button>
+          ) : null}
+        </div>
+        <div
+          className={
+            copied
+              ? styles.createsuccess__copiedmessage
+              : styles.createsuccess__copiedmessage__hidden
+          }
+          style={{ marginTop: '18px' }}
+        >
+          Copied
         </div>
       </div>
       <Footer />

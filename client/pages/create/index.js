@@ -179,6 +179,7 @@ const CreatePage = () => {
             start={startDate}
             end={endDate}
             title={title}
+            description={description}
             showError={showTitleError || showTimeslotsError}
             setShowTitleError={setShowTitleError}
             setShowTimeslotsError={setShowTimeslotsError}

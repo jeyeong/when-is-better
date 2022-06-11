@@ -32,6 +32,7 @@ const CreateEventButton = ({
   start,
   end,
   title,
+  description,
   showError,
   setShowTitleError,
   setShowTimeslotsError,
@@ -67,20 +68,11 @@ const CreateEventButton = ({
     return true;
   };
 
-  const handleEventCreation = () => {
-    titleValidation();
-    timeslotsValidation();
-  };
-
   const createEvent = () => {
-    const availableTimes = timeslots.map((day) =>
-      day.filter((slot) => slot.selected).map((slot) => slot.time.toHTTP())
-    );
-
     const payload = {
       creator: 'uncommon_hacks',
-      event_name: 'uncommon_hacks',
-      description: 'flames',
+      event_name: title,
+      description: description,
       available_times: availableTimes,
       time_start: start.toHTTP(),
       time_end: end.toHTTP(),
@@ -102,11 +94,19 @@ const CreateEventButton = ({
       });
   };
 
+  const handleEventCreation = () => {
+    const titleValidated = titleValidation();
+    const timeslotsValidated = timeslotsValidation();
+
+    if (titleValidated && timeslotsValidated) {
+      createEvent();
+    }
+  };
+
   return (
     <Button
       variant="contained"
       onClick={handleEventCreation}
-      // onClick={createEvent}
       style={
         title.length > 0 && atLeastOneTimeAvailable
           ? BUTTON_STYLE_ACTIVATED

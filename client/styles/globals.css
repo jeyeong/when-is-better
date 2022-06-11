@@ -49,22 +49,6 @@ a {
   margin: 0 auto;
 }
 
-.btn {
-  display: inline-block;
-  border: none;
-  text-decoration: none;
-  background: #087f5b;
-  color: #ffffff;
-  font-family: sans-serif;
-  cursor: pointer;
-  text-align: center;
-
-  font-size: 16px;
-  padding: 10px 20px;
-  margin: 0;
-  border-radius: 20px;
-}
-
 /* 
 Style Choices
 
