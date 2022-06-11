@@ -24,7 +24,6 @@ const CreateSuccess = () => {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
-    console.log('yo');
     setCopied(true);
     navigator.clipboard.writeText(`${DOMAIN_NAME}form/${event_id}`);
   };
