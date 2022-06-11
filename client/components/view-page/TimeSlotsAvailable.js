@@ -24,9 +24,11 @@ const TimeSlotAvailable = ({ timeslot, timeDelta, allRespondents }) => {
     [...allRespondents],
     timeslot.people_available
   );
-  const percent_available_str = (
-    timeslot.people_available.length / allRespondents.length
-  ).toLocaleString(undefined, { style: 'percent' });
+  const percent_available_str =
+    // Math.max(allRespondents.length, 1) prevents divide-by-zero error
+    (
+      timeslot.people_available.length / Math.max(allRespondents.length, 1)
+    ).toLocaleString(undefined, { style: 'percent' });
   return (
     <Grid item xs={12}>
       <Paper
@@ -47,7 +49,8 @@ const TimeSlotAvailable = ({ timeslot, timeDelta, allRespondents }) => {
                 label={`${percent_available_str} Available`}
                 style={{
                   backgroundColor: `rgba(145,224,155,${
-                    timeslot.people_available.length / allRespondents.length
+                    timeslot.people_available.length /
+                    Math.max(allRespondents.length, 1)
                   })`,
                 }}
               />
@@ -76,10 +79,8 @@ const TimeSlotsAvailable = ({ timeslots, timeDelta, allRespondents }) => {
   return (
     <div
       style={{
-        marginTop: '24px',
-        marginBottom: '40px',
         width: '90%',
-        maxWidth: '750px',
+        maxWidth: '500px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

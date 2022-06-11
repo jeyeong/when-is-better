@@ -1,6 +1,7 @@
 /* Library imports */
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { Grid } from '@mui/material';
 import { DateTime, Duration } from 'luxon';
 
 /* Component imports */
@@ -52,7 +53,7 @@ const CreateForm = () => {
             setTimeslots(res.timeslots);
             setEventRespondents(res.respondents);
             setEventDetails({
-              title: res.event_name ?? '<No title>',
+              title: res.event_name || '<No title>',
               description: res.description ?? '',
               deltaTime: res.deltatime ?? MINUTES_60,
             });
@@ -82,48 +83,70 @@ const CreateForm = () => {
     <>
       <Header />
 
-      <div
-        className={styles.formviewpage}
-        style={{ paddingTop: `${TOP_PADDING}px` }}
+      <Grid
+        container
+        style={{
+          paddingTop: `${TOP_PADDING}px`,
+          marginBottom: '40px',
+          rowGap: '24px',
+        }}
       >
-        <div
-          className={styles.formviewpage__topsection}
-          id="form-view-page-topsection"
-        >
-          <EventTitle
-            title={eventDetails.title}
-            titleBottomMargin={TITLE_BOTTOM_MARGIN}
-          />
+        <Grid item xs={12} md={6}>
+          <div className={styles.formviewpage}>
+            <div
+              className={styles.formviewpage__topsection}
+              id="form-view-page-topsection"
+            >
+              <EventTitle
+                title={eventDetails.title}
+                titleBottomMargin={TITLE_BOTTOM_MARGIN}
+              />
 
-          <EventDescription
-            description={eventDetails.description}
-            bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
-            titleBottomMargin={TITLE_BOTTOM_MARGIN}
-          />
-        </div>
+              <EventDescription
+                description={eventDetails.description}
+                bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
+                titleBottomMargin={TITLE_BOTTOM_MARGIN}
+              />
+            </div>
 
-        <div
-          className={styles.formviewpage__tscontainer}
-          style={{
-            paddingTop: `${TS_CONTAINER_TB_PADDING}px`,
-            paddingBottom: `${20}px`,
-          }}
+            <div
+              className={styles.formviewpage__tscontainer}
+              style={{
+                paddingTop: `${TS_CONTAINER_TB_PADDING}px`,
+                paddingBottom: `${20}px`,
+              }}
+            >
+              <ResultsViewTimeSlots
+                timeslots={timeslots}
+                setTimeslots={setTimeslots}
+                deltaTime={deltaTime}
+                distanceFromTop={39}
+                allRespondents={eventRespondents}
+                widthExpr={(x) => {
+                  if (x > 900) {
+                    // medium
+                    return x / 2;
+                  } else {
+                    return x;
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          style={{ display: 'flex', justifyContent: 'center' }}
         >
-          <ResultsViewTimeSlots
+          <TimeSlotsAvailable
             timeslots={timeslots}
-            setTimeslots={setTimeslots}
-            deltaTime={deltaTime}
-            distanceFromTop={39}
+            timeDelta={eventDetails.deltaTime}
             allRespondents={eventRespondents}
           />
-        </div>
-
-        <TimeSlotsAvailable
-          timeslots={timeslots}
-          timeDelta={eventDetails.deltaTime}
-          allRespondents={eventRespondents}
-        />
-      </div>
+        </Grid>
+      </Grid>
     </>
   );
 };

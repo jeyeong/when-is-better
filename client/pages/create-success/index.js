@@ -1,7 +1,7 @@
 import styles from '../../styles/CreateSuccess.module.css';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Button } from '@mui/material';
+import { Button, Snackbar, Alert } from '@mui/material';
 import { NavBar } from '../../components/general/NavBar';
 import { Footer } from '../../components/general/Footer';
 
@@ -54,16 +54,19 @@ const CreateSuccess = () => {
             </Button>
           ) : null}
         </div>
-        <div
-          className={
-            copied
-              ? styles.createsuccess__copiedmessage
-              : styles.createsuccess__copiedmessage__hidden
-          }
-          style={{ marginTop: '18px' }}
+        <Snackbar
+          open={copied}
+          onClose={() => {
+            setCopied(false);
+          }}
+          message="Copied!"
+          severity="success"
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
-          Copied
-        </div>
+          <Alert severity="success" sx={{ width: '100%' }}>
+            Copied!
+          </Alert>
+        </Snackbar>
       </div>
       <Footer />
     </>
@@ -71,22 +74,3 @@ const CreateSuccess = () => {
 };
 
 export default CreateSuccess;
-
-// <Button
-// variant="contained"
-// style={{
-//   borderRadius: '20px',
-//   padding: '0.5rem 0.9rem',
-//   fontSize: '16px',
-//   width: '80vw',
-//   textTransform: 'lowercase',
-//   backgroundColor: '#fff',
-//   border: '3px solid #087f5b',
-//   color: '#000',
-// }}
-// onClick={() =>
-//   navigator.clipboard.writeText(`${DOMAIN_NAME}form/${event_id}`)
-// }
-// >
-// {`${DOMAIN_NAME}form/${event_id}`}
-// </Button>
