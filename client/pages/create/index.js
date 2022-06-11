@@ -20,6 +20,7 @@ import Head from 'next/head';
 import styles from '../../styles/Create.module.css';
 import { defaultStart, defaultEnd } from '../../constants.js';
 import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
+import { NavBar } from '../../components/general/NavBar';
 
 /******************
  *    Settings    *
@@ -32,6 +33,7 @@ const TOP_PADDING = 12; // space above the title
 const TITLE_HEIGHT = 60;
 const TITLE_BOTTOM_MARGIN = 4;
 const DESCRIPTION_BOTTOM_MARGIN = 16;
+const NAVBAR_HEIGHT = 60;
 
 /* make deltaDuration programmatic */
 const MINUTES_15 = 15;
@@ -113,101 +115,105 @@ const CreatePage = () => {
   const topRef = useRef();
 
   return (
-    <div
-      className={styles.createpage}
-      style={{ paddingTop: `${TOP_PADDING}px` }}
-    >
-      <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1"
+    <>
+      <NavBar />
+      <div
+        className={styles.createpage}
+        style={{ paddingTop: `${TOP_PADDING}px` }}
+      >
+        <Head>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
+          />
+        </Head>
+
+        <div ref={topRef}></div>
+
+        <EventTitle
+          title={title}
+          setTitle={setTitle}
+          titleHeight={TITLE_HEIGHT}
+          titleBottomMargin={TITLE_BOTTOM_MARGIN}
         />
-      </Head>
 
-      <div ref={topRef}></div>
+        <EventDescription
+          bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
+          description={description}
+          setDescription={setDescription}
+        />
 
-      <EventTitle
-        title={title}
-        setTitle={setTitle}
-        titleHeight={TITLE_HEIGHT}
-        titleBottomMargin={TITLE_BOTTOM_MARGIN}
-      />
+        <TimeSelection
+          timeslots={timeslots}
+          setTimeslots={setTimeslots}
+          deltaTime={deltaTime}
+          distanceFromTop={
+            TOP_PADDING +
+            TITLE_HEIGHT +
+            TITLE_BOTTOM_MARGIN +
+            DESCRIPTION_BOTTOM_MARGIN + 
+            NAVBAR_HEIGHT
+          }
+        />
 
-      <EventDescription
-        bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
-        description={description}
-        setDescription={setDescription}
-      />
+        <br />
+        <br />
 
-      <TimeSelection
-        timeslots={timeslots}
-        setTimeslots={setTimeslots}
-        deltaTime={deltaTime}
-        distanceFromTop={
-          TOP_PADDING +
-          TITLE_HEIGHT +
-          TITLE_BOTTOM_MARGIN +
-          DESCRIPTION_BOTTOM_MARGIN
-        }
-      />
-
-      <br />
-      <br />
-
-      {/* Bottom settings */}
-      <div className={styles.button_container}>
-        <div className={styles.flex}>
-          <input
-            type="text"
-            value={name}
-            onInput={(e) => setName(e.target.value)}
-            placeholder="John Doe"
-            className={styles.input_name}
-          />
+        {/* Bottom settings */}
+        <div className={styles.button_container}>
+          <div className={styles.flex}>
+            <input
+              type="text"
+              value={name}
+              onInput={(e) => setName(e.target.value)}
+              placeholder="John Doe"
+              className={styles.input_name}
+            />
+          </div>
+          <div className={styles.flex}>
+            <CreateEventButton
+              timeslots={timeslots}
+              start={startDate}
+              end={endDate}
+            />
+          </div>
+          <div className="flex">
+            <button
+              className={styles.btn_test}
+              onClick={async () => {
+                if (showOptions) {
+                  topRef.current.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest',
+                  });
+                  await sleep(200); /* wait to get to page top first */
+                  setShowOptions(!showOptions);
+                } else {
+                  setShowOptions(!showOptions);
+                  await sleep(200); /* wait for menu to render first */
+                  bottomRef.current.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest',
+                  });
+                }
+              }}
+            >
+              <BsGear size={30} />
+            </button>
+          </div>
         </div>
-        <div className={styles.flex}>
-          <CreateEventButton
-            timeslots={timeslots}
-            start={startDate}
-            end={endDate}
-          />
+
+        <div className={`${showOptions ? '' : 'hide'} w_100 `}>
+          <div className="container-padding-lg">
+            <OptionsMenu />
+          </div>
         </div>
-        <div className="flex">
-          <button
-            className={styles.btn_test}
-            onClick={async () => {
-              if (showOptions) {
-                topRef.current.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start',
-                  inline: 'nearest',
-                });
-                await sleep(200); /* wait to get to page top first */
-                setShowOptions(!showOptions);
-              } else {
-                setShowOptions(!showOptions);
-                await sleep(200); /* wait for menu to render first */
-                bottomRef.current.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start',
-                  inline: 'nearest',
-                });
-              }
-            }}
-          >
-            <BsGear size={30} />
-          </button>
-        </div>
+
+        <div ref={bottomRef}></div>
       </div>
-
-      <div className={`${showOptions ? '' : 'hide'} w_100 `}>
-        <div className="container-padding-lg">
-          <OptionsMenu />
-        </div>
-      </div>
-
-      <div ref={bottomRef}></div>
-    </div>
+    </>
   );
 };
 

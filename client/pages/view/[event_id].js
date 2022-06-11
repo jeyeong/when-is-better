@@ -10,6 +10,7 @@ import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 import styles from '../../styles/Create.module.css';
 
 import { defaultStart, defaultEnd } from '../../constants.js';
+import { NavBar } from '../../components/general/NavBar';
 
 const MINUTES_15 = 15;
 const MINUTES_30 = 30;
@@ -37,6 +38,7 @@ const CreateForm = () => {
 
   return (
     <>
+      <NavBar />
       <Head>
         {/* for the font */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

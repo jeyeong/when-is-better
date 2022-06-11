@@ -7,7 +7,7 @@ import { NavBar } from '../../components/general/NavBar';
 import { Footer } from '../../components/general/Footer';
 import { useState } from 'react';
 
-const DOMAIN_NAME = 'https://when-is-better.vercel.app/';
+const DOMAIN_NAME = 'https://when-is-better.tech/';
 
 const CreateSuccess = () => {
   const router = useRouter();
@@ -25,7 +25,7 @@ const CreateSuccess = () => {
       <NavBar />
       <div className={styles.createsuccess}>
         <h1 className={styles.header_font}>Success</h1>
-        <span>
+        <span align="center">
           Click to copy, then forward this link to your event attendees!
         </span>
         <div className={styles.margin_top}>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Grid from '@mui/material/Grid'
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
@@ -7,8 +8,10 @@ import { DateTime, Duration } from 'luxon';
 import TimeSelection from '../../components/TimeSelection';
 import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 import styles from '../../styles/Create.module.css';
+import { NavBar } from '../../components/general/NavBar';
 
 import { defaultStart, defaultEnd } from '../../constants.js';
+import { Typography } from '@mui/material';
 
 const MINUTES_15 = 15;
 const MINUTES_30 = 30;
@@ -22,6 +25,9 @@ const CreateForm = () => {
   );
   const { query, isReady } = useRouter();
   let event_id = undefined;
+  
+  const [name, setName] = useState()
+  const [description, setDescription] = useState()
 
   useEffect(() => {
     if (!('event_id' in query)) {
@@ -29,6 +35,8 @@ const CreateForm = () => {
     }
     event_id = query.event_id;
     getEventObject(query.event_id).then((res) => {
+      setName(res.event_name);
+      setDescription(res.description);
       setTimeslots(res.timeslots);
     });
   }, [isReady]);
@@ -46,7 +54,7 @@ const CreateForm = () => {
 
     const payload = {
       event_id: event_id,
-      name: 'james',
+      name: name,
       comments: 'flames',
       selected_times: availableTimes,
       time_interval_min: 60,
@@ -62,14 +70,14 @@ const CreateForm = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
 
-        Router.push(`/view/d39ec5`);
+        Router.push(`/view/${event_id}`);
       });
   };
 
   return (
     <>
+      <NavBar />
       <Head>
         {/* for the font */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -83,27 +91,49 @@ const CreateForm = () => {
           rel="stylesheet"
         />
       </Head>
-      <h1 className={styles.timeselection__header} style={{ display: 'flex', justify: 'center' }}>
-        WhenIs<span style={{ color: '#087f5b' }}>Better</span>
-      </h1>
+      <Typography variant='h5' align="center" style={{
+        paddingTop:'10px',
+        height: '40px'
+      }}>
+        {name}
+      </Typography>
+      <Typography variant='body1' align="center" style={{
+        height:'30px'
+      }}>
+        {description}
+      </Typography>
       <TimeSelection
         timeslots={timeslots}
         setTimeslots={setTimeslots}
         deltaTime={deltaTime}
-        distanceFromTop={39}
+        distanceFromTop={60 + 40 + 30}
       />
-      <Button
-        variant="contained"
-        onClick={submitForm}
-        style={{
-          backgroundColor: '#087f5b',
-          borderRadius: '50px',
-          padding: '0.5rem 2rem',
-          fontSize: '1rem',
-        }}
-      >
-        Submit
-      </Button>
+      <Grid container direction="row" justifyContent="space-evenly" alignItems="center">
+        <Grid item xs={8} md={6}>
+          <input
+            type="text"
+            value={name}
+            onInput={(e) => setName(e.target.value)}
+            placeholder="John Doe"
+            className={styles.input_name}
+          />
+        </Grid>
+        <Grid item >
+          <Button
+            variant="contained"
+            onClick={submitForm}
+            style={{
+              width:'100%',
+              backgroundColor: '#087f5b',
+              borderRadius: '50px',
+              padding: '0.5rem 2rem',
+              fontSize: '1rem',
+            }}
+          >
+            Submit
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 };
