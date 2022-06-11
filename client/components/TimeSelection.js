@@ -100,9 +100,8 @@ const TimeSelection = ({
   formMode,
 }) => {
   if (formMode) {
-    distanceFromTop += document.querySelector(
-      '#form-view-page-topsection'
-    ).scrollHeight;
+    distanceFromTop +=
+      document.querySelector('#form-view-page-topsection')?.scrollHeight ?? 0;
   }
 
   /* To detect changes in screen size: re-render component */

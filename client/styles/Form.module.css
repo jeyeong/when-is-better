@@ -43,6 +43,51 @@
   transition: border-color 0.3s;
 }
 
+/* Submit button */
+.formpage__steptwobutton {
+  animation-duration: 0.5s;
+  animation-name: animate-fade;
+  animation-fill-mode: backwards;
+}
+
+@keyframes animate-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.formpage__namebox {
+  height: 33px;
+  width: 160px;
+  border: 1px solid #aaa;
+  border-radius: 50px;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: rgba(0,0,0,.9);
+  animation-duration: 0.5s;
+  animation-name: namebox-appearance;
+  animation-fill-mode: backwards;
+}
+
+.formpage__namebox::placeholder {
+  font-size: 12px;
+}
+
+.formpage__namebox:focus {
+  outline: none;
+}
+
+@keyframes namebox-appearance {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Media queries */
 @media only screen and (max-width: 500px) {
   .formviewpage {

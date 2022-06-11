@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { DateTime, Duration } from 'luxon';
 import Head from 'next/head';
+import { CircularProgress } from '@mui/material';
 
 /* Component imports */
 import Header from '../../components/general/Header';
@@ -58,7 +59,7 @@ const CreatePage = () => {
   const [timeslots, setTimeslots] = useState([]);
   const [showTimeslotsError, setShowTimeslotsError] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
-  const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const [loadDone, setLoadDone] = useState(false);
 
   /* Additional hooks */
   const { query, isReady } = useRouter();
@@ -95,12 +96,12 @@ const CreatePage = () => {
     );
 
     setTimeslots(timeslots_arr);
-    setInitialLoadDone(true);
+    setLoadDone(true);
   }, [isReady]);
 
   /* Subsequent changes to settings */
   useEffect(() => {
-    if (initialLoadDone) {
+    if (loadDone) {
       const timeslots_arr = generateTimeSlotArray(
         startDate,
         endDate,
@@ -114,6 +115,10 @@ const CreatePage = () => {
   /* For stuff below the time select component */
   const bottomRef = useRef();
   const topRef = useRef();
+
+  if (!loadDone) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -167,7 +172,6 @@ const CreatePage = () => {
               TS_CONTAINER_BORDER_WIDTH +
               TS_CONTAINER_TB_PADDING
             }
-            showTimeslotsError={showTimeslotsError}
           />
         </div>
 
@@ -256,5 +260,21 @@ const CreatePage = () => {
     </>
   );
 };
+
+const Loading = () => (
+  <>
+    <Header />
+    <div
+      style={{
+        height: '100vh',
+        width: '100%',
+        display: 'grid',
+        placeItems: 'center',
+      }}
+    >
+      <CircularProgress color="success" />
+    </div>
+  </>
+);
 
 export default CreatePage;

@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import { NavBar } from '../../components/general/NavBar';
 import { Footer } from '../../components/general/Footer';
 
-const DOMAIN_NAME = 'https://when-is-better.vercel.app/';
+const DOMAIN_NAME = 'https://whenisbetter.tech/';
 
 const CreateSuccess = () => {
   /* Get event ID */
@@ -28,7 +28,9 @@ const CreateSuccess = () => {
       <NavBar />
       <div className={styles.createsuccess}>
         <h1>Success</h1>
-        <span style={{ marginTop: '12px' }}>
+        <span
+          style={{ marginTop: '12px', textAlign: 'center', padding: '0 4px' }}
+        >
           Click to copy, then forward this link to your event attendees!
         </span>
         <div style={{ marginTop: '20px' }}>
