@@ -72,6 +72,7 @@
 .createpage__bottombar {
   display: flex;
   column-gap: min(20px,4vw);
+  margin-top: 28px;
 }
 
 .createpage__deltatimeselector {
@@ -108,7 +109,14 @@
 }
 
 .createpage__settingstoggler > img {
+  margin-top: 1.5px;
   height: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.createpage__settingstoggler__open > img {
+  margin-top: 0;
+  transform: rotate(180deg);
 }
 
 /* Media queries */

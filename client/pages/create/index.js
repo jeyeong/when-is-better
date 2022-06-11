@@ -13,6 +13,8 @@ import EventTitle from '../../components/create-page/EventTitle';
 import EventDescription from '../../components/create-page/EventDescription';
 import TimeSelection from '../../components/TimeSelection';
 import CreateEventButton from '../../components/create-page/CreateEventButton';
+import SettingsToggler from '../../components/create-page/SettingsToggler';
+import DeltaTimeSelector from '../../components/create-page/DeltaTimeSelector';
 import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 
 /* Other imports */
@@ -57,6 +59,7 @@ const CreatePage = () => {
     generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
   );
   const [showTimeslotsError, setShowTimeslotsError] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
 
   /* Additional hooks */
@@ -111,8 +114,6 @@ const CreatePage = () => {
   }, [startDate, endDate, deltaTime]);
 
   /* For stuff below the time select component */
-  const [name, setName] = useState('');
-  const [showOptions, setShowOptions] = useState(false);
   const bottomRef = useRef();
   const topRef = useRef();
 
@@ -172,9 +173,6 @@ const CreatePage = () => {
           />
         </div>
 
-        <br />
-        <br />
-
         <div className={styles.createpage__bottombar}>
           <CreateEventButton
             timeslots={timeslots}
@@ -186,11 +184,15 @@ const CreatePage = () => {
             setShowTimeslotsError={setShowTimeslotsError}
           />
 
-          <div className={styles.createpage__deltatimeselector}>30 M</div>
+          <DeltaTimeSelector
+            deltaTime={deltaTime}
+            setDeltaTime={setDeltaTime}
+          />
 
-          <div className={styles.createpage__settingstoggler}>
-            <img src="expand_more.svg" alt="expand more" />
-          </div>
+          <SettingsToggler
+            showOptions={showOptions}
+            setShowOptions={setShowOptions}
+          />
         </div>
 
         {/* Bottom settings */}
