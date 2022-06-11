@@ -28,7 +28,7 @@ const TimeSlotAvailable = ({
     const people_unavailable = setMinusMultiple([...allRespondents], timeslot.people_available)
     const percent_available_str = (timeslot.people_available.length / allRespondents.length).toLocaleString(undefined, {style: 'percent'})
     return (
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} xl={6}>
             <Paper elevation={5} style={{
                 padding: '0.5em'
             }}>

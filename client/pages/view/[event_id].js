@@ -9,6 +9,7 @@ import TimeSlotsAvailable from '../../components/view-page/TimeSlotsAvailable'
 import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 import styles from '../../styles/Create.module.css';
 
+import Grid from '@mui/material/Grid';
 import { defaultStart, defaultEnd } from '../../constants.js';
 import { NavBar } from '../../components/general/NavBar';
 
@@ -52,21 +53,33 @@ const CreateForm = () => {
           rel="stylesheet"
         />
       </Head>
-      <h1 className={styles.timeselection__header} style={{ display: 'flex', justify: 'center' }}>
-        WhenIs<span style={{ color: '#087f5b' }}>Better</span>
-      </h1>
-      <ResultsViewTimeSlots
-        timeslots={timeslots}
-        setTimeslots={setTimeslots}
-        deltaTime={deltaTime}
-        distanceFromTop={39}
-        allRespondents={eventRespondents}
-      />
-      <TimeSlotsAvailable
-        timeslots={timeslots}
-        timeDelta={deltaDuration}
-        allRespondents={eventRespondents}
-      />
+      <Grid container spacing={1} style={{marginTop:'20px'}}>
+        <Grid item xs={12} md={6} lg={6}>
+          <ResultsViewTimeSlots
+            timeslots={timeslots}
+            setTimeslots={setTimeslots}
+            deltaTime={deltaTime}
+            distanceFromTop={39}
+            allRespondents={eventRespondents}
+            widthExpr={x => {
+              if (x > 900) {
+                // medium
+                return x / 2
+              } else {
+                return x;
+              }
+              
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} md={6} xl={6}>
+          <TimeSlotsAvailable
+            timeslots={timeslots}
+            timeDelta={deltaDuration}
+            allRespondents={eventRespondents}
+          />
+        </Grid>
+      </Grid>
     </>
   );
 };

@@ -24,18 +24,19 @@ const CreateForm = () => {
     generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
   );
   const { query, isReady } = useRouter();
-  let event_id = undefined;
+  const [event_id, setEventId] = useState();
   
-  const [name, setName] = useState()
+  const [eventName, setEventName] = useState()
+  const [responderName, setResponderName] = useState()
   const [description, setDescription] = useState()
 
   useEffect(() => {
     if (!('event_id' in query)) {
       return;
     }
-    event_id = query.event_id;
+    setEventId(query.event_id);
     getEventObject(query.event_id).then((res) => {
-      setName(res.event_name);
+      setEventName(res.event_name);
       setDescription(res.description);
       setTimeslots(res.timeslots);
     });
@@ -54,7 +55,7 @@ const CreateForm = () => {
 
     const payload = {
       event_id: event_id,
-      name: name,
+      name: responderName,
       comments: 'flames',
       selected_times: availableTimes,
       time_interval_min: 60,
@@ -95,7 +96,7 @@ const CreateForm = () => {
         paddingTop:'10px',
         height: '40px'
       }}>
-        {name}
+        {eventName}
       </Typography>
       <Typography variant='body1' align="center" style={{
         height:'30px'
@@ -112,8 +113,8 @@ const CreateForm = () => {
         <Grid item xs={8} md={6}>
           <input
             type="text"
-            value={name}
-            onInput={(e) => setName(e.target.value)}
+            value={responderName}
+            onInput={(e) => setResponderName(e.target.value)}
             placeholder="John Doe"
             className={styles.input_name}
           />

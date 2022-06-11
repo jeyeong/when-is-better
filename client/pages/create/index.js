@@ -173,6 +173,9 @@ const CreatePage = () => {
           <div className={styles.flex}>
             <CreateEventButton
               timeslots={timeslots}
+              creator={name}
+              event_name={title}
+              description={description}
               start={startDate}
               end={endDate}
             />

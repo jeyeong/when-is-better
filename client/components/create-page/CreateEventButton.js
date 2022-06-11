@@ -4,16 +4,16 @@ import Router from 'next/router';
 
 const deltaDuration = Duration.fromObject({ minutes: 60 });
 
-const CreateEventButton = ({ timeslots, start, end }) => {
+const CreateEventButton = ({ timeslots, creator, event_name, description, start, end }) => {
   const createEvent = () => {
     const availableTimes = timeslots.map((day) =>
       day.filter((slot) => slot.selected).map((slot) => slot.time.toHTTP())
     );
 
     const payload = {
-      creator: 'uncommon_hacks',
-      event_name: 'uncommon_hacks',
-      description: 'flames',
+      creator: creator,
+      event_name: event_name,
+      description: description,
       available_times: availableTimes,
       time_start: start.toHTTP(),
       time_end: end.toHTTP(),

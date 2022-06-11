@@ -115,6 +115,7 @@ const ResultsViewTimeSlots = ({
   setTimeslots,
   deltaTime,
   allRespondents,
+  widthExpr,
 }) => {
   /* To detect changes in screen size: re-render component */
   const [dimensions, setDimensions] = useState({
@@ -134,7 +135,7 @@ const ResultsViewTimeSlots = ({
     const handleScreenChange = () => {
       setDimensions({
         height: window.innerHeight,
-        width: window.innerWidth,
+        width: widthExpr(window.innerWidth),
       });
     };
     handleScreenChange();

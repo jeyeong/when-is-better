@@ -1,13 +1,22 @@
-import Head from 'next/head';
-
+import * as React from 'react'
 import styles from '../../styles/CreateSuccess.module.css';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import { NavBar } from '../../components/general/NavBar';
 import { Footer } from '../../components/general/Footer';
 import { useState } from 'react';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
-const DOMAIN_NAME = 'https://when-is-better.tech/';
+const DOMAIN_NAME = 'https://whenisbetter.tech/';
+
+// source: https://mui.com/material-ui/react-snackbar/
+const Alert = React.forwardRef(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const CreateSuccess = () => {
   const router = useRouter();
@@ -36,6 +45,18 @@ const CreateSuccess = () => {
             {`${DOMAIN_NAME}form/${event_id}`}
           </button>
         </div>
+        <Snackbar
+          open={copied}
+          autoHideDuration={2000}
+          onClose={() => {setCopied(false)}}
+          message="Copied!"
+          severity="success"
+          anchorOrigin={{vertical: "top", horizontal: "center"}}
+        >
+          <Alert severity="success" sx={{ width: '100%' }}>
+            Copied!
+          </Alert>
+        </Snackbar>
       </div>
       <Footer />
     </>
