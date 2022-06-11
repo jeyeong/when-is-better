@@ -1,16 +1,17 @@
 /* Library imports */
+import { useState } from 'react';
 import { Button } from '@mui/material';
-import { DateTime, Duration } from 'luxon';
 import Router from 'next/router';
 
-const deltaDuration = Duration.fromObject({ minutes: 60 });
+/* Other imports */
+import styles from '../../styles/Create.module.css';
 
 /* Button styles */
 const BUTTON_STYLE_ACTIVATED = {
   height: '33px',
+  width: '160px',
   backgroundColor: '#087f5b',
   borderRadius: '50px',
-  padding: '6px 60px',
   fontSize: '12px',
   transition: 'background-color 0.3s color 0.3s',
   boxShadow: 'none',
@@ -31,12 +32,17 @@ const CreateEventButton = ({
   timeslots,
   start,
   end,
+  deltaTime,
   title,
   description,
   showError,
   setShowTitleError,
   setShowTimeslotsError,
 }) => {
+  // /* Stage two */
+  // const [stageTwo, setStageTwo] = useState(false);
+  // const [name, setName] = useState('');
+
   /* Filter available times */
   const availableTimes = timeslots.map((day) =>
     day.filter((slot) => slot.selected).map((slot) => slot.time.toHTTP())
@@ -70,13 +76,13 @@ const CreateEventButton = ({
 
   const createEvent = () => {
     const payload = {
-      creator: 'uncommon_hacks',
+      creator: 'placeholder',
       event_name: title,
       description: description,
       available_times: availableTimes,
       time_start: start.toHTTP(),
       time_end: end.toHTTP(),
-      time_interval_min: 60,
+      time_interval_min: deltaTime,
     };
 
     fetch('https://when-is-better-backend.herokuapp.com/event', {
@@ -118,6 +124,19 @@ const CreateEventButton = ({
       Submit
     </Button>
   );
+
+  // return (
+  //   <div style={{ display: 'flex', flexDirection: 'column' }}>
+  //     <Button
+  //       variant="contained"
+  //       onClick={handleEventCreation}
+  //       style={BUTTON_STYLE_DEACTIVATED}
+  //     >
+  //       One more thing...
+  //     </Button>
+  //     <input placeholder="YOUR NAME" className={styles.createpage__namebox} />
+  //   </div>
+  // );
 };
 
 export default CreateEventButton;

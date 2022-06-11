@@ -35,8 +35,18 @@ const CreateSuccess = () => {
           {isReady ? (
             <Button
               variant="contained"
-              className={styles.createsuccess__link}
               onClick={copyToClipboard}
+              className={styles.createsuccess__link}
+              style={{
+                border: 'none',
+                borderRadius: '20px',
+                textTransform: 'none',
+                fontFamily: 'sans-serif',
+                fontSize: '15px',
+                backgroundColor: '#087f5b',
+                paddingLeft: '25px',
+                paddingRight: '25px',
+              }}
             >
               {link}
             </Button>

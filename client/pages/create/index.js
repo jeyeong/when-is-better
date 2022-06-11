@@ -178,6 +178,7 @@ const CreatePage = () => {
             timeslots={timeslots}
             start={startDate}
             end={endDate}
+            deltaTime={deltaTime}
             title={title}
             description={description}
             showError={showTitleError || showTimeslotsError}

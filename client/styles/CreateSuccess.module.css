@@ -7,27 +7,17 @@
 
 .createsuccess__link,
 .createsuccess__link:hover {
-  border: none;
-  border-radius: 20px;
-  text-transform: none;
-  font-family: sans-serif;
-  font-size: 15px;
-  background-color: #087f5b;
-  padding-left: 25px;
-  padding-right: 25px;
-  animation: MoveUpDown 12s linear 0s infinite;
+  animation: MoveUpDown 8s linear 0s infinite;
 }
 
 @keyframes MoveUpDown {
   0%,
   12%,
-  24%,
-  36% {
+  24% {
     transform: translateY(0);
   }
   6%,
-  18%,
-  30% {
+  18% {
     transform: translateY(-7.5px);
   }
 }
