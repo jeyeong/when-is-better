@@ -56,6 +56,11 @@
 
 .datebox__unavailable {
   background-color: #888;
+  border-top-color: transparent;
+}
+
+.datebox__unavailable + .datebox {
+  border-top-color: transparent;
 }
 
 .datebox__selected {

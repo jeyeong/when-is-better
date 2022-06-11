@@ -102,7 +102,6 @@ const SubmitForm = ({ timeslots, eventID, deltaTime }) => {
         placeholder="YOUR NAME"
         className={styles.formpage__namebox}
         style={{ marginTop: '10px' }}
-        autoFocus
       />
     </div>
   );
