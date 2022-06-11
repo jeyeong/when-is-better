@@ -6,6 +6,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { DateTime, Duration } from 'luxon';
+import Head from 'next/head';
 
 /* Component imports */
 import Header from '../../components/general/Header';
@@ -18,7 +19,6 @@ import DeltaTimeSelector from '../../components/create-page/DeltaTimeSelector';
 import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 
 /* Other imports */
-import Head from 'next/head';
 import styles from '../../styles/Create.module.css';
 import { defaultStart, defaultEnd } from '../../constants.js';
 import { generateTimeSlotArray } from '../../models/timeslots';
@@ -55,9 +55,7 @@ const CreatePage = () => {
   const [description, setDescription] = useState('');
   const [deltaTime, setDeltaTime] = useState(MINUTES_30);
   const deltaDuration = Duration.fromObject({ minutes: deltaTime });
-  const [timeslots, setTimeslots] = useState(
-    generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
-  );
+  const [timeslots, setTimeslots] = useState([]);
   const [showTimeslotsError, setShowTimeslotsError] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [initialLoadDone, setInitialLoadDone] = useState(false);

@@ -1,27 +1,81 @@
+/* Library imports */
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
-import Button from '@mui/material/Button';
-import Hammer from 'react-hammerjs';
+import { Button, CircularProgress } from '@mui/material';
+import Head from 'next/head';
 import { DateTime, Duration } from 'luxon';
-import TimeSelection from '../../components/TimeSelection';
-import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
-import styles from '../../styles/Create.module.css';
 
+/* Component imports */
+import Header from '../../components/general/Header';
+import TimeSelection from '../../components/TimeSelection';
+
+/* Other imports */
+import styles from '../../styles/Create.module.css';
+import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 import { defaultStart, defaultEnd } from '../../constants.js';
 
+/* Constants */
 const MINUTES_15 = 15;
 const MINUTES_30 = 30;
 const MINUTES_60 = 60;
 const deltaTime = MINUTES_60;
 const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
-const CreateForm = () => {
-  const [timeslots, setTimeslots] = useState(
-    generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
-  );
+const Form = () => {
+  /* States */
+  const [timeslots, setTimeslots] = useState([]);
+  const [eventDetails, setEventDetails] = useState({});
+  const [loadDone, setLoadDone] = useState(false);
+  const [validEventID, setValidEventID] = useState(true);
+
+  /* Additional hooks */
   const { query, isReady } = useRouter();
-  let event_id = undefined;
+
+  /* Get data */
+  useEffect(() => {
+    if (isReady) {
+      const event_id = query.event_id;
+      if (!event_id) {
+        setValidEventID(false);
+      } else {
+        getEventObject(event_id).then((res) => {
+          if (!res) {
+            setValidEventID(false);
+          } else {
+            setTimeslots(timeslots);
+            setEventDetails({
+              title: res.event_name ?? '<No title>',
+              description: res.description ?? '',
+              deltatime: res.deltatime ?? MINUTES_30,
+            });
+            setLoadDone(true);
+          }
+        });
+      }
+    }
+  }, [isReady]);
+
+  /* Wrong event ID view */
+  if (!validEventID) {
+    return <InvalidEventID />;
+  }
+
+  /* Loading view */
+  if (!loadDone) {
+    return <Loading />;
+  }
+
+  return (
+    <>
+      {/* <Header /> */}
+      <div style={{ height: '500px' }}>Done!</div>
+    </>
+  );
+};
+
+const Form2 = () => {
+  const [timeslots, setTimeslots] = useState([]);
+  const { query, isReady } = useRouter();
 
   useEffect(() => {
     if (!('event_id' in query)) {
@@ -83,7 +137,10 @@ const CreateForm = () => {
           rel="stylesheet"
         />
       </Head>
-      <h1 className={styles.timeselection__header} style={{ display: 'flex', justify: 'center' }}>
+      <h1
+        className={styles.timeselection__header}
+        style={{ display: 'flex', justify: 'center' }}
+      >
         WhenIs<span style={{ color: '#087f5b' }}>Better</span>
       </h1>
       <TimeSelection
@@ -108,4 +165,43 @@ const CreateForm = () => {
   );
 };
 
-export default CreateForm;
+const InvalidEventID = () => (
+  <>
+    <Header />
+    <div
+      style={{
+        height: '100vh',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        placeItems: 'center',
+      }}
+    >
+      <img
+        src="../close.svg"
+        alt="wrong event ID"
+        style={{ height: '100px', marginBottom: '24px' }}
+      />
+      <p style={{ fontSize: '15px', fontWeight: '600' }}>Invalid Event ID</p>
+    </div>
+  </>
+);
+
+const Loading = () => (
+  <>
+    <Header />
+    <div
+      style={{
+        height: '100vh',
+        width: '100%',
+        display: 'grid',
+        placeItems: 'center',
+      }}
+    >
+      <CircularProgress color="success" />
+    </div>
+  </>
+);
+
+export default Form;

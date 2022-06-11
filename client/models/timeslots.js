@@ -46,7 +46,12 @@ const getDaysInIntervalFromEnd = (interval) => {
  *   editLock - bool
  * }
  */
-const generateTimeSlotArray = (start, end, deltaDuration, available_default) => {
+const generateTimeSlotArray = (
+  start,
+  end,
+  deltaDuration,
+  available_default
+) => {
   const interval = Interval.fromDateTimes(start, end);
   const dayStarts = getDaysInIntervalFromStart(interval);
   const dayEnds = getDaysInIntervalFromEnd(interval);
@@ -125,7 +130,7 @@ const getEventObject = (event_id) => {
           }
         });
       });
-      event.respondents = resp.responses.map(r => r.name)
+      event.respondents = resp.responses.map((r) => r.name);
 
       timeslots.forEach((day_timeslots) => {
         day_timeslots.forEach((timeslot) => {
@@ -141,6 +146,7 @@ const getEventObject = (event_id) => {
       });
 
       event.timeslots = timeslots;
+      event.deltatime = resp.event.time_interval_min;
       return event;
     });
 
