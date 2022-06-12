@@ -22,7 +22,7 @@ const DATETITLE_BOTTOM_MARGIN = 12;
 const COLUMN_BORDER_WIDTH = 1;
 const LG_SM_THRESHOLD = 800;
 const SLOT_HEIGHTS = {
-  15: 12.5,
+  15: 10,
   30: 20,
   60: 40,
 };
