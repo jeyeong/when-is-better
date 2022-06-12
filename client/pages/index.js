@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Head from 'next/head';
 import { Button } from '@mui/material';
 import styles from '../styles/Home.module.css';
 import { BasicDatePicker } from '../components/homepage/DatePicker';
@@ -51,6 +52,9 @@ const LandingPage = () => {
 
   return (
     <>
+      <Head>
+        <title>WhenIsBetter</title>
+      </Head>
       <NavBar />
 
       <div className="max-width-container">

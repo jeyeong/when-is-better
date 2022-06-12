@@ -1,6 +1,7 @@
 import styles from '../../styles/CreateSuccess.module.css';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { Button, Snackbar, Alert } from '@mui/material';
 import { NavBar } from '../../components/general/NavBar';
 import { Footer } from '../../components/general/Footer';
@@ -25,6 +26,9 @@ const CreateSuccess = () => {
 
   return (
     <>
+      <Head>
+        <title>WhenIsBetter</title>
+      </Head>
       <NavBar />
       <div className={styles.createsuccess}>
         <h1>Success</h1>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Grid } from '@mui/material';
+import Head from 'next/head';
 import { DateTime, Duration } from 'luxon';
 
 /* Component imports */
@@ -81,6 +82,9 @@ const CreateForm = () => {
 
   return (
     <>
+      <Head>
+        <title>WhenIsBetter</title>
+      </Head>
       <Header />
 
       <Grid
