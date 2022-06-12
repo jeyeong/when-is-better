@@ -81,7 +81,7 @@
   display: grid;
   place-items: center;
   font-size: 12px;
-  background-color: #56f56e;
+  background-color: #aceca1;
   border-radius: 50px;
   cursor: pointer;
 }
@@ -92,7 +92,7 @@
   display: grid;
   place-items: center;
   font-size: 12px;
-  background-color: #52f56a;
+  background-color: #c9f2c7;
   border-radius: 50px;
   cursor: pointer;
 }
@@ -103,7 +103,7 @@
   display: grid;
   place-items: center;
   font-size: 12px;
-  background-color: #52f56a;
+  background-color: #c9f2c7;
   border-radius: 50px;
   cursor: pointer;
 }
