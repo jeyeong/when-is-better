@@ -15,27 +15,24 @@ const ToggleButton = styled(MuiToggleButton)({
 });
 
 const children = [
-  <ToggleButton value="15" key="15" disableRipple={true}>
+  <ToggleButton value={15} key="15" disableRipple={true}>
     15
   </ToggleButton>,
-  <ToggleButton value="30" key="30" disableRipple={true}>
+  <ToggleButton value={30} key="30" disableRipple={true}>
     30
   </ToggleButton>,
-  <ToggleButton value="60" key="60" disableRipple={true}>
+  <ToggleButton value={60} key="60" disableRipple={true}>
     60
   </ToggleButton>,
 ];
 
-export const Increment = () => {
-  const timeInterval = '15';
-
-  const handleChange = () => {
-    console.log('Yet to implement!!!');
-    throw 'to-do';
+export const Increment = ({ deltaTime, setDeltaTime }) => {
+  const handleChange = (e, newDeltaTime) => {
+    setDeltaTime(newDeltaTime);
   };
 
   const control = {
-    value: timeInterval,
+    value: deltaTime,
     onChange: handleChange,
     exclusive: true,
   };

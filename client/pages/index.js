@@ -30,7 +30,7 @@ const LandingPage = () => {
 
   const takeToCreatePage = () => {
     if (startDate === 'startDateNotSet' || endDate === 'endDateNotSet') {
-      setErrorMsg('Null dates are not allowed');
+      setErrorMsg('Please enter your dates!');
       setIsInvalidDate(true);
       return;
     }

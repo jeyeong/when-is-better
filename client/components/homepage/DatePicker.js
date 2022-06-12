@@ -52,7 +52,9 @@ export const BasicDatePicker = ({ label, setDate }) => {
           label={label}
           value={value}
           onChange={onChange}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(params) => (
+            <TextField {...params} fullWidth size="small" />
+          )}
           sx={{
             color: '#087f5b',
           }}

@@ -1,21 +1,54 @@
 import React from 'react';
 import { useState } from 'react';
 
-const times = ['8:00AM', '9:00AM', '10:00AM'];
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { Menu } from '@mui/material';
 
-export const SelectHour = () => {
-  const [hour, setHour] = useState('8:00AM');
+const hours = [];
+for (var i = 0; i < 24; i++) {
+  hours.push(i);
+}
+
+const numToFormat = (num) => {
+  // Technically noon is 12PM; midnight is 12 AM; confusing AF.
+  if (num === 0) {
+    return 'Midnight';
+  } else if (num === 12) {
+    return 'Noon';
+  } else {
+    if (num < 12) {
+      return `${num} AM`;
+    } else {
+      return `${num % 12} PM`;
+    }
+  }
+};
+
+export const SelectHour = ({ defaultHour, setHour, isStartHour }) => {
+  const handleChange = (event) => {
+    setHour(event.target.value);
+  };
 
   return (
-    <label>
-      <select value={hour} onChange={(e) => setHour(e.target.value)}>
-        {times.map((time) => (
-          <option key={time} value={time}>
-            {time}
-          </option>
-        ))}
-      </select>
-      <div>Selected hour: {hour}</div>
-    </label>
+    <Box sx={{ minWidth: 200 }}>
+      <FormControl fullWidth size="small">
+        <Select
+          labelId="select-label"
+          id="demo-simple-select"
+          value={defaultHour}
+          onChange={handleChange}
+        >
+          {hours.map((hour) => (
+            <MenuItem key={hour} value={hour}>
+              {numToFormat(hour)}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
   );
 };

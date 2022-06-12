@@ -22,7 +22,12 @@ const ToggleButton = styled(MuiToggleButton)({
   },
 });
 
-export const OptionsMenu = () => {
+export const OptionsMenu = ({
+  deltaTime,
+  setDeltaTime,
+  startHour,
+  setStartHour,
+}) => {
   /* Code for TimeZone */
   const [selectedTimezone, setSelectedTimezone] = useState(
     Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -50,7 +55,32 @@ export const OptionsMenu = () => {
         <div>
           <ul className={styles.options_list}>
             <li>
-              start Date
+              Start Hour
+              <div>
+                <SelectHour
+                  defaultHour={startHour}
+                  setHour={setStartHour}
+                  isStartHour={true}
+                />
+              </div>
+            </li>
+            <li>
+              End Hour
+              <div>
+                TO DO
+                {/* <SelectHour /> */}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+{
+  /* <li>
+              Start Date
               <div>
                 <BasicDatePicker
                   label="Start"
@@ -59,27 +89,17 @@ export const OptionsMenu = () => {
               </div>
             </li>
             <li>
-              end Date
+              End Date
               <div>
                 <BasicDatePicker
                   label="Start"
                   setDate={(val) => setStartDate(val)}
                 />
               </div>
-            </li>
-            <li>
-              Hour Start:
-              <div>
-                <SelectHour />
-              </div>
-            </li>
-            <li>
-              Hour End:
-              <div>
-                <SelectHour />
-              </div>
-            </li>
-            <li>
+            </li> */
+}
+{
+  /* <li>
               Timezone
               <div className="select-wrapper">
                 <TimezoneSelect
@@ -88,14 +108,11 @@ export const OptionsMenu = () => {
                 />
               </div>
               <div>currTZ: {currTZ}</div>
-            </li>
-            <li>
+            </li> */
+}
+{
+  /* <li>
               Increment
-              <Increment />
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-};
+              <Increment deltaTime={deltaTime} setDeltaTime={setDeltaTime} />
+            </li> */
+}
