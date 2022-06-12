@@ -7,24 +7,27 @@ import styles from '../styles/TimeSelection.module.css';
 
 /* Constants */
 const COLUMN_SETTINGS_SM = {
-  width: 115,
-  gap: 25,
+  width: 100,
+  gap: 20,
   padding: 15,
 };
 const COLUMN_SETTINGS_LG = {
-  width: 200,
-  gap: 40,
+  width: 175,
+  gap: 35,
   padding: 100,
 };
-const DATETITLE_HEIGHT = 42;
+const DATETITLE_HEIGHT = 38;
 const DATETITLE_BOTTOM_MARGIN = 12;
-const COLUMN_BORDER_WIDTH = 2;
+const COLUMN_BORDER_WIDTH = 1;
 const LG_SM_THRESHOLD = 800;
 const SLOT_HEIGHTS = {
   15: 12.5,
   30: 20,
   60: 40,
 };
+const PAGE_PADDING_CONST_LG = 0.8;
+const PAGE_PADDING_CONST_MD = 0.75;
+const PAGE_PADDING_CONST_SM = 0.9;
 
 /* Individual time selection columns */
 const TimeSelectionDay = ({
@@ -54,7 +57,16 @@ const TimeSelectionDay = ({
       >
         <div className={styles.datebox__container}>
           {groupDaySlots(day, deltaTime).map((slotGroup, i) => (
-            <div key={i} className={styles.slot_group}>
+            <div
+              key={i}
+              className={`${styles.slot_group} ${
+                slotGroup[0].selected ? styles.slot_group_firstselected : ''
+              } ${
+                slotGroup[slotGroup.length - 1].selected
+                  ? styles.slot_group_lastselected
+                  : ''
+              }`}
+            >
               {slotGroup.map((slot, i) => (
                 <div
                   className={`${styles.datebox} ${
@@ -86,7 +98,13 @@ const TimeSelection = ({
   setTimeslots,
   deltaTime,
   distanceFromTop,
+  formMode,
 }) => {
+  if (formMode) {
+    distanceFromTop +=
+      document.querySelector('#form-view-page-topsection')?.scrollHeight ?? 0;
+  }
+
   /* To detect changes in screen size: re-render component */
   const [dimensions, setDimensions] = useState({
     height: 0,
@@ -131,7 +149,8 @@ const TimeSelection = ({
     distanceFromTop +
     descriptionBoxHeight +
     DATETITLE_HEIGHT +
-    DATETITLE_BOTTOM_MARGIN;
+    DATETITLE_BOTTOM_MARGIN +
+    1; // Padding of timeselection container
 
   /* Finds index associated with y-coordinate */
   const findTimeIndex = (y) => {
@@ -224,9 +243,18 @@ const TimeSelection = ({
     setFirstAction({ taken: false, isSelection: false });
   };
 
+  /* Page padding constant to use */
+  const pagePaddingConst =
+    dimensions.width > 500
+      ? dimensions.width > 800
+        ? PAGE_PADDING_CONST_LG
+        : PAGE_PADDING_CONST_MD
+      : PAGE_PADDING_CONST_SM;
+
   /* Compute number of columns to show */
   const numberOfColumns = Math.floor(
-    (dimensions.width - columnDimensions.padding) / columnDimensions.width
+    (dimensions.width * pagePaddingConst - columnDimensions.padding) /
+      columnDimensions.width
   );
 
   /* Current page */

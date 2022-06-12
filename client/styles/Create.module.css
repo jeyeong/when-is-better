@@ -3,30 +3,36 @@
   flex-direction: column;
   align-items: center;
   padding: 0 7.5%;
-  font-family: 'Open Sans';
+  background-color:#f8f9fa;
 }
 
 /* Title */
-.createpage__header {
+.createpage__title {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.createpage__header > input {
-  width: 50vw;
+.createpage__title > input {
+  width: 90vw;
   min-width: min(100%, 400px);
   border: none;
   outline: none;
   text-align: center;
-  font-size: 28px;
+  font-size: 26px;
   color: #000000;
+  letter-spacing: 0.3px;
   background-color: transparent;
 }
 
-.createpage__header > input::placeholder {
+.createpage__title > input::placeholder {
   color: #000000;
   text-align: center;
+  transition: color 0.3s;
+}
+
+.createpage__title__error > input::placeholder {
+  color: #ed4337;
 }
 
 /* Description */
@@ -46,6 +52,84 @@
   color: rgb(64, 64, 64);
   background-color: transparent;
 }
+
+/* Time selection container */
+.createpage__tscontainer {
+  width: max-content;
+  max-width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #dddce3;
+  border-radius: 5px;
+  padding: 0 55px;
+  transition: border-color 0.3s;
+}
+
+.createpage__tscontainer__error {
+  border: 2px solid #ed4337;
+}
+
+/* Bottom bar */
+.createpage__bottombar {
+  display: flex;
+  column-gap: min(20px,4vw);
+  margin-top: 28px;
+}
+
+.createpage__deltatimeselector {
+  height: 33px;
+  width: 50px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  background-color: #56f56e;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.createpage__deltatimeselector {
+  height: 33px;
+  width: 50px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  background-color: #52F56A;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.createpage__settingstoggler {
+  height: 33px;
+  width: 33px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  background-color: #52F56A;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.createpage__settingstoggler > img {
+  margin-top: 1.5px;
+  height: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.createpage__settingstoggler__open > img {
+  margin-top: 0;
+  transform: rotate(180deg);
+}
+
+/* Media queries */
+@media only screen and (max-width: 500px) {
+  .createpage {
+    padding: 0 2.5%;
+  }
+
+  .createpage__tscontainer {
+    padding: 0 30px;
+  }
+}
+
 
 
 

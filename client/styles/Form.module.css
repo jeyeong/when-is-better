@@ -1,0 +1,106 @@
+.formpage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 7.5%;
+  background-color:#f8f9fa;
+}
+
+.viewpage {
+  padding: 0 7.5%;
+  background-color:#f8f9fa;
+}
+
+/* Top section */
+.formviewpage__topsection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formviewpage__title {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.formviewpage__title > span {
+  font-size: 26px;
+  color: #000000;
+  letter-spacing: 0.3px;
+}
+
+.formviewpage__description {
+  width: 90%;
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+}
+
+/* Time selection container */
+.formviewpage__tscontainer {
+  width: max-content;
+  max-width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #dddce3;
+  border-radius: 5px;
+  padding: 0 55px;
+  transition: border-color 0.3s;
+}
+
+/* Submit button */
+.formpage__steptwobutton {
+  animation-duration: 0.5s;
+  animation-name: animate-fade;
+  animation-fill-mode: backwards;
+}
+
+@keyframes animate-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.formpage__namebox {
+  height: 33px;
+  width: 160px;
+  border: 1px solid #aaa;
+  border-radius: 50px;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: rgba(0,0,0,.9);
+  animation-duration: 0.5s;
+  animation-name: namebox-appearance;
+  animation-fill-mode: backwards;
+}
+
+.formpage__namebox::placeholder {
+  font-size: 12px;
+}
+
+.formpage__namebox:focus {
+  outline: none;
+}
+
+@keyframes namebox-appearance {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Media queries */
+@media only screen and (max-width: 500px) {
+  .formpage,
+  .viewpage {
+    padding: 0 2.5%;
+  }
+
+  .formviewpage__tscontainer {
+    padding: 0 30px;
+  }
+}

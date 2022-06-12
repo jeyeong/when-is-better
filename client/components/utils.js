@@ -51,7 +51,7 @@ exports.generateDateTimeArray = (start, end, deltaDuration) => {
 };
 
 exports.getStringDatesFromArray = (timeslots) => {
-  if (timeslots === null || timeslots === undefined) {
+  if (timeslots === null || timeslots === undefined || timeslots.length === 0) {
     return [];
   }
   const start = timeslots[0][0].time;

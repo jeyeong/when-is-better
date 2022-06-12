@@ -1,10 +1,3 @@
-/* External container: to center the timeselection element */
-.timeselection {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
 /* Contains the timeselection element */
 .timeselection__container {
   display: flex;
@@ -16,24 +9,25 @@
 
 /* Column styling */
 .timeselection__datetitle {
-  font-size: 15px;
+  font-size: 13px;
+  letter-spacing: 0.3px;
   text-align: center;
   white-space: pre-line;
   margin: 0;
 }
 
 .datebox__container {
-  border: 2px solid #555;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px 1px rgba(0,0,0,0.2);
+  border: 1px solid #585858;
+  border-radius: 4px;
+  box-shadow: 0 0.5px 1px 1px rgba(0,0,0,0.15);
+  padding: 1px;
   overflow: hidden;
 }
 
 /* Slot group */
 .slot_group {
   position: relative;
-  border-top: 1px solid #555;
-  border-bottom: 1px solid #555;
+  border-top: 1px solid rgba(0,0,0,.4);
 }
 
 .slot_group:first-child {
@@ -44,33 +38,51 @@
   border-bottom: none;
 }
 
+.slot_group_firstselected {
+  border-top-color: transparent;
+}
+
+.slot_group_lastselected + .slot_group {
+  border-top-color: transparent;
+}
+
 /* Dateboxes */
 .datebox {
   width: 100%;
-  border-top: 1px dashed #bbb;
+  border-top: 1.5px dashed #bbbb;
   display: grid;
   place-items: center;
 }
 
 .datebox__unavailable {
-  background-color: gray;
-  color: gray;
+  background-color: #888;
+  border-top-color: transparent;
+}
+
+.datebox__unavailable + .datebox {
+  border-top-color: transparent;
 }
 
 .datebox__selected {
-  background-color: rgb(111, 241, 130);
+  background-color: #52f56a;
+  border-top-color: transparent;
+}
+
+.datebox__selected + .datebox {
+  border-top-color: transparent;
 }
 
 .time_str {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.3px;
   position: absolute;
   width: 100%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  z-index: 98;
 }
 
 .timebox:first-of-type {
@@ -82,25 +94,32 @@
 .timeselection__navleft,
 .timeselection__navright {
   position: absolute;
-  top: 6px;
-  font-size: 18px;
+  top: 3px;
+  font-size: 16px;
   cursor: pointer;
   color: rgba(0,0,0,0.9);
+  user-select: none;
 }
 
 .timeselection__navleft {
-  left: -10px;
+  left: -13px;
 }
 
 .timeselection__navright {
-  right: -10px;
+  right: -13px;
 }
 
 .timeselection__nav__grayed {
   color: #ccc;
-  cursor:default;
+  cursor: default;
 }
 
+/* Media queries */
+@media only screen and (max-width: 800px) {
+  .timeselection__datetitle, .time_str {
+    font-size: 12px;
+  }
+}
 
 
 

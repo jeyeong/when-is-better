@@ -1,16 +1,27 @@
+/* Library imports */
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import Router, { useRouter } from 'next/router';
-import Button from '@mui/material/Button';
-import Hammer from 'react-hammerjs';
+import { useRouter } from 'next/router';
+import { Grid } from '@mui/material';
 import { DateTime, Duration } from 'luxon';
-import ResultsViewTimeSlots from '../../components/view-page/ResultsViewTimeSlots'
-import TimeSlotsAvailable from '../../components/view-page/TimeSlotsAvailable'
-import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
-import styles from '../../styles/Create.module.css';
 
-import { defaultStart, defaultEnd } from '../../constants.js';
+/* Component imports */
+import Loading from '../../components/general/Loading';
+import Header from '../../components/general/Header';
+import EventTitle from '../../components/form-view-page/EventTitle';
+import EventDescription from '../../components/form-view-page/EventDescription';
+import ResultsViewTimeSlots from '../../components/view-page/ResultsViewTimeSlots';
+import TimeSlotsAvailable from '../../components/view-page/TimeSlotsAvailable';
 
+/* Other imports */
+import styles from '../../styles/Form.module.css';
+import { getEventObject } from '../../models/timeslots';
+
+/* Constants */
+const TOP_PADDING = 45; // space above the title
+const TITLE_BOTTOM_MARGIN = 18;
+const DESCRIPTION_BOTTOM_MARGIN = 24;
+const TS_CONTAINER_BORDER_WIDTH = 1;
+const TS_CONTAINER_TB_PADDING = 25;
 const MINUTES_15 = 15;
 const MINUTES_30 = 30;
 const MINUTES_60 = 60;
@@ -18,55 +29,154 @@ const deltaTime = MINUTES_60;
 const deltaDuration = Duration.fromObject({ minutes: deltaTime });
 
 const CreateForm = () => {
-  const [timeslots, setTimeslots] = useState(
-    generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
-  );
-  const { query, isReady } = useRouter();
-  
-  const [eventRespondents, setEventRespondents] = useState([])
+  /* States */
+  const [timeslots, setTimeslots] = useState([]);
+  const [eventDetails, setEventDetails] = useState({});
+  const [eventRespondents, setEventRespondents] = useState([]);
+  const [loadDone, setLoadDone] = useState(false);
+  const [validEventID, setValidEventID] = useState(true);
 
+  /* Additional hooks */
+  const { query, isReady } = useRouter();
+
+  /* Get data */
   useEffect(() => {
-    if (!('event_id' in query)) {
-      return;
+    if (isReady) {
+      const event_id = query.event_id;
+      if (!event_id) {
+        setValidEventID(false);
+      } else {
+        getEventObject(event_id).then((res) => {
+          if (!res) {
+            setValidEventID(false);
+          } else {
+            setTimeslots(res.timeslots);
+            setEventRespondents(res.respondents);
+            setEventDetails({
+              title: res.event_name || '<No title>',
+              description: res.description ?? '',
+              deltaTime: res.deltatime ?? MINUTES_60,
+            });
+            setLoadDone(true);
+          }
+        });
+      }
     }
-    getEventObject(query.event_id).then((res) => {
-      setEventRespondents(res.respondents)
-      setTimeslots(res.timeslots);
-    });
   }, [isReady]);
+
+  /* Wrong event ID view */
+  if (!validEventID) {
+    return <InvalidEventID />;
+  }
+
+  /* Loading view */
+  if (!loadDone) {
+    return (
+      <>
+        <Header />
+        <Loading />
+      </>
+    );
+  }
 
   return (
     <>
-      <Head>
-        {/* for the font */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="true"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Open+Sans:ital,wght@0,400;0,800;1,400&family=Raleway+Dots&family=Raleway:wght@100;400;900&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
-      <h1 className={styles.timeselection__header} style={{ display: 'flex', justify: 'center' }}>
-        WhenIs<span style={{ color: '#087f5b' }}>Better</span>
-      </h1>
-      <ResultsViewTimeSlots
-        timeslots={timeslots}
-        setTimeslots={setTimeslots}
-        deltaTime={deltaTime}
-        distanceFromTop={39}
-        allRespondents={eventRespondents}
-      />
-      <TimeSlotsAvailable
-        timeslots={timeslots}
-        timeDelta={deltaDuration}
-        allRespondents={eventRespondents}
-      />
+      <Header />
+
+      <Grid
+        container
+        className={styles.viewpage}
+        style={{
+          paddingTop: `${TOP_PADDING}px`,
+          paddingBottom: '40px',
+          rowGap: '24px',
+        }}
+      >
+        <Grid
+          item
+          xs={12}
+          md={6}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            placeItems: 'center',
+          }}
+        >
+          <div className={styles.formviewpage__topsection}>
+            <EventTitle
+              title={eventDetails.title}
+              titleBottomMargin={TITLE_BOTTOM_MARGIN}
+            />
+
+            <EventDescription
+              description={eventDetails.description}
+              bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
+              titleBottomMargin={TITLE_BOTTOM_MARGIN}
+            />
+          </div>
+
+          <div
+            className={styles.formviewpage__tscontainer}
+            style={{
+              paddingTop: `${TS_CONTAINER_TB_PADDING}px`,
+              paddingBottom: `${20}px`,
+            }}
+          >
+            <ResultsViewTimeSlots
+              timeslots={timeslots}
+              setTimeslots={setTimeslots}
+              deltaTime={deltaTime}
+              distanceFromTop={39}
+              allRespondents={eventRespondents}
+              widthExpr={(x) => {
+                if (x > 900) {
+                  // medium
+                  return x / 2;
+                } else {
+                  return x;
+                }
+              }}
+            />
+          </div>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          style={{ display: 'flex', justifyContent: 'center' }}
+        >
+          <TimeSlotsAvailable
+            timeslots={timeslots}
+            timeDelta={eventDetails.deltaTime}
+            allRespondents={eventRespondents}
+          />
+        </Grid>
+      </Grid>
     </>
   );
 };
+
+const InvalidEventID = () => (
+  <>
+    <Header />
+    <div
+      style={{
+        height: '100vh',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        placeItems: 'center',
+      }}
+    >
+      <img
+        src="../close.svg"
+        alt="wrong event ID"
+        style={{ height: '100px', marginBottom: '24px' }}
+      />
+      <p style={{ fontSize: '15px', fontWeight: '600' }}>Invalid Event ID</p>
+    </div>
+  </>
+);
 
 export default CreateForm;

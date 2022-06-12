@@ -6,20 +6,24 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { DateTime, Duration } from 'luxon';
-import { BsGear } from 'react-icons/bs';
+import Head from 'next/head';
+import { CircularProgress } from '@mui/material';
 
 /* Component imports */
+import Loading from '../../components/general/Loading';
+import Header from '../../components/general/Header';
 import EventTitle from '../../components/create-page/EventTitle';
 import EventDescription from '../../components/create-page/EventDescription';
 import TimeSelection from '../../components/TimeSelection';
 import CreateEventButton from '../../components/create-page/CreateEventButton';
+import SettingsToggler from '../../components/create-page/SettingsToggler';
+import DeltaTimeSelector from '../../components/create-page/DeltaTimeSelector';
 import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 
 /* Other imports */
-import Head from 'next/head';
 import styles from '../../styles/Create.module.css';
 import { defaultStart, defaultEnd } from '../../constants.js';
-import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
+import { generateTimeSlotArray } from '../../models/timeslots';
 
 /******************
  *    Settings    *
@@ -28,10 +32,12 @@ import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 const sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
 
 /* Constants */
-const TOP_PADDING = 12; // space above the title
+const TOP_PADDING = 34; // space above the title
 const TITLE_HEIGHT = 60;
-const TITLE_BOTTOM_MARGIN = 4;
+const TITLE_BOTTOM_MARGIN = 6;
 const DESCRIPTION_BOTTOM_MARGIN = 16;
+const TS_CONTAINER_BORDER_WIDTH = 1;
+const TS_CONTAINER_TB_PADDING = 25;
 
 /* make deltaDuration programmatic */
 const MINUTES_15 = 15;
@@ -45,15 +51,16 @@ const MINUTES_60 = 60;
 const CreatePage = () => {
   /* States */
   const [startDate, setStartDate] = useState(null); // startDate is beginning of first day
-  const [endDate, setEndDate] = useState(null);     // endDate is end of last day
+  const [endDate, setEndDate] = useState(null); // endDate is end of last day
   const [title, setTitle] = useState('');
+  const [showTitleError, setShowTitleError] = useState(false);
   const [description, setDescription] = useState('');
-  const [deltaTime, setDeltaTime] = useState(MINUTES_60);
+  const [deltaTime, setDeltaTime] = useState(MINUTES_30);
   const deltaDuration = Duration.fromObject({ minutes: deltaTime });
-  const [timeslots, setTimeslots] = useState(
-    generateTimeSlotArray(defaultStart, defaultEnd, deltaDuration, true)
-  );
-  const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const [timeslots, setTimeslots] = useState([]);
+  const [showTimeslotsError, setShowTimeslotsError] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const [loadDone, setLoadDone] = useState(false);
 
   /* Additional hooks */
   const { query, isReady } = useRouter();
@@ -90,12 +97,12 @@ const CreatePage = () => {
     );
 
     setTimeslots(timeslots_arr);
-    setInitialLoadDone(true);
+    setLoadDone(true);
   }, [isReady]);
 
   /* Subsequent changes to settings */
   useEffect(() => {
-    if (initialLoadDone) {
+    if (loadDone) {
       const timeslots_arr = generateTimeSlotArray(
         startDate,
         endDate,
@@ -104,19 +111,23 @@ const CreatePage = () => {
       );
       setTimeslots(timeslots_arr);
     }
-  }, [startDate, endDate, deltaTime])
+  }, [startDate, endDate, deltaTime]);
 
   /* For stuff below the time select component */
-  const [name, setName] = useState('');
-  const [showOptions, setShowOptions] = useState(false);
   const bottomRef = useRef();
   const topRef = useRef();
 
+  if (!loadDone) {
+    return (
+      <>
+        <Header />
+        <Loading />
+      </>
+    );
+  }
+
   return (
-    <div
-      className={styles.createpage}
-      style={{ paddingTop: `${TOP_PADDING}px` }}
-    >
+    <>
       <Head>
         <meta
           name="viewport"
@@ -124,37 +135,78 @@ const CreatePage = () => {
         />
       </Head>
 
-      <div ref={topRef}></div>
+      <Header />
 
-      <EventTitle
-        title={title}
-        setTitle={setTitle}
-        titleHeight={TITLE_HEIGHT}
-        titleBottomMargin={TITLE_BOTTOM_MARGIN}
-      />
+      <div
+        className={styles.createpage}
+        style={{ paddingTop: `${TOP_PADDING}px` }}
+      >
+        <div ref={topRef}></div>
 
-      <EventDescription
-        bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
-        description={description}
-        setDescription={setDescription}
-      />
+        <EventTitle
+          title={title}
+          setTitle={setTitle}
+          titleHeight={TITLE_HEIGHT}
+          titleBottomMargin={TITLE_BOTTOM_MARGIN}
+          showTitleError={showTitleError}
+        />
 
-      <TimeSelection
-        timeslots={timeslots}
-        setTimeslots={setTimeslots}
-        deltaTime={deltaTime}
-        distanceFromTop={
-          TOP_PADDING +
-          TITLE_HEIGHT +
-          TITLE_BOTTOM_MARGIN +
-          DESCRIPTION_BOTTOM_MARGIN
-        }
-      />
+        <EventDescription
+          bottomMargin={DESCRIPTION_BOTTOM_MARGIN}
+          description={description}
+          setDescription={setDescription}
+        />
 
-      <br />
-      <br />
+        <div
+          className={`${styles.createpage__tscontainer} ${
+            showTimeslotsError ? styles.createpage__tscontainer__error : ''
+          }`}
+          style={{
+            paddingTop: `${TS_CONTAINER_TB_PADDING}px`,
+            paddingBottom: `${20}px`,
+          }}
+        >
+          <TimeSelection
+            timeslots={timeslots}
+            setTimeslots={setTimeslots}
+            deltaTime={deltaTime}
+            distanceFromTop={
+              TOP_PADDING +
+              TITLE_HEIGHT +
+              TITLE_BOTTOM_MARGIN +
+              DESCRIPTION_BOTTOM_MARGIN +
+              TS_CONTAINER_BORDER_WIDTH +
+              TS_CONTAINER_TB_PADDING
+            }
+          />
+        </div>
 
-      {/* Bottom settings */}
+        <div className={styles.createpage__bottombar}>
+          <CreateEventButton
+            timeslots={timeslots}
+            start={startDate}
+            end={endDate}
+            deltaTime={deltaTime}
+            title={title}
+            description={description}
+            showError={showTitleError || showTimeslotsError}
+            setShowTitleError={setShowTitleError}
+            setShowTimeslotsError={setShowTimeslotsError}
+          />
+
+          <DeltaTimeSelector
+            deltaTime={deltaTime}
+            setDeltaTime={setDeltaTime}
+          />
+
+          <SettingsToggler
+            showOptions={showOptions}
+            setShowOptions={setShowOptions}
+          />
+        </div>
+
+        {/* Bottom settings */}
+        {/*
       <div className={styles.button_container}>
         <div className={styles.flex}>
           <input
@@ -182,11 +234,11 @@ const CreatePage = () => {
                   block: 'start',
                   inline: 'nearest',
                 });
-                await sleep(200); /* wait to get to page top first */
+                await sleep(200); // wait to get to page top first
                 setShowOptions(!showOptions);
               } else {
                 setShowOptions(!showOptions);
-                await sleep(200); /* wait for menu to render first */
+                await sleep(200); // wait for menu to render first
                 bottomRef.current.scrollIntoView({
                   behavior: 'smooth',
                   block: 'start',
@@ -207,7 +259,11 @@ const CreatePage = () => {
       </div>
 
       <div ref={bottomRef}></div>
-    </div>
+      */}
+
+        <br />
+      </div>
+    </>
   );
 };
 
