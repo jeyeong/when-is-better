@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -36,11 +37,14 @@ const theme = createTheme({
 });
 
 export const BasicDatePicker = ({ label, setDate, defaultDate }) => {
-  const [value, setValue] = React.useState(defaultDate);
-  console.log('defaultDate: ', defaultDate);
+  // console.log('defaultDate: ', defaultDate);
+  const [value, setValue] = useState(defaultDate);
+  // const date = new Date();
+  // const [value, setValue] = useState(date);
 
   const onChange = (newValue) => {
     setValue(newValue);
+    console.log('New value: ', newValue);
     if (newValue != null) {
       setDate(newValue.toHTTP());
     }

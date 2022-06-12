@@ -31,7 +31,6 @@ import { generateTimeSlotArray, getEventObject } from '../../models/timeslots';
 /******************
  *    Settings    *
  ******************/
-
 const sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
 
 /* Constants */
@@ -43,7 +42,6 @@ const DESCRIPTION_BOTTOM_MARGIN = 16;
 /****************
  *     Main     *
  ****************/
-
 const CreatePage = () => {
   /* States for user input */
   const [title, setTitle] = useState('');
@@ -56,12 +54,26 @@ const CreatePage = () => {
   const [timeslots, setTimeslots] = useState(
     generateTimeSlotArray(defaultStart, defaultEnd, deltaTime, true)
   );
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
   const [timeZone, setTimeZone] = useState('Chicago');
   const [startHour, setStartHour] = useState(8);
   const [endHour, setEndHour] = useState(20);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null); /* up to and including */
-  const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const [startDate, _setStartDate] = useState(null);
+  const [endDate, _setEndDate] = useState(null); /* up to and including */
+
+  const setStartDate = (startDate) => {
+    let date = DateTime.fromHTTP(startDate)
+      .toLocal()
+      .set({ hour: 8, minute: 0 });
+    _setStartDate(date.toHTTP());
+  };
+
+  const setEndDate = (endDate) => {
+    let date = DateTime.fromHTTP(endDate)
+      .toLocal()
+      .set({ hour: 21, minute: 0 });
+    _setEndDate(date.toHTTP());
+  };
 
   /* Additional hooks */
   const { query, isReady } = useRouter();
@@ -113,13 +125,12 @@ const CreatePage = () => {
     }
   }, [startDate, endDate, deltaTime]);
 
-  console.log('startDate: ', startDate);
-  console.log('endDate: ', endDate);
-
   /* For stuff below the time select component */
   const [showOptions, setShowOptions] = useState(false);
   const bottomRef = useRef();
   const topRef = useRef();
+
+  console.log('Start page index pg:', startDate);
 
   return (
     <div

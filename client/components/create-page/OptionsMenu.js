@@ -35,6 +35,8 @@ export const OptionsMenu = ({
   setEndDate,
   setTimeZone,
 }) => {
+  console.log('Start date:', startDate);
+
   /* Code for TimeZone */
   const [selectedTimezone, setSelectedTimezone] = useState(
     Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -56,6 +58,8 @@ export const OptionsMenu = ({
     exclusive: true,
   };
 
+  console.log('startDate from OptionsMenu: ', startDate);
+
   return (
     <div className="container-padding-sm">
       <div className={`${styles.options_container}`}>
@@ -73,8 +77,10 @@ export const OptionsMenu = ({
             <li>
               End Date
               <div>
-                {/* defaultDate={endDate} */}
-                <BasicDatePicker setDate={(val) => setEndDate(val)} />
+                <BasicDatePicker
+                  defaultDate={endDate}
+                  setDate={(val) => setEndDate(val)}
+                />
               </div>
             </li>
 
