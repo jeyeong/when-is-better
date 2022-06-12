@@ -10,7 +10,7 @@ const setMinusMultiple = (A, B) => {
   B.forEach((i) => {
     const idx = A.indexOf(i);
     if (idx >= 0) {
-      A.pop(idx);
+      A.splice(idx, 1);
     }
   });
   return A;
