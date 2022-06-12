@@ -54,7 +54,7 @@ const generateTimeSlotArray = (
   deltaDuration,
   available_default
 ) => {
-  /* modify start (the start Date) so that hour is accounted for */
+  /* first 2 lines: modify start (the start Date) so that hour is accounted for */
   start = start.set({ hour: startHour }).toLocal();
   end = end.set({ hour: endHour }).toLocal();
   const interval = Interval.fromDateTimes(start, end);

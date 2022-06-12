@@ -9,22 +9,18 @@ import Router from 'next/router';
 import { DateTime } from 'luxon';
 
 const LandingPage = () => {
-  const [startDate, _setStartDate] = useState('startDateNotSet');
+  const [startDate, _setStartDate] = useState('startDateNotSet'); //startDate is a string on the home page because we pass on via HTTP; this differs from the create page's startDate which is a Luxon Datetime object
   const [endDate, _setEndDate] = useState('endDateNotSet');
   const [isInvalidDate, setIsInvalidDate] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const setStartDate = (startDate) => {
-    let date = DateTime.fromHTTP(startDate)
-      .toLocal()
-      .set({ hour: 8, minute: 0 });
-    _setStartDate(date.toHTTP());
+  const setStartDate = (newStartDate) => {
+    let date = newStartDate.toLocal().set({ hour: 8, minute: 0 });
+    _setStartDate(date.toHTTP()); /* convert to HTTP to pass on via URL */
   };
 
-  const setEndDate = (endDate) => {
-    let date = DateTime.fromHTTP(endDate)
-      .toLocal()
-      .set({ hour: 21, minute: 0 });
+  const setEndDate = (newEndDate) => {
+    let date = newEndDate.toLocal().set({ hour: 21, minute: 0 });
     _setEndDate(date.toHTTP());
   };
 
@@ -87,10 +83,12 @@ const LandingPage = () => {
                 <BasicDatePicker
                   label="Start"
                   setDate={(val) => setStartDate(val)}
+                  defaultDate={null}
                 />
                 <BasicDatePicker
                   label="End"
                   setDate={(val) => setEndDate(val)}
+                  defaultDate={null}
                 />
               </div>
               <div className={styles.invalid_date}>{errorMsg}</div>

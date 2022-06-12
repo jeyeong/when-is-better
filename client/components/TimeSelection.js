@@ -354,5 +354,5 @@ methods; they becomes strings --> Need (date) string to format function.
 */
 const formatSlotTime = (slotTime) => {
   const a = DateTime.fromISO(slotTime);
-  return a.toFormat('h:mm a');
+  return a.toFormat('h a');
 };

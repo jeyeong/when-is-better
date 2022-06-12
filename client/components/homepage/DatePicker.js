@@ -35,13 +35,13 @@ const theme = createTheme({
   },
 });
 
-export const BasicDatePicker = ({ label, setDate }) => {
-  const [value, setValue] = React.useState(null);
+export const BasicDatePicker = ({ label, setDate, defaultDate }) => {
+  const [value, setValue] = React.useState(defaultDate);
 
   const onChange = (newValue) => {
     setValue(newValue);
     if (newValue != null) {
-      setDate(newValue.toHTTP());
+      setDate(newValue);
     }
   };
 

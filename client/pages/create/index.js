@@ -61,40 +61,10 @@ const CreatePage = () => {
   /* States that user can change via options */
   const [showOptions, setShowOptions] = useState(false);
   const [deltaTime, setDeltaTime] = useState(MINUTES_30);
-  const [startDate, setStartDate] = useState(null); // startDate is beginning of first day
+  const [startHour, _setStartHour] = useState(INITIAL_START_HOUR);
+  const [endHour, _setEndHour] = useState(INITIAL_END_HOUR);
+  const [startDate, setStartDate] = useState(null); //startDate is a string on the home page because we pass on via HTTP; this differs from the create page's startDate which is a Luxon Datetime object
   const [endDate, setEndDate] = useState(null); // endDate is end of last day
-  const [startHour, _setStartHour] = useState(8);
-  const [endHour, _setEndHour] = useState(21);
-
-  /*
-   * setStartHour
-   *   This wrapper is needed so we modify the startDate object
-   */
-  function setStartHour(startHour) {
-    _setStartHour(startHour);
-
-    const initialStartDate = DateTime.now()
-      .set({
-        hour: INITIAL_START_HOUR,
-        minute: 0,
-      })
-      .minus({ day: 10 });
-    initialStartDate = initialStartDate.toLocal();
-    setStartDate(initialStartDate);
-  }
-
-  function setEndHour(endHour) {
-    _setEndHour(endHour);
-
-    const initialStartDate = DateTime.now()
-      .set({
-        hour: INITIAL_START_HOUR,
-        minute: 0,
-      })
-      .minus({ day: 10 });
-    initialStartDate = initialStartDate.toLocal();
-    setStartDate(initialStartDate);
-  }
 
   /* Internal states for logic */
   const deltaDuration = Duration.fromObject({ minutes: deltaTime });
@@ -104,6 +74,39 @@ const CreatePage = () => {
 
   /* Additional hooks */
   const { query, isReady } = useRouter();
+
+  /*
+   * setStartHour
+   *   This wrapper is needed so we modify the startDate object's hour
+   *   Returns True if we modified the Hour, False if startHour >= End Hour
+   */
+  const setStartHour = (newStartHour) => {
+    if (newStartHour >= endHour) {
+      return false;
+    }
+
+    _setStartHour(newStartHour);
+    const newStartDate = startDate.set({
+      hour: INITIAL_START_HOUR,
+      minute: 0,
+    });
+    setStartDate(newStartDate);
+    return true;
+  };
+
+  const setEndHour = (newEndHour) => {
+    if (startHour >= newEndHour) {
+      return false;
+    }
+
+    _setEndHour(newEndHour);
+    const newEndDate = endDate.set({
+      hour: INITIAL_START_HOUR,
+      minute: 0,
+    });
+    setEndDate(newEndDate);
+    return true;
+  };
 
   /* Initial page load */
   useEffect(() => {
@@ -252,7 +255,6 @@ const CreatePage = () => {
           />
         </div>
 
-        <div>start hour: {startHour}</div>
         <div className={styles.createpage__options_container}>
           {showOptions ? (
             <OptionsMenu
@@ -260,12 +262,12 @@ const CreatePage = () => {
               setDeltaTime={setDeltaTime}
               startHour={startHour}
               setStartHour={setStartHour}
-              // endHour={endHour}
-              // setEndHour={setEndHour}
-              // startDate={startDate}
-              // setStartDate={setStartDate}
-              // endDate={endDate}
-              // setEndDate={setEndDate}
+              endHour={endHour}
+              setEndHour={setEndHour}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
               // setTimeZone={setTimeZone}
             />
           ) : (

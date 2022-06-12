@@ -27,6 +27,12 @@ export const OptionsMenu = ({
   setDeltaTime,
   startHour,
   setStartHour,
+  endHour,
+  setEndHour,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
 }) => {
   /* Code for TimeZone */
   const [selectedTimezone, setSelectedTimezone] = useState(
@@ -57,18 +63,33 @@ export const OptionsMenu = ({
             <li>
               Start Hour
               <div>
-                <SelectHour
-                  defaultHour={startHour}
-                  setHour={setStartHour}
-                  isStartHour={true}
-                />
+                <SelectHour defaultHour={startHour} setHour={setStartHour} />
               </div>
             </li>
             <li>
               End Hour
               <div>
-                TO DO
-                {/* <SelectHour /> */}
+                <SelectHour defaultHour={endHour} setHour={setEndHour} />
+              </div>
+            </li>
+            <li>
+              Start Date
+              <div>
+                <BasicDatePicker
+                  label="Start"
+                  setDate={(val) => setStartDate(val)}
+                  defaultDate={startDate}
+                />
+              </div>
+            </li>
+            <li>
+              End Date
+              <div>
+                <BasicDatePicker
+                  label="End"
+                  setDate={(val) => setEndDate(val)}
+                  defaultDate={endDate}
+                />
               </div>
             </li>
           </ul>
