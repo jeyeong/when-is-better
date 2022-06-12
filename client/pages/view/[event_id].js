@@ -85,10 +85,10 @@ const CreateForm = () => {
 
       <Grid
         container
-        className={styles.formviewpage}
+        className={styles.viewpage}
         style={{
           paddingTop: `${TOP_PADDING}px`,
-          marginBottom: '40px',
+          paddingBottom: '40px',
           rowGap: '24px',
         }}
       >

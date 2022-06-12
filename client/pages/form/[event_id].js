@@ -85,7 +85,7 @@ const Form = () => {
       <Header />
 
       <div
-        className={styles.formviewpage}
+        className={styles.formpage}
         style={{ paddingTop: `${TOP_PADDING}px` }}
       >
         <div
@@ -122,7 +122,7 @@ const Form = () => {
           />
         </div>
 
-        <div style={{ marginTop: '24px', marginBottom: '30px' }}>
+        <div style={{ marginTop: '24px', paddingBottom: '30px' }}>
           <SubmitForm
             timeslots={timeslots}
             eventID={query.event_id}
