@@ -28,7 +28,7 @@ const SLOT_HEIGHTS = {
 };
 const PAGE_PADDING_CONST_LG = 0.8;
 const PAGE_PADDING_CONST_MD = 0.75;
-const PAGE_PADDING_CONST_SM = 0.8;
+const PAGE_PADDING_CONST_SM = 0.9;
 
 /* Individual time selection columns */
 const TimeSelectionDay = ({
@@ -128,6 +128,7 @@ const ResultsViewTimeSlots = ({
   /* To detect changes in screen size: re-render component */
   const [dimensions, setDimensions] = useState({
     height: 0,
+    originalWidth: 0,
     width: 0,
   });
   const [columnDimensions, setColumnDimensions] = useState(
@@ -143,6 +144,7 @@ const ResultsViewTimeSlots = ({
     const handleScreenChange = () => {
       setDimensions({
         height: window.innerHeight,
+        originalWidth: window.innerWidth,
         width: widthExpr(window.innerWidth),
       });
     };
@@ -161,8 +163,8 @@ const ResultsViewTimeSlots = ({
 
   /* Page padding constant to use */
   const pagePaddingConst =
-    dimensions.width > 500
-      ? dimensions.width > 800
+    dimensions.originalWidth > 500
+      ? dimensions.originalWidth > 800
         ? PAGE_PADDING_CONST_LG
         : PAGE_PADDING_CONST_MD
       : PAGE_PADDING_CONST_SM;
