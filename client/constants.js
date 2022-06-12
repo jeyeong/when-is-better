@@ -14,4 +14,8 @@ const defaultEnd = DateTime.fromObject({
   hour: 20,
 }).setZone('America/Chicago');
 
-export { defaultStart, defaultEnd };
+const MINUTES_15 = 15;
+const MINUTES_30 = 30;
+const MINUTES_60 = 60;
+
+export { defaultStart, defaultEnd, MINUTES_15, MINUTES_30, MINUTES_60 };

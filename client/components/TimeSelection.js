@@ -21,7 +21,7 @@ const DATETITLE_BOTTOM_MARGIN = 12;
 const COLUMN_BORDER_WIDTH = 1;
 const LG_SM_THRESHOLD = 800;
 const SLOT_HEIGHTS = {
-  15: 12.5,
+  15: 10,
   30: 20,
   60: 40,
 };
@@ -354,5 +354,5 @@ methods; they becomes strings --> Need (date) string to format function.
 */
 const formatSlotTime = (slotTime) => {
   const a = DateTime.fromISO(slotTime);
-  return a.toFormat('h:mm a');
+  return a.toFormat('h a');
 };

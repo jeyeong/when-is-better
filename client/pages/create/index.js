@@ -22,7 +22,13 @@ import { OptionsMenu } from '../../components/create-page/OptionsMenu';
 
 /* Other imports */
 import styles from '../../styles/Create.module.css';
-import { defaultStart, defaultEnd } from '../../constants.js';
+import {
+  defaultStart,
+  defaultEnd,
+  MINUTES_15,
+  MINUTES_30,
+  MINUTES_60,
+} from '../../constants.js';
 import { generateTimeSlotArray } from '../../models/timeslots';
 
 /******************
@@ -39,31 +45,68 @@ const DESCRIPTION_BOTTOM_MARGIN = 16;
 const TS_CONTAINER_BORDER_WIDTH = 1;
 const TS_CONTAINER_TB_PADDING = 25;
 
-/* make deltaDuration programmatic */
-const MINUTES_15 = 15;
-const MINUTES_30 = 30;
-const MINUTES_60 = 60;
+const INITIAL_START_HOUR = 8;
+const INITIAL_END_HOUR = 21;
 
 /****************
  *     Main     *
  ****************/
 
 const CreatePage = () => {
-  /* States */
-  const [startDate, setStartDate] = useState(null); // startDate is beginning of first day
-  const [endDate, setEndDate] = useState(null); // endDate is end of last day
+  /* User Defined States */
   const [title, setTitle] = useState('');
   const [showTitleError, setShowTitleError] = useState(false);
   const [description, setDescription] = useState('');
+
+  /* States that user can change via options */
+  const [showOptions, setShowOptions] = useState(false);
   const [deltaTime, setDeltaTime] = useState(MINUTES_30);
+  const [startHour, _setStartHour] = useState(INITIAL_START_HOUR);
+  const [endHour, _setEndHour] = useState(INITIAL_END_HOUR);
+  const [startDate, setStartDate] = useState(null); //startDate is a string on the home page because we pass on via HTTP; this differs from the create page's startDate which is a Luxon Datetime object
+  const [endDate, setEndDate] = useState(null); // endDate is end of last day
+
+  /* Internal states for logic */
   const deltaDuration = Duration.fromObject({ minutes: deltaTime });
   const [timeslots, setTimeslots] = useState([]);
   const [showTimeslotsError, setShowTimeslotsError] = useState(false);
-  const [showOptions, setShowOptions] = useState(false);
   const [loadDone, setLoadDone] = useState(false);
 
   /* Additional hooks */
   const { query, isReady } = useRouter();
+
+  /*
+   * setStartHour
+   *   This wrapper is needed so we modify the startDate object's hour
+   *   Returns True if we modified the Hour, False if startHour >= End Hour
+   */
+  const setStartHour = (newStartHour) => {
+    if (newStartHour >= endHour) {
+      return false;
+    }
+
+    _setStartHour(newStartHour);
+    const newStartDate = startDate.set({
+      hour: INITIAL_START_HOUR,
+      minute: 0,
+    });
+    setStartDate(newStartDate);
+    return true;
+  };
+
+  const setEndHour = (newEndHour) => {
+    if (startHour >= newEndHour) {
+      return false;
+    }
+
+    _setEndHour(newEndHour);
+    const newEndDate = endDate.set({
+      hour: INITIAL_START_HOUR,
+      minute: 0,
+    });
+    setEndDate(newEndDate);
+    return true;
+  };
 
   /* Initial page load */
   useEffect(() => {
@@ -78,7 +121,10 @@ const CreatePage = () => {
       /* Default date range:
          Start = 08:00 today
          End = 21:00 4 days from today */
-      initialStartDate = DateTime.now().set({ hour: 8, minute: 0 });
+      initialStartDate = DateTime.now().set({
+        hour: INITIAL_START_HOUR,
+        minute: 0,
+      });
       initialEndDate = initialStartDate
         .plus({ day: 3 })
         .set({ hour: 21 })
@@ -92,6 +138,8 @@ const CreatePage = () => {
     const timeslots_arr = generateTimeSlotArray(
       initialStartDate,
       initialEndDate,
+      INITIAL_START_HOUR,
+      INITIAL_END_HOUR,
       deltaDuration,
       true
     );
@@ -106,6 +154,8 @@ const CreatePage = () => {
       const timeslots_arr = generateTimeSlotArray(
         startDate,
         endDate,
+        startHour,
+        endHour,
         deltaDuration,
         true
       );
@@ -113,7 +163,7 @@ const CreatePage = () => {
     }
   }, [startDate, endDate, deltaTime]);
 
-  /* For stuff below the time select component */
+  /* To move window to see options component */
   const bottomRef = useRef();
   const topRef = useRef();
 
@@ -206,61 +256,25 @@ const CreatePage = () => {
           />
         </div>
 
-        {/* Bottom settings */}
-        {/*
-      <div className={styles.button_container}>
-        <div className={styles.flex}>
-          <input
-            type="text"
-            value={name}
-            onInput={(e) => setName(e.target.value)}
-            placeholder="John Doe"
-            className={styles.input_name}
-          />
+        <div className={styles.createpage__options_container}>
+          {showOptions ? (
+            <OptionsMenu
+              deltaTime={deltaTime}
+              setDeltaTime={setDeltaTime}
+              startHour={startHour}
+              setStartHour={setStartHour}
+              endHour={endHour}
+              setEndHour={setEndHour}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              // setTimeZone={setTimeZone}
+            />
+          ) : (
+            ''
+          )}
         </div>
-        <div className={styles.flex}>
-          <CreateEventButton
-            timeslots={timeslots}
-            start={startDate}
-            end={endDate}
-          />
-        </div>
-        <div className="flex">
-          <button
-            className={styles.btn_test}
-            onClick={async () => {
-              if (showOptions) {
-                topRef.current.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start',
-                  inline: 'nearest',
-                });
-                await sleep(200); // wait to get to page top first
-                setShowOptions(!showOptions);
-              } else {
-                setShowOptions(!showOptions);
-                await sleep(200); // wait for menu to render first
-                bottomRef.current.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start',
-                  inline: 'nearest',
-                });
-              }
-            }}
-          >
-            <BsGear size={30} />
-          </button>
-        </div>
-      </div>
-
-      <div className={`${showOptions ? '' : 'hide'} w_100 `}>
-        <div className="container-padding-lg">
-          <OptionsMenu />
-        </div>
-      </div>
-
-      <div ref={bottomRef}></div>
-      */}
 
         <br />
       </div>
