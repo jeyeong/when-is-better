@@ -125,7 +125,7 @@ const CreateForm = () => {
             <ResultsViewTimeSlots
               timeslots={timeslots}
               setTimeslots={setTimeslots}
-              deltaTime={deltaTime}
+              deltaTime={eventDetails.deltaTime}
               distanceFromTop={39}
               allRespondents={eventRespondents}
               widthExpr={(x) => {

@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import Chip from '@mui/material/Chip';
+import { DateTime, Duration } from 'luxon';
 
 /* this mutates A, so pass a clone */
 const setMinusMultiple = (A, B) => {
@@ -18,7 +19,8 @@ const setMinusMultiple = (A, B) => {
 const TimeSlotAvailable = ({ timeslot, timeDelta, allRespondents }) => {
   const localTime = timeslot.time.toLocal();
   const timeStart = localTime.toFormat('h:mm').toLowerCase();
-  const timeEnd = localTime.plus(timeDelta).toFormat('h:mma').toLowerCase();
+  const deltaDuration = Duration.fromObject({ minutes: timeDelta });
+  const timeEnd = localTime.plus(deltaDuration).toFormat('h:mma').toLowerCase();
   const date = localTime.toFormat('ccc LLL d');
   const people_unavailable = setMinusMultiple(
     [...allRespondents],
