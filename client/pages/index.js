@@ -28,6 +28,10 @@ const LandingPage = () => {
     if (startDate === 'startDateNotSet' || endDate === 'endDateNotSet') {
       setErrorMsg('Please enter your dates!');
       setIsInvalidDate(true);
+      setTimeout(() => {
+        setIsInvalidDate(false);
+        setErrorMsg('');
+      }, 5000);
       return;
     }
 
@@ -36,6 +40,10 @@ const LandingPage = () => {
     if (startDateTime > endDateTime) {
       setErrorMsg('End date cannot be before start date');
       setIsInvalidDate(true);
+      setTimeout(() => {
+        setIsInvalidDate(false);
+        setErrorMsg('');
+      }, 5000);
       return;
     }
 

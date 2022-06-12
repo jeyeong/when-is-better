@@ -17,9 +17,9 @@ const hours = [
 const numToFormat = (num) => {
   // Technically noon is 12PM; midnight is 12 AM; confusing AF.
   if (num === 24) {
-    return 'Midnight';
+    return '12 AM Midnight';
   } else if (num === 12) {
-    return 'Noon';
+    return '12 PM Noon';
   } else {
     if (num < 12) {
       return `${num} AM`;
