@@ -50,12 +50,13 @@ const generateTimeSlotArray = (
   start,
   end,
   startHour,
+  endHour,
   deltaDuration,
   available_default
 ) => {
-  console.log('startHour: ', startHour);
   /* modify start (the start Date) so that hour is accounted for */
   start = start.set({ hour: startHour }).toLocal();
+  end = end.set({ hour: endHour }).toLocal();
   const interval = Interval.fromDateTimes(start, end);
   const dayStarts = getDaysInIntervalFromStart(interval);
   const dayEnds = getDaysInIntervalFromEnd(interval);
