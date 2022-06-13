@@ -92,7 +92,7 @@
   display: grid;
   place-items: center;
   font-size: 12px;
-  background-color: #c9f2c7;
+  background-color: rgb(145,224,155);
   border-radius: 50px;
   cursor: pointer;
 }
@@ -103,7 +103,7 @@
   display: grid;
   place-items: center;
   font-size: 12px;
-  background-color: #c9f2c7;
+  background-color: rgb(145,224,155);
   border-radius: 50px;
   cursor: pointer;
 }
