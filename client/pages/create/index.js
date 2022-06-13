@@ -87,7 +87,7 @@ const CreatePage = () => {
 
     _setStartHour(newStartHour);
     const newStartDate = startDate.set({
-      hour: INITIAL_START_HOUR,
+      hour: newStartHour,
       minute: 0,
     });
     setStartDate(newStartDate);
@@ -101,7 +101,7 @@ const CreatePage = () => {
 
     _setEndHour(newEndHour);
     const newEndDate = endDate.set({
-      hour: INITIAL_START_HOUR,
+      hour: newEndHour,
       minute: 0,
     });
     setEndDate(newEndDate);
@@ -138,8 +138,6 @@ const CreatePage = () => {
     const timeslots_arr = generateTimeSlotArray(
       initialStartDate,
       initialEndDate,
-      INITIAL_START_HOUR,
-      INITIAL_END_HOUR,
       deltaDuration,
       true
     );
@@ -154,8 +152,6 @@ const CreatePage = () => {
       const timeslots_arr = generateTimeSlotArray(
         startDate,
         endDate,
-        startHour,
-        endHour,
         deltaDuration,
         true
       );
