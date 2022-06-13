@@ -1,7 +1,7 @@
 /* Library imports */
 import { useState } from 'react';
-import { Button } from '@mui/material';
 import Router from 'next/router';
+import { Button, Snackbar, Alert } from '@mui/material';
 
 /* Other imports */
 import styles from '../../styles/Create.module.css';
@@ -39,6 +39,10 @@ const CreateEventButton = ({
   setShowTitleError,
   setShowTimeslotsError,
 }) => {
+  /* Copied state: for the pop up on invalidation */
+  const [copied, setCopied] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   // /* Stage two */
   // const [stageTwo, setStageTwo] = useState(false);
   // const [name, setName] = useState('');
@@ -59,6 +63,10 @@ const CreateEventButton = ({
     if (title.length === 0) {
       setShowTitleError(true);
       setTimeout(() => setShowTitleError(false), 5000);
+
+      setErrorMessage('Please Enter a Title');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
       return false;
     }
     return true;
@@ -69,6 +77,10 @@ const CreateEventButton = ({
     if (!atLeastOneTimeAvailable) {
       setShowTimeslotsError(true);
       setTimeout(() => setShowTimeslotsError(false), 5000);
+
+      setErrorMessage('Please Select Times');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
       return false;
     }
     return true;
@@ -101,8 +113,8 @@ const CreateEventButton = ({
   };
 
   const handleEventCreation = () => {
-    const titleValidated = titleValidation();
     const timeslotsValidated = timeslotsValidation();
+    const titleValidated = titleValidation();
 
     if (titleValidated && timeslotsValidated) {
       createEvent();
@@ -110,33 +122,35 @@ const CreateEventButton = ({
   };
 
   return (
-    <Button
-      variant="contained"
-      onClick={handleEventCreation}
-      style={
-        title.length > 0 && atLeastOneTimeAvailable
-          ? BUTTON_STYLE_ACTIVATED
-          : showError
-          ? BUTTON_STYLE_ERROR
-          : BUTTON_STYLE_DEACTIVATED
-      }
-    >
-      Submit
-    </Button>
+    <>
+      <Button
+        variant="contained"
+        onClick={handleEventCreation}
+        style={
+          title.length > 0 && atLeastOneTimeAvailable
+            ? BUTTON_STYLE_ACTIVATED
+            : showError
+            ? BUTTON_STYLE_ERROR
+            : BUTTON_STYLE_DEACTIVATED
+        }
+      >
+        Submit
+      </Button>
+      <Snackbar
+        open={copied}
+        onClose={() => {
+          setCopied(false);
+        }}
+        message="Copied!"
+        severity="error"
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+    </>
   );
-
-  // return (
-  //   <div style={{ display: 'flex', flexDirection: 'column' }}>
-  //     <Button
-  //       variant="contained"
-  //       onClick={handleEventCreation}
-  //       style={BUTTON_STYLE_DEACTIVATED}
-  //     >
-  //       One more thing...
-  //     </Button>
-  //     <input placeholder="YOUR NAME" className={styles.createpage__namebox} />
-  //   </div>
-  // );
 };
 
 export default CreateEventButton;

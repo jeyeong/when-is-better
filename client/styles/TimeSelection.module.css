@@ -19,8 +19,7 @@
 .datebox__container {
   border: 1px solid #585858;
   border-radius: 4px;
-  box-shadow: 0 0.5px 1px 1px rgba(0, 0, 0, 0.15);
-  padding: 1px;
+  box-shadow: 0 0.5px 10px 1px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
@@ -64,7 +63,7 @@
 }
 
 .datebox__selected {
-  background-color: rgb(145,224,155);
+  background-color: rgb(145, 224, 155);
   border-top-color: transparent;
 }
 
