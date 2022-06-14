@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { Grid } from '@mui/material';
 import Head from 'next/head';
 import { DateTime, Duration } from 'luxon';
+import { Footer } from '../../components/general/Footer';
 
 /* Component imports */
 import Loading from '../../components/general/Loading';
@@ -156,6 +157,7 @@ const CreateForm = () => {
           />
         </Grid>
       </Grid>
+      <Footer />
     </>
   );
 };
