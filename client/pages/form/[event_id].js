@@ -11,6 +11,7 @@ import EventTitle from '../../components/form-view-page/EventTitle';
 import EventDescription from '../../components/form-view-page/EventDescription';
 import TimeSelection from '../../components/TimeSelection';
 import SubmitForm from '../../components/form-view-page/SubmitForm';
+import { Footer } from '../../components/general/Footer';
 
 /* Other imports */
 import styles from '../../styles/Form.module.css';
@@ -131,6 +132,8 @@ const Form = () => {
           />
         </div>
       </div>
+
+      <Footer />
     </>
   );
 };

@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   padding: 0 7.5%;
-  background-color:#f8f9fa;
 }
 
 .viewpage {
@@ -72,6 +71,7 @@
   animation-duration: 0.5s;
   animation-name: namebox-appearance;
   animation-fill-mode: backwards;
+  transition: border-color 0.3s color 0.3s;
 }
 
 .formpage__namebox::placeholder {
@@ -91,6 +91,10 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.formpage__namebox__error {
+  border: 2px solid #ed4337;
 }
 
 /* Media queries */
