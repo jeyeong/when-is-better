@@ -11,6 +11,13 @@ const color = '#087f5b';
 
 const theme = createTheme({
   components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#fff',
+        },
+      },
+    },
     MuiIconButton: {
       styleOverrides: {
         sizeMedium: {
