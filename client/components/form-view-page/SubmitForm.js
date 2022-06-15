@@ -1,6 +1,6 @@
 /* Library imports */
 import { useState } from 'react';
-import { Button } from '@mui/material';
+import { Button, Snackbar, Alert } from '@mui/material';
 import Router from 'next/router';
 
 /* Other imports */
@@ -22,18 +22,26 @@ const BUTTON_STYLE_DEACTIVATED = {
   boxShadow: 'none',
   color: '#000000c0',
 };
+const BUTTON_STYLE_ERROR = {
+  ...BUTTON_STYLE_ACTIVATED,
+  backgroundColor: '#ed4337',
+  boxShadow: 'none',
+};
 
 const SubmitForm = ({ timeslots, eventID, deltaTime }) => {
+  /* Copied state: for the pop up on invalidation */
+  const [copied, setCopied] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   /* States */
-  const [stepTwo, setStepTwo] = useState(false);
   const [name, setName] = useState('');
+  const [showNameError, setShowNameError] = useState(false);
 
-  /* Step 1 submission */
-  const advanceToStepTwo = () => setStepTwo(true);
-
-  /* Step 2 submission */
+  /* Submission logic */
   const submitForm = () => {
     if (name.length == 0) {
+      setShowNameError(true);
+      setTimeout(() => setShowNameError(false), 2500);
       return;
     }
 
@@ -70,20 +78,6 @@ const SubmitForm = ({ timeslots, eventID, deltaTime }) => {
       });
   };
 
-  /* Step 1: Select timeslots */
-  if (!stepTwo) {
-    return (
-      <Button
-        variant="contained"
-        onClick={advanceToStepTwo}
-        style={BUTTON_STYLE_ACTIVATED}
-      >
-        Submit
-      </Button>
-    );
-  }
-
-  /* Step 2: Fill out your name */
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Button
@@ -91,18 +85,38 @@ const SubmitForm = ({ timeslots, eventID, deltaTime }) => {
         onClick={submitForm}
         className={styles.formpage__steptwobutton}
         style={
-          name.length > 0 ? BUTTON_STYLE_ACTIVATED : BUTTON_STYLE_DEACTIVATED
+          name.length > 0
+            ? BUTTON_STYLE_ACTIVATED
+            : showNameError
+            ? BUTTON_STYLE_ERROR
+            : BUTTON_STYLE_DEACTIVATED
         }
       >
-        {name.length > 0 ? 'Submit' : 'One more thing...'}
+        Submit
       </Button>
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="YOUR NAME"
-        className={styles.formpage__namebox}
+        className={`${styles.formpage__namebox} ${
+          showNameError ? styles.formpage__namebox__error : ''
+        }`}
         style={{ marginTop: '10px' }}
       />
+
+      <Snackbar
+        open={showNameError}
+        onClose={() => {
+          setShowNameError(false);
+        }}
+        message="Please Enter Your Name"
+        severity="error"
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert severity="error" sx={{ width: '100%' }}>
+          Please Enter Your Name
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

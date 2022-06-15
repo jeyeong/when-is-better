@@ -7,7 +7,6 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { DateTime, Duration } from 'luxon';
 import Head from 'next/head';
-import { CircularProgress } from '@mui/material';
 
 /* Component imports */
 import Loading from '../../components/general/Loading';
@@ -19,6 +18,7 @@ import CreateEventButton from '../../components/create-page/CreateEventButton';
 import SettingsToggler from '../../components/create-page/SettingsToggler';
 import DeltaTimeSelector from '../../components/create-page/DeltaTimeSelector';
 import { OptionsMenu } from '../../components/create-page/OptionsMenu';
+import { Footer } from '../../components/general/Footer';
 
 /* Other imports */
 import styles from '../../styles/Create.module.css';
@@ -272,7 +272,7 @@ const CreatePage = () => {
           )}
         </div>
 
-        <br />
+        <Footer />
       </div>
     </>
   );

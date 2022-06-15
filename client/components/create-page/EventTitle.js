@@ -19,11 +19,7 @@ const EventTitle = ({
         }}
       >
         <input
-          placeholder={
-            showTitleError
-              ? "What's the occasion? (This field is required.)"
-              : "What's the occasion?"
-          }
+          placeholder={"What's the occasion?"}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
