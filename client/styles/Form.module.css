@@ -35,6 +35,11 @@
   color: #777;
 }
 
+.formviewpage__instruction__text {
+  text-align: center;
+  margin: 0px 0px 20px 0px;
+}
+
 /* Time selection container */
 .formviewpage__tscontainer {
   width: max-content;
@@ -54,8 +59,12 @@
 }
 
 @keyframes animate-fade {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .formpage__namebox {
@@ -66,7 +75,7 @@
   font-size: 13px;
   letter-spacing: 0.2px;
   text-align: center;
-  color: rgba(0,0,0,.9);
+  color: rgba(0, 0, 0, 0.9);
   animation-duration: 0.5s;
   animation-name: namebox-appearance;
   animation-fill-mode: backwards;

@@ -71,6 +71,7 @@ const CreatePage = () => {
   const [timeslots, setTimeslots] = useState([]);
   const [showTimeslotsError, setShowTimeslotsError] = useState(false);
   const [loadDone, setLoadDone] = useState(false);
+  const [loadNextPageDone, setLoadNextPageDone] = useState(false); // Show loader after user presses createEventButton
 
   /* Additional hooks */
   const { query, isReady } = useRouter();
@@ -163,7 +164,7 @@ const CreatePage = () => {
   const bottomRef = useRef();
   const topRef = useRef();
 
-  if (!loadDone) {
+  if (!loadDone || loadNextPageDone) {
     return (
       <>
         <Header />
@@ -239,6 +240,7 @@ const CreatePage = () => {
             showError={showTitleError || showTimeslotsError}
             setShowTitleError={setShowTitleError}
             setShowTimeslotsError={setShowTimeslotsError}
+            setLoadNextPageDone={setLoadNextPageDone}
           />
 
           <DeltaTimeSelector
