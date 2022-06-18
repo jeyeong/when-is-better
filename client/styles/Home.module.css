@@ -154,11 +154,6 @@ FONT SIZE SYSTEM (px)
   transform: rotate(var(--rotateDegree));
 }
 
-@keyframes rotateCool {
-  100% {
-  }
-}
-
 .datepicker_container {
   margin: 10px 0px 0px 0px;
   display: flex;

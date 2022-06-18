@@ -105,7 +105,10 @@ const Form = () => {
             titleBottomMargin={TITLE_BOTTOM_MARGIN}
           />
         </div>
-
+        {/* <p className={styles.formviewpage__instruction__text}>
+          Below are the proposed time slots for this event. Paint over all that
+          are good for you.
+        </p> */}
         <div
           className={styles.formviewpage__tscontainer}
           style={{

@@ -54,8 +54,16 @@
 }
 
 .datebox__unavailable {
-  background-color: #888;
+  /* background-color: #888; */
+  background: repeating-linear-gradient(
+    0deg,
+    #ddd,
+    #ddd 5px,
+    #eee 5px,
+    #eee 10px
+  );
   border-top-color: transparent;
+  cursor: not-allowed;
 }
 
 .datebox__unavailable + .datebox {
@@ -72,16 +80,17 @@
 }
 
 .time_str {
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
+  font-size: 16px;
+  font-weight: 600;
   position: absolute;
-  width: 100%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
   z-index: 98;
+
+  /* don't give width: want the time str to take up as little as possible so hover goes across dif timeslots */
+  word-break: keep-all;
 }
 
 .timebox:first-of-type {
@@ -117,7 +126,8 @@
 @media only screen and (max-width: 800px) {
   .timeselection__datetitle,
   .time_str {
-    font-size: 12px;
+    font-size: 14px;
+    letter-spacing: -1px;
   }
 }
 
